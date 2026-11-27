@@ -62,7 +62,14 @@
 		<param name="onclick" />
 		<param name="onleft" default="noop" />
 		<param name="onright" default="noop" />
+		<param name="down" default="9000" />
+		<param name="current" default="false" />
 		<definition>
+			<control type="image">
+				<left>$PARAM[left]</left><top>8</top><width>$PARAM[width]</width><height>48</height>
+				<texture border="24,0,24,0" colordiffuse="3DB9CCDD">moodyfin/shapes/pill_48.png</texture>
+				<visible>$PARAM[current] + !Control.HasFocus($PARAM[id])</visible>
+			</control>
 			<control type="button" id="$PARAM[id]">
 				<left>$PARAM[left]</left><top>8</top><width>$PARAM[width]</width><height>48</height>
 				<label />
@@ -71,7 +78,7 @@
 				<onclick>$PARAM[onclick]</onclick>
 				<onleft>$PARAM[onleft]</onleft>
 				<onright>$PARAM[onright]</onright>
-				<ondown>9000</ondown>
+				<ondown>$PARAM[down]</ondown>
 			</control>
 			<control type="label">
 				<left>$PARAM[textleft]</left><top>8</top><width>200</width><height>48</height>
@@ -104,7 +111,18 @@
 		</definition>
 	</include>
 
+	<!-- current section in the Videos window (the Jellyfin theme's marks it in the menu) -->
+	<expression name="mf_page_favorites">Window.IsActive(Videos) + [String.Contains(Container.FolderPath,jellyfin_Favorite) | String.Contains(Container.FolderPath,Favorite%20movies) | String.Contains(Container.FolderPath,Favorite%20tvshows)]</expression>
+	<expression name="mf_page_sports">Window.IsActive(Videos) + String.Contains(Container.FolderPath,Sports)</expression>
+	<expression name="mf_page_sets">Window.IsActive(Videos) + String.StartsWith(Container.FolderPath,videodb://movies/sets/)</expression>
+	<expression name="mf_page_movies">Window.IsActive(Videos) + Container.Content(movies) + !$EXP[mf_page_favorites] + !$EXP[mf_page_sets]</expression>
+	<expression name="mf_page_shows">Window.IsActive(Videos) + [Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes)] + !$EXP[mf_page_favorites] + !$EXP[mf_page_sports]</expression>
+
+	<!-- params: down = where Down goes from the header, stats = show the library stats -->
 	<include name="MFHeader">
+		<param name="down" default="9000" />
+		<param name="stats" default="true" />
+		<definition>
 		<control type="group">
 			<depth>DepthBars</depth>
 			<visible>!$EXP[infodialog_active]</visible>
@@ -134,6 +152,7 @@
 				<font>mf_small20</font>
 				<textcolor>mf_muted</textcolor>
 				<label>$INFO[Window(Home).Property(MoodyFin.Stats)]</label>
+				<visible>$PARAM[stats]</visible>
 			</control>
 			<!-- nav pill -->
 			<control type="group" id="9100">
@@ -150,37 +169,37 @@
 					<param name="id" value="9101" /><param name="left" value="8" /><param name="textleft" value="56" /><param name="iconleft" value="26" /><param name="width" value="156" />
 					<param name="icon" value="moodyfin/icons/favorite.png" /><param name="label" value="Favorites" />
 					<param name="onclick" value="ActivateWindow(Videos,library://video/jellyfin_Favoritemovies.xml/,return)" />
-					<param name="onright" value="9102" />
+					<param name="onright" value="9102" /><param name="down" value="$PARAM[down]" /><param name="current" value="$EXP[mf_page_favorites]" />
 				</include>
 				<include content="MFNavButton">
 					<param name="id" value="9102" /><param name="left" value="168" /><param name="textleft" value="216" /><param name="iconleft" value="186" /><param name="width" value="176" />
 					<param name="icon" value="moodyfin/icons/video_library.png" /><param name="label" value="Collections" />
 					<param name="onclick" value="ActivateWindow(Videos,videodb://movies/sets/,return)" />
-					<param name="onleft" value="9101" /><param name="onright" value="9103" />
+					<param name="onleft" value="9101" /><param name="onright" value="9103" /><param name="down" value="$PARAM[down]" /><param name="current" value="$EXP[mf_page_sets]" />
 				</include>
 				<include content="MFNavButton">
 					<param name="id" value="9103" /><param name="left" value="348" /><param name="textleft" value="396" /><param name="iconleft" value="366" /><param name="width" value="132" />
 					<param name="icon" value="moodyfin/icons/movie.png" /><param name="label" value="Movies" />
 					<param name="onclick" value="ActivateWindow(Videos,videodb://movies/titles/,return)" />
-					<param name="onleft" value="9102" /><param name="onright" value="9104" />
+					<param name="onleft" value="9102" /><param name="onright" value="9104" /><param name="down" value="$PARAM[down]" /><param name="current" value="$EXP[mf_page_movies]" />
 				</include>
 				<include content="MFNavButton">
 					<param name="id" value="9104" /><param name="left" value="484" /><param name="textleft" value="532" /><param name="iconleft" value="502" /><param name="width" value="124" />
 					<param name="icon" value="moodyfin/icons/tv.png" /><param name="label" value="Shows" />
 					<param name="onclick" value="ActivateWindow(Videos,videodb://tvshows/titles/,return)" />
-					<param name="onleft" value="9103" /><param name="onright" value="9105" />
+					<param name="onleft" value="9103" /><param name="onright" value="9105" /><param name="down" value="$PARAM[down]" /><param name="current" value="$EXP[mf_page_shows]" />
 				</include>
 				<include content="MFNavButton">
 					<param name="id" value="9105" /><param name="left" value="612" /><param name="textleft" value="660" /><param name="iconleft" value="630" /><param name="width" value="128" />
 					<param name="icon" value="moodyfin/icons/sports_soccer.png" /><param name="label" value="Sports" />
 					<param name="onclick" value="ActivateWindow(Videos,&quot;videodb://tvshows/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tag%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22Sports%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D&quot;,return)" />
-					<param name="onleft" value="9104" /><param name="onright" value="9106" />
+					<param name="onleft" value="9104" /><param name="onright" value="9106" /><param name="down" value="$PARAM[down]" /><param name="current" value="$EXP[mf_page_sports]" />
 				</include>
 				<include content="MFNavButton">
 					<param name="id" value="9106" /><param name="left" value="744" /><param name="iconleft" value="759" /><param name="width" value="52" />
 					<param name="icon" value="moodyfin/icons/search.png" /><param name="label" value="" />
-					<param name="onclick" value="ActivateWindow(1107)" />
-					<param name="onleft" value="9105" /><param name="onright" value="9120" />
+					<param name="onclick" value="ActivateWindow(1150)" />
+					<param name="onleft" value="9105" /><param name="onright" value="9120" /><param name="down" value="$PARAM[down]" /><param name="current" value="Window.IsActive(1150)" />
 				</include>
 			</control>
 			<!-- profile picture (settings) -->
@@ -191,7 +210,7 @@
 				<label />
 				<onclick>ActivateWindow(settings)</onclick>
 				<onleft>9106</onleft>
-				<ondown>9000</ondown>
+				<ondown>$PARAM[down]</ondown>
 			</control>
 			<control type="image">
 				<right>76</right><top>28</top><width>48</width><height>48</height>
@@ -199,6 +218,7 @@
 				<texture diffuse="moodyfin/shapes/circle.png" fallback="DefaultUser.png">$INFO[System.ProfileThumb]</texture>
 			</control>
 		</control>
+		</definition>
 	</include>
 
 	<!-- ================================================================ row heading: accent bar + Bebas title -->
@@ -220,6 +240,18 @@
 	</include>
 
 	<!-- ================================================================ cards -->
+	<variable name="MFCardSub">
+		<value condition="!String.IsEmpty(ListItem.Property(mf.type))">$INFO[ListItem.Property(mf.rating),★ , · ]$INFO[ListItem.Property(mf.sub)]$VAR[MFTypeLabel]</value>
+		<value condition="String.IsEqual(ListItem.DBType,season)">$INFO[ListItem.Property(NumEpisodes),, episodes]</value>
+		<value condition="String.IsEqual(ListItem.DBType,set)">$INFO[ListItem.Property(Total),, movies]</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie)">$INFO[ListItem.Rating,★ , · ]$INFO[ListItem.Year] · Movie</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow)">$INFO[ListItem.Rating,★ , · ]$INFO[ListItem.Year] · Show</value>
+		<value>$INFO[ListItem.Year]</value>
+	</variable>
+	<variable name="MFCardFallbackTitle">
+		<value condition="ListItem.IsParentFolder">Back</value>
+		<value>$INFO[ListItem.Label]</value>
+	</variable>
 	<variable name="MFTypeLabel">
 		<value condition="String.IsEqual(ListItem.Property(mf.type),movie)"> · Movie</value>
 		<value condition="String.IsEqual(ListItem.Property(mf.type),tvshow)"> · Show</value>
@@ -248,7 +280,7 @@
 					<align>center</align><aligny>center</aligny>
 					<font>mf_heading36</font>
 					<textcolor>B3F1F2F4</textcolor>
-					<label>$INFO[ListItem.Label]</label>
+					<label>$VAR[MFCardFallbackTitle]</label>
 					<visible>String.IsEmpty(ListItem.Art(poster))</visible>
 				</control>
 				<!-- watched / unwatched episodes -->
@@ -302,7 +334,7 @@
 						<top>326</top><width>190</width><height>28</height>
 						<font>mf_small20</font>
 						<textcolor>mf_muted</textcolor>
-						<label>$INFO[ListItem.Property(mf.rating),★ , · ]$INFO[ListItem.Property(mf.sub)]$VAR[MFTypeLabel]</label>
+						<label>$VAR[MFCardSub]</label>
 					</control>
 				</control>
 				<control type="image">
@@ -472,12 +504,13 @@
 		<param name="row" />
 		<param name="up" />
 		<param name="down" />
+		<param name="alsovisible" default="false" />
 		<definition>
 			<control type="group" id="$PARAM[group]">
 				<onup>$PARAM[up]</onup>
 				<ondown>$PARAM[down]</ondown>
 				<height>460</height>
-				<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
+				<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating | $PARAM[alsovisible]</visible>
 				<include content="MFRowHeading"><param name="label" value="$PARAM[label]" /></include>
 				<control type="list" id="$PARAM[id]">
 					<left>mf_gutter</left><top>76</top><right>0</right><height>370</height>
@@ -710,4 +743,133 @@
 			</control>
 		</definition>
 	</include>
+	<!-- ================================================================ library pages (MyVideoNav) -->
+	<variable name="MFLibraryTitle">
+		<value condition="$EXP[mf_page_favorites]">Favorites</value>
+		<value condition="$EXP[mf_page_sports] + Container.Content(tvshows)">Sports</value>
+		<value condition="String.IsEqual(Container.FolderPath,videodb://movies/sets/)">Collections</value>
+		<value condition="String.StartsWith(Container.FolderPath,videodb://movies/titles/) + Container.Content(movies) + !String.Contains(Container.FolderPath,xsp=)">Movies</value>
+		<value condition="String.StartsWith(Container.FolderPath,videodb://tvshows/titles/) + Container.Content(tvshows) + !String.Contains(Container.FolderPath,xsp=)">Shows</value>
+		<value condition="!String.IsEmpty(Container.FolderName)">$INFO[Container.FolderName]</value>
+		<value>Library</value>
+	</variable>
+	<variable name="MFWatchedFilterLabel">
+		<value condition="Control.IsVisible(10) + !String.IsEmpty(Control.GetLabel(10))">  ·  $INFO[Control.GetLabel(10)]</value>
+	</variable>
+
+	<!-- episode row (list 521): still, progress, title, facts, plot -->
+	<include name="MFEpisodeRow">
+		<param name="list" />
+		<param name="focused" default="false" />
+		<definition>
+			<control type="image">
+				<left>0</left><top>8</top><right>0</right><height>220</height>
+				<texture border="12" colordiffuse="17FFFFFF">moodyfin/shapes/rr12.png</texture>
+				<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
+			</control>
+			<control type="group">
+				<left>10</left><top>18</top>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
+				</control>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<aspectratio>scale</aspectratio>
+					<texture background="true" diffuse="moodyfin/masks/thumb.png">$INFO[ListItem.Art(thumb)]</texture>
+				</control>
+				<control type="progress">
+					<left>14</left><top>182</top><width>328</width><height>6</height>
+					<texturebg border="3" colordiffuse="4DFFFFFF">moodyfin/shapes/rr6.png</texturebg>
+					<midtexture border="3" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+					<lefttexture />
+					<righttexture />
+					<info>ListItem.PercentPlayed</info>
+					<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+				</control>
+				<control type="group">
+					<left>316</left><top>8</top>
+					<visible>Integer.IsGreater(ListItem.PlayCount,0)</visible>
+					<control type="image">
+						<width>32</width><height>32</height>
+						<texture colordiffuse="D9101113">moodyfin/shapes/circle.png</texture>
+					</control>
+					<control type="image">
+						<left>7</left><top>7</top><width>18</width><height>18</height>
+						<texture colordiffuse="mf_text">moodyfin/icons/check.png</texture>
+					</control>
+				</control>
+				<control type="image">
+					<left>-3</left><top>-3</top><width>362</width><height>206</height>
+					<texture border="14" colordiffuse="mf_accent">moodyfin/shapes/rr12_line.png</texture>
+					<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
+				</control>
+			</control>
+			<control type="label">
+				<left>400</left><top>26</top><right>24</right><height>42</height>
+				<font>mf_semibold30</font>
+				<textcolor>mf_text</textcolor>
+				<label>$INFO[ListItem.Episode,,. ]$INFO[ListItem.Title]</label>
+				<scroll>Control.HasFocus($PARAM[list]) + $PARAM[focused]</scroll>
+			</control>
+			<control type="label">
+				<left>400</left><top>70</top><right>24</right><height>30</height>
+				<font>mf_small20</font>
+				<textcolor>mf_muted</textcolor>
+				<label>$INFO[ListItem.Season,S,]$INFO[ListItem.Episode, · E,]$INFO[ListItem.Duration(mins),  ·  , min]$INFO[ListItem.Rating,  ·  ★ ,]$INFO[ListItem.Premiered,  ·  ,]</label>
+			</control>
+			<control type="textbox">
+				<left>400</left><top>108</top><right>24</right><height>96</height>
+				<font>font12</font>
+				<textcolor>CCF1F2F4</textcolor>
+				<label>$INFO[ListItem.Plot]</label>
+			</control>
+		</definition>
+	</include>
+
+	<!-- plain list row (list 522) -->
+	<include name="MFListRow">
+		<param name="list" />
+		<param name="focused" default="false" />
+		<definition>
+			<control type="image">
+				<left>0</left><top>4</top><right>0</right><height>64</height>
+				<texture border="12" colordiffuse="29FFFFFF">moodyfin/shapes/rr12.png</texture>
+				<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>16</top><width>5</width><height>40</height>
+				<texture colordiffuse="mf_accent">colors/white.png</texture>
+				<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
+			</control>
+			<control type="image">
+				<left>18</left><top>16</top><width>40</width><height>40</height>
+				<aspectratio>keep</aspectratio>
+				<texture background="true">$INFO[ListItem.Icon]</texture>
+			</control>
+			<control type="label">
+				<left>76</left><top>4</top><right>200</right><height>64</height>
+				<aligny>center</aligny>
+				<font>mf_semibold25</font>
+				<textcolor>FFF1F2F4</textcolor>
+				<label>$INFO[ListItem.Label]</label>
+			</control>
+			<control type="label">
+				<right>20</right><top>4</top><width>300</width><height>64</height>
+				<align>right</align><aligny>center</aligny>
+				<font>mf_small20</font>
+				<textcolor>FF969AA1</textcolor>
+				<label>$INFO[ListItem.Label2]</label>
+			</control>
+		</definition>
+	</include>
+	<!-- ================================================================ search page -->
+	<variable name="MFSearchFieldLabel">
+		<value condition="!String.IsEmpty(Window(1150).Property(mf.query))">$INFO[Window(1150).Property(mf.query)]</value>
+		<value>Search movies, shows and episodes</value>
+	</variable>
+	<variable name="MFSearchFieldColor">
+		<value condition="!String.IsEmpty(Window(1150).Property(mf.query))">FFF1F2F4</value>
+		<value>FF969AA1</value>
+	</variable>
 </includes>

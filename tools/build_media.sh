@@ -93,7 +93,7 @@ rr 400 600 16 "$M/masks/poster_large.png"
 # icon buttons (128 px, shown at 64): normal = white icon, focus = white square + black icon,
 # on = pale blue square + black icon (the Jellyfin theme's "watched" state)
 mkdir -p "$M/buttons"
-for n in play_arrow movie check skip_next info_outline; do
+for n in play_arrow movie check skip_next info_outline sort_by_alpha swap_vert visibility filter_alt arrow_back; do
   magick -background none -density 400 "icons/$n.svg" -resize 60x60 -fill white -colorize 100 \
     -gravity center -extent 128x128 "$M/buttons/$n.png"
   magick -background none -density 400 "icons/$n.svg" -resize 60x60 -fill black -colorize 100 -gravity center -extent 128x128 /tmp/mf_black.png

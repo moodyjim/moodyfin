@@ -1,3 +1,11 @@
+[B]0.4.0[/B]
+- Library pages (the Jellyfin theme's Movies page): header with the current section marked, title and "12 of 1535",
+  sort / order / watched / filter buttons with the current sort shown, and three views picked by content:
+  poster grid (movies, shows, seasons, collections), episode list (still, progress, facts, plot), plain list.
+- Search page (Search in the menu): "Discover something new", a search field, results in Movies, Shows and
+  Episodes rows; a card opens its details page.
+- Poster cards show Kodi's own rating / year / episode / movie counts in library lists.
+
 [B]0.3.0[/B]
 - Details page (the Jellyfin theme's title page) for movies, shows and episodes: blurred backdrop, centred title logo, big
   poster, info band (title, year / S·E, runtime, age rating, star rating, ends at), Play / Play next / Trailer /

@@ -10,6 +10,9 @@
         Sets Window(movieinformation).Property(mf.watched) to 1/0 so the open page updates at once.
     action=play,type=movie|episode,dbid=N
         Closes the details page and plays the item from the library, resuming where it stopped.
+    action=search
+        Asks for a search (Kodi's keyboard, starting from the last one) and puts it on the search page:
+        Window(1150).Property(mf.query) in the skin (11150 here) to show, Property(mf.q) URL-quoted for the rows' plugin paths.
     action=playnext,tvshowid=N
         Plays the show's next episode (the one in progress, else the first unwatched), resuming where it stopped.
 """
@@ -107,6 +110,23 @@ def play(kind, dbid):
     rpc.call("Player.Open", {"item": {kind + "id": int(dbid)}, "options": {"resume": True}})
 
 
+SEARCH_WINDOW = 11150  # custom window 1150 (Kodi adds 10000)
+
+
+def search():
+    win = xbmcgui.Window(SEARCH_WINDOW)
+    text = xbmcgui.Dialog().input("Search movies, shows and episodes", defaultt=win.getProperty("mf.query"))
+    text = (text or "").strip()
+    if not text:  # Cancel also returns "": keep the last search
+        return
+    # Kodi doesn't reload a list inside a hidden group: keep the rows shown while the new results load
+    win.setProperty("mf.searching", "1")
+    win.setProperty("mf.query", text)
+    win.setProperty("mf.q", quote(text))
+    xbmc.Monitor().waitForAbort(4)
+    win.clearProperty("mf.searching")
+
+
 def run(argv):
     args = _args(argv)
     action = args.get("action")
@@ -118,6 +138,8 @@ def run(argv):
         watched(args.get("type", ""), args.get("dbid", ""))
     elif action == "play":
         play(args.get("type", ""), args.get("dbid", ""))
+    elif action == "search":
+        search()
     elif action == "playnext":
         playnext(args.get("tvshowid", ""))
     else:

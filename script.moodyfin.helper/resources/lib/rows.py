@@ -174,13 +174,31 @@ def similar_row(params, limit=16):
     return found[:limit]
 
 
+def search_row(params, limit=40):
+    """Titles containing the query: type=movie|tvshow|episode."""
+    q = (params.get("q") or "").strip()
+    kind = params.get("type", "movie")
+    if len(q) < 2:
+        return []
+    filt = {"field": "title", "operator": "contains", "value": q}
+    sort = {"method": "title", "order": "ascending", "ignorearticle": True}
+    if kind == "movie":
+        return [items.movie(m) for m in rpc.movies(sort, limit, filt)]
+    if kind == "tvshow":
+        return [items.tvshow(t) for t in rpc.shows(sort, limit, filt)]
+    if kind == "episode":
+        return [items.episode(e) for e in rpc.episodes({"method": "lastplayed", "order": "descending"}, limit, filt)]
+    return []
+
+
 def _plain(fn):
     return lambda params: fn()
 
 
 ROWS = {"hero": _plain(hero_row), "continue": _plain(continue_row), "top10": _top10, "latest": _plain(latest_row),
         "recentmovies": _plain(recentmovies_row), "recentshows": _plain(recentshows_row), "nextup": nextup_row,
-        "seasons": seasons_row, "collection": collection_row, "similar": similar_row}
+        "seasons": seasons_row, "collection": collection_row, "similar": similar_row,
+        "search": search_row}
 
 
 def run(argv):

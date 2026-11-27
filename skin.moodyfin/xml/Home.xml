@@ -330,6 +330,6 @@
 			<control type="image"><height>60</height><texture /></control>
 		</control>
 
-		<include>MFHeader</include>
+		<include content="MFHeader" />
 	</controls>
 </window>

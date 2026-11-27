@@ -74,7 +74,9 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
   - Funnel Sans static weights were cut from the Google Fonts variable font with fontTools (`wght` 400/500/600/700).
   - `xml/Includes_MoodyFin.xml` — MoodyFin includes: `MFAmbient`, `MFHeader`, `MFRowHeading`, cards (`MFPosterCard`,
     `MFThumbCard`, `MFTop10Wide`, `MFCastCard`), `MFPosterRow`, details variables (`MFVideoLine`, `MFAudioLine`, ...).
-    `xml/Home.xml` and `xml/DialogVideoInfo.xml` (details page) are MoodyFin's own; Estuary's are gone.
+    `xml/Home.xml`, `xml/DialogVideoInfo.xml` (details), `xml/MyVideoNav.xml` (library: views 520 posters, 521 episodes,
+    522 list; SetFocus(520) = current view) and `xml/Custom_1150_MoodyFinSearch.xml` (search, window 11150 in Python)
+    are MoodyFin's own; Estuary's versions are gone.
   - Details page = Kodi's video info dialog. Its `ListItem.*` is always the dialog's item. Kodi ids: 8 Play, 11 Trailer,
     50 Cast (Kodi fills it). Cards open it through the helper (`action=info`), which loads the whole record + cast.
 - `script.moodyfin.helper/` — Python helper the skin requires:
@@ -112,3 +114,7 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 - `$VAR[]` doesn't work in a button's texture; use a `togglebutton` with `usealttexture`.
 - Image `colordiffuse="$VAR[...]"` didn't update reliably: use two images with visible conditions.
 - Autoscroll: `<autoscroll time="9000">` - `time` is the interval between moves.
+- A list inside a hidden group isn't processed: its content won't reload when its path changes. Keep it visible
+  while it loads (search sets `mf.searching` for a few seconds).
+- Custom window `Custom_1150_*.xml` is window 11150 for Python (`xbmcgui.Window`); the skin's `Window(1150)` adds 10000.
+- Media windows: `<defaultcontrol>` / SetFocus must name a view id that exists (520), not 50.

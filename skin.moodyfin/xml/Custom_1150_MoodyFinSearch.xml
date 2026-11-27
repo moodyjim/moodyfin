@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MoodyFin search page (the Jellyfin theme's "Discover something new"). Window 1150.
+     1151 = the search field: RunScript(script.moodyfin.helper,action=search) asks for the words and sets
+     Window(1150).Property(mf.query) (shown) and Property(mf.q) (URL-quoted, used in the rows' plugin paths).
+     Rows: 1161 Movies, 1171 Shows, 1181 Episodes (plugin://script.moodyfin.helper/?row=search&type=...&q=...). -->
+<window id="1150">
+	<defaultcontrol always="true">1151</defaultcontrol>
+	<backgroundcolor>background</backgroundcolor>
+	<onload condition="String.IsEmpty(Window(1150).Property(mf.query))">RunScript(script.moodyfin.helper,action=search)</onload>
+	<controls>
+		<include>MFAmbient</include>
+
+		<control type="grouplist" id="9000">
+			<left>0</left><top>0</top><width>100%</width><height>100%</height>
+			<orientation>vertical</orientation>
+			<itemgap>0</itemgap>
+			<scrolltime tween="cubic" easing="out">300</scrolltime>
+			<animation effect="fade" start="0" end="100" time="250">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+
+			<control type="group" id="1152">
+				<height>330</height>
+				<control type="label">
+					<left>0</left><top>140</top><width>100%</width><height>60</height>
+					<align>center</align><aligny>center</aligny>
+					<font>font40_title</font>
+					<textcolor>mf_text</textcolor>
+					<label>Discover something new</label>
+				</control>
+				<control type="button" id="1151">
+					<centerleft>50%</centerleft><top>222</top><width>680</width><height>64</height>
+					<label>$VAR[MFSearchFieldLabel]</label>
+					<font>mf_semibold25</font>
+					<textoffsetx>70</textoffsetx>
+					<aligny>center</aligny>
+					<textcolor>$VAR[MFSearchFieldColor]</textcolor>
+					<focusedcolor>FF000000</focusedcolor>
+					<texturenofocus border="32,0,32,0" colordiffuse="CC101113">moodyfin/shapes/pill_64.png</texturenofocus>
+					<texturefocus border="32,0,32,0" colordiffuse="mf_text">moodyfin/shapes/pill_64.png</texturefocus>
+					<onclick>RunScript(script.moodyfin.helper,action=search)</onclick>
+					<onup>9100</onup>
+					<ondown>1160</ondown>
+				</control>
+				<control type="image">
+					<centerleft>50%</centerleft><top>222</top><width>680</width><height>64</height>
+					<texture border="32,0,32,0" colordiffuse="33FFFFFF">moodyfin/shapes/pill_line_64.png</texture>
+					<visible>!Control.HasFocus(1151)</visible>
+				</control>
+				<control type="group">
+					<centerleft>50%</centerleft><top>222</top><width>680</width><height>64</height>
+					<control type="image">
+						<left>26</left><top>18</top><width>28</width><height>28</height>
+						<texture colordiffuse="mf_muted">moodyfin/icons/search.png</texture>
+						<visible>!Control.HasFocus(1151)</visible>
+					</control>
+					<control type="image">
+						<left>26</left><top>18</top><width>28</width><height>28</height>
+						<texture colordiffuse="FF000000">moodyfin/icons/search.png</texture>
+						<visible>Control.HasFocus(1151)</visible>
+					</control>
+				</control>
+			</control>
+
+			<include content="MFPosterRow">
+				<param name="group" value="1160" /><param name="id" value="1161" /><param name="label" value="Movies" />
+				<param name="row" value="search&amp;type=movie&amp;q=$INFO[Window(1150).Property(mf.q)]" />
+				<param name="up" value="1151" /><param name="down" value="1170" /><param name="alsovisible" value="!String.IsEmpty(Window(1150).Property(mf.searching))" />
+			</include>
+			<include content="MFPosterRow">
+				<param name="group" value="1170" /><param name="id" value="1171" /><param name="label" value="Shows" />
+				<param name="row" value="search&amp;type=tvshow&amp;q=$INFO[Window(1150).Property(mf.q)]" />
+				<param name="up" value="1160" /><param name="down" value="1180" /><param name="alsovisible" value="!String.IsEmpty(Window(1150).Property(mf.searching))" />
+			</include>
+			<control type="group" id="1180">
+				<onup>1170</onup>
+				<height>380</height>
+				<visible>Integer.IsGreater(Container(1181).NumItems,0) | Container(1181).IsUpdating | !String.IsEmpty(Window(1150).Property(mf.searching))</visible>
+				<include content="MFRowHeading"><param name="label" value="Episodes" /></include>
+				<control type="list" id="1181">
+					<left>mf_gutter</left><top>76</top><right>0</right><height>284</height>
+					<onup>1170</onup>
+					<orientation>horizontal</orientation>
+					<scrolltime tween="cubic" easing="out">240</scrolltime>
+					<itemlayout width="376" height="284"><include content="MFThumbCard"><param name="list" value="1181" /></include></itemlayout>
+					<focusedlayout width="376" height="284"><include content="MFThumbCard"><param name="list" value="1181" /><param name="focused" value="true" /></include></focusedlayout>
+					<onclick>RunScript(script.moodyfin.helper,action=info,type=episode,dbid=$INFO[ListItem.DBID])</onclick>
+					<content target="videos">plugin://script.moodyfin.helper/?row=search&amp;type=episode&amp;q=$INFO[Window(1150).Property(mf.q)]</content>
+				</control>
+			</control>
+			<!-- nothing found -->
+			<control type="label">
+				<height>120</height>
+				<align>center</align><aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>mf_muted</textcolor>
+				<label>$INFO[Window(1150).Property(mf.query),Nothing found for “,”]</label>
+				<visible>!String.IsEmpty(Window(1150).Property(mf.query)) + String.IsEmpty(Window(1150).Property(mf.searching)) + !Control.IsVisible(1160) + !Control.IsVisible(1170) + !Control.IsVisible(1180)</visible>
+			</control>
+			<control type="image"><height>80</height><texture /></control>
+		</control>
+
+		<include content="MFHeader"><param name="down" value="1151" /><param name="stats" value="false" /></include>
+	</controls>
+</window>
