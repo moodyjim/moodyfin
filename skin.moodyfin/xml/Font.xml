@@ -134,6 +134,16 @@
 		</font>
 		<!-- MoodyFin -->
 		<font>
+			<name>mf_tag13</name>
+			<filename>FunnelSans-SemiBold.ttf</filename>
+			<size>13</size>
+		</font>
+		<font>
+			<name>mf_tag14b</name>
+			<filename>FunnelSans-Bold.ttf</filename>
+			<size>14</size>
+		</font>
+		<font>
 			<name>mf_heading32</name>
 			<filename>BebasNeue-Regular.ttf</filename>
 			<size>32</size>
@@ -360,6 +370,18 @@
 			<size>26</size>
 		</font>
 		<!-- MoodyFin -->
+		<font>
+			<name>mf_tag13</name>
+			<filename>arial.ttf</filename>
+			<size>13</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_tag14b</name>
+			<filename>arial.ttf</filename>
+			<size>14</size>
+			<style>bold</style>
+		</font>
 		<font>
 			<name>mf_heading32</name>
 			<filename>arial.ttf</filename>

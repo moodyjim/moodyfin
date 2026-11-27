@@ -191,6 +191,28 @@ def search_row(params, limit=40):
     return []
 
 
+EPISODE_DAYS = 7    # "New episode": aired in the last week (the Jellyfin theme's 08-new-episode-tags.js)
+SEASON_DAYS = 28    # "New season": a season premiere (S2+ E1) aired in the last four weeks
+
+
+def new_tags():
+    """tvshowid -> "New season" / "New episode", from the newest episodes (air date, else date added)."""
+    today = datetime.date.today()
+    tags = {}
+    for e in rpc.episodes(SORT_ADDED, 400):
+        day = (e.get("firstaired") or e.get("dateadded") or "")[:10]
+        try:
+            age = (today - datetime.date.fromisoformat(day)).days
+        except ValueError:
+            continue
+        sid = e.get("tvshowid")
+        if e.get("season", 0) > 1 and e.get("episode") == 1 and 0 <= age <= SEASON_DAYS:
+            tags[sid] = "New season"
+        elif 0 <= age <= EPISODE_DAYS and tags.get(sid) != "New season":
+            tags[sid] = "New episode"
+    return tags
+
+
 def _plain(fn):
     return lambda params: fn()
 
@@ -209,6 +231,11 @@ def run(argv):
     if row:
         try:
             entries = row(params)
+            if any(li.getProperty("mf.type") == "tvshow" for li, _ in entries):
+                tags = new_tags()
+                for li, _ in entries:
+                    if li.getProperty("mf.type") == "tvshow":
+                        li.setProperty("mf.tag", tags.get(li.getVideoInfoTag().getDbId(), ""))
         except Exception as exc:  # a broken row must not take Home down
             xbmc.log("[moodyfin] row %s failed: %r" % (params.get("row"), exc), xbmc.LOGERROR)
     xbmcplugin.setContent(handle, "videos")

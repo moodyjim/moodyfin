@@ -308,20 +308,36 @@
 						<visible>Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0)</visible>
 					</control>
 				</control>
-				<!-- New season -->
+				<!-- New episode / New season (the Jellyfin theme's 08-new-episode-tags.js): flush with the poster's bottom edge,
+				     #E50914, top corners 3 px, 12 px Bold (14 here), 0 8 px padding -->
 				<control type="group">
-					<left>35</left><top>247</top>
-					<visible>!String.IsEmpty(ListItem.Property(mf.tag))</visible>
+					<left>44</left><top>263</top>
+					<visible>String.IsEqual(ListItem.Property(mf.tag),New episode)</visible>
 					<control type="image">
-						<width>120</width><height>26</height>
-						<texture border="6" colordiffuse="mf_badge_new">moodyfin/shapes/rr6.png</texture>
+						<width>102</width><height>22</height>
+						<texture border="4,4,4,0" colordiffuse="FFE50914">moodyfin/shapes/tag_top.png</texture>
 					</control>
 					<control type="label">
-						<width>120</width><height>26</height>
+						<width>102</width><height>22</height>
 						<align>center</align><aligny>center</aligny>
-						<font>font_flag</font>
+						<font>mf_tag14b</font>
 						<textcolor>FFFFFFFF</textcolor>
-						<label>$INFO[ListItem.Property(mf.tag)]</label>
+						<label>New episode</label>
+					</control>
+				</control>
+				<control type="group">
+					<left>46</left><top>263</top>
+					<visible>String.IsEqual(ListItem.Property(mf.tag),New season)</visible>
+					<control type="image">
+						<width>97</width><height>22</height>
+						<texture border="4,4,4,0" colordiffuse="FFE50914">moodyfin/shapes/tag_top.png</texture>
+					</control>
+					<control type="label">
+						<width>97</width><height>22</height>
+						<align>center</align><aligny>center</aligny>
+						<font>mf_tag14b</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<label>New season</label>
 					</control>
 				</control>
 				<control type="group">
@@ -358,23 +374,65 @@
 			<!-- 4 px in from the item's corner: the list clips at its edges and the focus ring sits 3 px outside -->
 			<control type="group">
 			<left>4</left><top>4</top>
-			<control type="image">
-				<width>356</width><height>200</height>
-				<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
+			<!-- the Jellyfin theme's time-left badge: the picture (and its placeholder) is cut away around it (notch masks,
+			     one per badge width: helper sets mf.notch s / m / l), the text sits on the page background -->
+			<control type="group">
+				<visible>String.IsEmpty(ListItem.Property(mf.notch))</visible>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<texture diffuse="moodyfin/masks/thumb.png" colordiffuse="mf_surface">colors/white.png</texture>
+				</control>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<aspectratio>stretch</aspectratio>
+					<texture background="true" diffuse="moodyfin/masks/thumb.png">$INFO[ListItem.Art(wide)]</texture>
+				</control>
 			</control>
-			<control type="image">
-				<width>356</width><height>200</height>
-				<aspectratio>scale</aspectratio>
-				<texture background="true" diffuse="moodyfin/masks/thumb.png">$INFO[ListItem.Art(wide)]</texture>
+			<control type="group">
+				<visible>String.IsEqual(ListItem.Property(mf.notch),s)</visible>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<texture diffuse="moodyfin/masks/thumb_notch_s.png" colordiffuse="mf_surface">colors/white.png</texture>
+				</control>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<aspectratio>stretch</aspectratio>
+					<texture background="true" diffuse="moodyfin/masks/thumb_notch_s.png">$INFO[ListItem.Art(wide)]</texture>
+				</control>
+			</control>
+			<control type="group">
+				<visible>String.IsEqual(ListItem.Property(mf.notch),m)</visible>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<texture diffuse="moodyfin/masks/thumb_notch_m.png" colordiffuse="mf_surface">colors/white.png</texture>
+				</control>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<aspectratio>stretch</aspectratio>
+					<texture background="true" diffuse="moodyfin/masks/thumb_notch_m.png">$INFO[ListItem.Art(wide)]</texture>
+				</control>
+			</control>
+			<control type="group">
+				<visible>String.IsEqual(ListItem.Property(mf.notch),l)</visible>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<texture diffuse="moodyfin/masks/thumb_notch_l.png" colordiffuse="mf_surface">colors/white.png</texture>
+				</control>
+				<control type="image">
+					<width>356</width><height>200</height>
+					<aspectratio>stretch</aspectratio>
+					<texture background="true" diffuse="moodyfin/masks/thumb_notch_l.png">$INFO[ListItem.Art(wide)]</texture>
+				</control>
 			</control>
 			<control type="image">
 				<width>356</width><height>200</height>
 				<texture colordiffuse="FF000000">moodyfin/masks/thumb_shade.png</texture>
 			</control>
 			<control type="label">
-				<left>14</left><top>8</top><width>320</width><height>30</height>
-				<font>font_flag</font>
-				<textcolor>mf_text</textcolor>
+				<left>8</left><top>0</top><width>200</width><height>24</height>
+				<aligny>center</aligny>
+				<font>mf_tag13</font>
+				<textcolor>B3FFFFFF</textcolor>
 				<label>$INFO[ListItem.Property(mf.left)]</label>
 			</control>
 			<control type="progress">

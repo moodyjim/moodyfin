@@ -1,3 +1,8 @@
+[B]0.7.2[/B]
+- Continue Watching "time left" as in the Jellyfin theme: the picture is cut away around it (notch), text 70 % white.
+- "New episode" / "New season" tags as in the Jellyfin theme: flush with the poster's bottom, #E50914, top corners rounded,
+  12 px Bold; New episode = aired in the last 7 days, New season = a season premiere in the last 28.
+
 [B]0.7.1[/B]
 - Hover card made to the Jellyfin theme's hover preview: 336 px, #18181b, Bebas 32 title, 38 px buttons, SemiBold / Medium
   15 px text, rating in the highlight colour, genres with dim dots, watched check lit in the highlight colour.

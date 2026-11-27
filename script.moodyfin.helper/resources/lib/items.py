@@ -36,6 +36,13 @@ def _left(resume):
     return "%dh %dm left" % (mins // 60, mins % 60) if mins >= 60 else "%dm left" % mins
 
 
+def _notch(left):
+    """Which notch mask fits the time-left badge: s "36m left", m "1h 3m left", l "1h 13m left"."""
+    if not left:
+        return ""
+    return "s" if len(left) <= 8 else ("m" if len(left) <= 10 else "l")
+
+
 def _rating(value):
     return "%.1f" % value if value else ""
 
@@ -142,6 +149,7 @@ def movie(d):
         tag.setResumePoint(resume["position"], resume.get("total", 0))
     _streams(li, tag, d.get("streamdetails"))
     li.setProperty("mf.left", _left(resume))
+    li.setProperty("mf.notch", _notch(li.getProperty("mf.left")))
     li.setProperty("mf.sub", str(d.get("year") or ""))
     li.setProperty("mf.type", "movie")
     _meta(li, d, "Movie")
@@ -202,6 +210,7 @@ def episode(d, show_art=None):
     li.setLabel(d.get("showtitle", ""))
     li.setLabel2(d.get("title", ""))
     li.setProperty("mf.left", _left(resume))
+    li.setProperty("mf.notch", _notch(li.getProperty("mf.left")))
     li.setProperty("mf.sub", "S%d · E%d" % (d.get("season", 0), d.get("episode", 0)))
     li.setProperty("mf.type", "episode")
     li.setProperty("IsPlayable", "true")

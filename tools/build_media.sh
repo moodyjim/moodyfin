@@ -75,7 +75,7 @@ magick -size 16x512 xc:white -alpha set -channel A \
 # card shades (white; tinted black in the skin), already cut to the card's rounded corners
 magick -size 190x285 xc:white -alpha set -channel A -fx "yy=j/h; yy<0.5 ? 0 : (yy-0.5)/0.5*0.92" +channel \
   "$M/masks/poster.png" -compose DstIn -composite "$M/masks/poster_shade.png"
-magick -size 356x200 xc:white -alpha set -channel A -fx "yy=j/h; yy<0.28 ? 0.55*(1-yy/0.28) : (yy>0.7 ? (yy-0.7)/0.3*0.6 : 0)" +channel \
+magick -size 356x200 xc:white -alpha set -channel A -fx "yy=j/h; yy>0.7 ? (yy-0.7)/0.3*0.6 : 0" +channel \
   "$M/masks/thumb.png" -compose DstIn -composite "$M/masks/thumb_shade.png"
 magick -size 396x285 xc:white -alpha set -channel A -fx "xx=i/w; yy=j/h; max(0.9*(1-xx/0.75), yy>0.55 ? (yy-0.55)/0.45*0.9 : 0)" +channel \
   "$M/masks/wide.png" -compose DstIn -composite "$M/masks/wide_shade.png"
@@ -138,3 +138,14 @@ icon check 48 white "$M/buttons/pop_check_tick.png"
 rm -f /tmp/mf_i.png
 # hover card backdrop: rounded top corners only (336x189, 16:9)
 magick -size 336x215 xc:none -fill white -draw "roundrectangle 0,0,335,214,12,12" -crop 336x189+0+0 +repage "$M/masks/pop.png"
+
+# Continue Watching "time left" notch (the Jellyfin theme's 03-time-remaining.js tbNotch): the picture is cut away around the
+# badge, inner corner r=10, joins r2=6, card corners 12. One mask per badge width: s 70 ("36m left"), m 81
+# ("1h 3m left"), l 88 ("1h 13m left"); badge 24 tall (11 px SemiBold + 4/8 px padding, a size up for TV).
+notch() { # notch <badge w> <out>
+  local sw=356 sh=200 cr=12 r=10 r2=6 bw=$1 bh=24
+  magick -size ${sw}x${sh} xc:none -fill white -draw "path 'M $((bw+r2)) 0 L $((sw-cr)) 0 Q $sw 0 $sw $cr L $sw $((sh-cr)) Q $sw $sh $((sw-cr)) $sh L $cr $sh Q 0 $sh 0 $((sh-cr)) L 0 $((bh+r2)) Q 0 $bh $r2 $bh L $((bw-r)) $bh Q $bw $bh $bw $((bh-r)) L $bw $r2 Q $bw 0 $((bw+r2)) 0 Z'" "$2"
+}
+notch 70 "$M/masks/thumb_notch_s.png"; notch 81 "$M/masks/thumb_notch_m.png"; notch 88 "$M/masks/thumb_notch_l.png"
+# "New episode" / "New season" tag (08-new-episode-tags.js): #E50914, top corners 3 px, flush with the poster's bottom
+magick -size 24x24 xc:none -fill white -draw "roundrectangle 0,0,23,23,3,3" -draw "rectangle 0,12,23,23" "$M/shapes/tag_top.png"
