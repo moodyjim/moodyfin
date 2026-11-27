@@ -23,7 +23,7 @@
 			<centerleft>50%</centerleft><bottom>40</bottom><width>mf_osd_width</width><height>88</height>
 			<include content="MFGlassPanel"><param name="height" value="88" /></include>
 			<control type="group">
-				<top>24</top>
+				<top>24</top><width>mf_osd_width</width><height>40</height>
 				<include>MFPlayerProgress</include>
 			</control>
 			<!-- seeking with the number keys -->

@@ -137,6 +137,11 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 - A dialog's window-level `<visible>` that turns false *closes* it (VideoOSD then also closes its audio / subtitle
   menus): hide its contents with a group's `<visible>` instead.
 - Inside a grouplist, the children's onleft / onright are ignored at its edges: set them on the grouplist.
+- A horizontal grouplist with an unfocusable child (a progress bar) stopped navigation there: place such rows by hand
+  with explicit onleft / onright (a hidden control is skipped through its own onleft / onright).
+- No focusable sliders on the player panel: they take left / right and trap the remote (volume = mute + level).
+- The helper talks to Jellyfin (favourites) with the Jellyfin add-on's saved login (`jellyfin.py`); the token only
+  goes to that server and is never logged or printed.
 - Lists clip at their edges: anything drawn outside an item (focus ring at -3) needs the card inset (cards sit 4 px
   in; lists are 4 px up/left of where the cards appear).
 - Hover card (`MFPopupRow` / `MFPopupRowTop10` / `MFPopupGrid`, written by `tools/build_popup.py`): its own control

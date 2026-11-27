@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- MoodyFin player controls (the Jellyfin theme's floating glass panel). Opened with OK / Menu during playback.
-     Title + logo top left; "Ends at" pill; panel: time · progress · time left, then
-     701 subtitles, 702 audio | 711 back 10 s, 710 play/pause, 712 forward 30 s | 721 video settings, 722 stop. -->
+     Title + logo top left; "Ends at" pill; panel: time · progress (chapter ticks) · time left, then
+       left   701 mute (with the volume level), 703 subtitles, 704 favourite (Jellyfin titles)
+       middle 711 back 10 s, 713 rewind, 710 play / pause, 714 fast forward, 712 forward 30 s
+       right  721 settings (audio, subtitles, video), 722 back to the menus (video keeps playing), 723 stop
+     The volume level is shown, not a slider: a focused slider would take left / right and trap the remote. -->
 <window>
 	<defaultcontrol always="true">710</defaultcontrol>
 	<include>Animation_BottomSlide</include>
@@ -10,7 +13,7 @@
 		<!-- hidden (not closed) while one of its menus is open: a window-level <visible> would close the OSD,
 		     and Kodi closes the OSD's menus with it -->
 		<control type="group">
-		<visible>![Window.IsVisible(SliderDialog) | Window.IsVisible(1110) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdsubtitlesettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
+		<visible>![Window.IsVisible(SliderDialog) | Window.IsVisible(1110) | Window.IsVisible(1101) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdsubtitlesettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
 		<!-- shades so the controls read over any picture -->
 		<control type="image">
 			<left>0</left><top>0</top><width>100%</width><height>320</height>
@@ -49,99 +52,151 @@
 			<centerleft>50%</centerleft><bottom>40</bottom><width>mf_osd_width</width><height>196</height>
 			<include content="MFGlassPanel"><param name="height" value="196" /></include>
 			<control type="group">
-				<top>26</top>
+				<top>26</top><width>mf_osd_width</width><height>40</height>
 				<include>MFPlayerProgress</include>
 			</control>
 
-			<!-- left: subtitles, audio -->
-			<control type="grouplist" id="700">
-				<left>28</left><top>98</top><width>180</width><height>72</height>
+			<!-- left: mute + volume level, subtitles, favourite. Fixed places and explicit left / right: a grouplist
+			     with the (unfocusable) volume level in it stopped there. A hidden favourite is skipped: Kodi follows
+			     the hidden control's own left / right. -->
+			<control type="togglebutton" id="701">
+				<left>28</left><top>106</top><width>56</width><height>56</height>
+				<label />
+				<texturenofocus>moodyfin/buttons/volume_up.png</texturenofocus>
+				<texturefocus>moodyfin/buttons/volume_up_focus.png</texturefocus>
+				<alttexturenofocus>moodyfin/buttons/volume_off.png</alttexturenofocus>
+				<alttexturefocus>moodyfin/buttons/volume_off_focus.png</alttexturefocus>
+				<usealttexture>Player.Muted</usealttexture>
+				<onclick>Mute</onclick>
 				<onleft>noop</onleft>
+				<onright>703</onright>
+			</control>
+			<control type="progress">
+				<left>94</left><top>131</top><width>88</width><height>6</height>
+				<texturebg border="3" colordiffuse="40FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+				<lefttexture />
+				<midtexture border="3" colordiffuse="$VAR[MFVolumeColor]">moodyfin/shapes/rr6.png</midtexture>
+				<righttexture />
+				<info>Player.Volume</info>
+			</control>
+			<control type="button" id="703">
+				<left>196</left><top>106</top><width>56</width><height>56</height>
+				<label />
+				<texturenofocus>moodyfin/buttons/subtitles.png</texturenofocus>
+				<texturefocus>moodyfin/buttons/subtitles_focus.png</texturefocus>
+				<onclick>ActivateWindow(osdsubtitlesettings)</onclick>
+				<onleft>701</onleft>
+				<onright>704</onright>
+			</control>
+			<control type="togglebutton" id="704">
+				<left>260</left><top>106</top><width>56</width><height>56</height>
+				<label />
+				<texturenofocus>moodyfin/buttons/favorite_border.png</texturenofocus>
+				<texturefocus>moodyfin/buttons/favorite_border_focus.png</texturefocus>
+				<alttexturenofocus>moodyfin/buttons/favorite.png</alttexturenofocus>
+				<alttexturefocus>moodyfin/buttons/favorite_focus.png</alttexturefocus>
+				<usealttexture>String.IsEqual(Window(Home).Property(MoodyFin.Fav),1)</usealttexture>
+				<onclick>RunScript(script.moodyfin.helper,action=favorite)</onclick>
+				<onleft>703</onleft>
 				<onright>711</onright>
-				<orientation>horizontal</orientation>
-				<itemgap>8</itemgap>
-				<control type="button" id="701">
-					<width>64</width><height>64</height><top>4</top>
-					<label />
-					<texturenofocus>moodyfin/buttons/subtitles.png</texturenofocus>
-					<texturefocus>moodyfin/buttons/subtitles_focus.png</texturefocus>
-					<onclick>ActivateWindow(osdsubtitlesettings)</onclick>
-					<onright>702</onright>
-				</control>
-				<control type="button" id="702">
-					<width>64</width><height>64</height><top>4</top>
-					<label />
-					<texturenofocus>moodyfin/buttons/music_note.png</texturenofocus>
-					<texturefocus>moodyfin/buttons/music_note_focus.png</texturefocus>
-					<onclick>ActivateWindow(osdaudiosettings)</onclick>
-					<onleft>701</onleft>
-					<onright>711</onright>
-				</control>
+				<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Fav))</visible>
 			</control>
 
-			<!-- middle: back 10 s, play / pause, forward 30 s -->
+			<!-- middle: back 10 s, rewind, play / pause, fast forward, forward 30 s -->
 			<control type="button" id="711">
-				<left>379</left><top>102</top><width>64</width><height>64</height>
+				<left>520</left><top>106</top><width>56</width><height>56</height>
 				<label />
 				<texturenofocus>moodyfin/buttons/replay_10.png</texturenofocus>
 				<texturefocus>moodyfin/buttons/replay_10_focus.png</texturefocus>
 				<onclick>Seek(-10)</onclick>
-				<onleft>702</onleft>
+				<onleft>704</onleft>
+				<onright>713</onright>
+			</control>
+			<control type="button" id="713">
+				<left>590</left><top>106</top><width>56</width><height>56</height>
+				<label />
+				<texturenofocus>moodyfin/buttons/fast_rewind.png</texturenofocus>
+				<texturefocus>moodyfin/buttons/fast_rewind_focus.png</texturefocus>
+				<onclick>PlayerControl(Rewind)</onclick>
+				<onleft>711</onleft>
 				<onright>710</onright>
-				<visible>Player.SeekEnabled</visible>
 			</control>
 			<control type="togglebutton" id="710">
-				<left>515</left><top>94</top><width>80</width><height>80</height>
+				<left>660</left><top>94</top><width>80</width><height>80</height>
 				<label />
 				<texturenofocus>moodyfin/buttons/pause_big.png</texturenofocus>
 				<texturefocus>moodyfin/buttons/pause_big.png</texturefocus>
 				<alttexturenofocus>moodyfin/buttons/play_arrow_big.png</alttexturenofocus>
 				<alttexturefocus>moodyfin/buttons/play_arrow_big.png</alttexturefocus>
-				<usealttexture>Player.Paused</usealttexture>
+				<usealttexture>Player.Paused | Player.Forwarding | Player.Rewinding</usealttexture>
 				<onclick>PlayerControl(Play)</onclick>
-				<onleft>711</onleft>
-				<onright>712</onright>
+				<onleft>713</onleft>
+				<onright>714</onright>
 			</control>
 			<control type="image">
-				<left>511</left><top>90</top><width>88</width><height>88</height>
+				<left>656</left><top>90</top><width>88</width><height>88</height>
 				<texture colordiffuse="mf_accent">moodyfin/shapes/ring_big.png</texture>
 				<visible>Control.HasFocus(710)</visible>
 			</control>
+			<control type="button" id="714">
+				<left>754</left><top>106</top><width>56</width><height>56</height>
+				<label />
+				<texturenofocus>moodyfin/buttons/fast_forward.png</texturenofocus>
+				<texturefocus>moodyfin/buttons/fast_forward_focus.png</texturefocus>
+				<onclick>PlayerControl(Forward)</onclick>
+				<onleft>710</onleft>
+				<onright>712</onright>
+			</control>
 			<control type="button" id="712">
-				<left>667</left><top>102</top><width>64</width><height>64</height>
+				<left>824</left><top>106</top><width>56</width><height>56</height>
 				<label />
 				<texturenofocus>moodyfin/buttons/forward_30.png</texturenofocus>
 				<texturefocus>moodyfin/buttons/forward_30_focus.png</texturefocus>
 				<onclick>Seek(30)</onclick>
-				<onleft>710</onleft>
-				<onright>721</onright>
-				<visible>Player.SeekEnabled</visible>
+				<onleft>714</onleft>
+				<onright>720</onright>
+			</control>
+			<!-- speed while rewinding / fast forwarding -->
+			<control type="label">
+				<left>590</left><top>66</top><width>220</width><height>28</height>
+				<align>center</align>
+				<font>font_flag</font>
+				<textcolor>mf_accent</textcolor>
+				<label>$INFO[Player.PlaySpeed,,×]</label>
+				<visible>Player.Forwarding | Player.Rewinding</visible>
 			</control>
 
-			<!-- right: video settings, stop -->
+			<!-- right: settings, back to the menus, stop -->
 			<control type="grouplist" id="720">
-				<right>28</right><top>98</top><width>180</width><height>72</height>
-				<onleft>712</onleft>
-				<onright>noop</onright>
+				<right>28</right><top>102</top><width>220</width><height>64</height>
 				<orientation>horizontal</orientation>
 				<align>right</align>
 				<itemgap>8</itemgap>
+				<onleft>712</onleft>
+				<onright>noop</onright>
 				<control type="button" id="721">
-					<width>64</width><height>64</height><top>4</top>
+					<width>56</width><height>56</height><top>4</top>
 					<label />
-					<texturenofocus>moodyfin/buttons/tune.png</texturenofocus>
-					<texturefocus>moodyfin/buttons/tune_focus.png</texturefocus>
-					<onclick>ActivateWindow(osdvideosettings)</onclick>
-					<onleft>712</onleft>
-					<onright>722</onright>
+					<texturenofocus>moodyfin/buttons/settings.png</texturenofocus>
+					<texturefocus>moodyfin/buttons/settings_focus.png</texturefocus>
+					<onclick>SetProperty(settingslist_content,osd,home)</onclick>
+					<onclick>SetProperty(settingslist_header,$LOCALIZE[5],home)</onclick>
+					<onclick>ActivateWindow(1101)</onclick>
 				</control>
 				<control type="button" id="722">
-					<width>64</width><height>64</height><top>4</top>
+					<width>56</width><height>56</height><top>4</top>
+					<label />
+					<texturenofocus>moodyfin/buttons/fullscreen_exit.png</texturenofocus>
+					<texturefocus>moodyfin/buttons/fullscreen_exit_focus.png</texturefocus>
+					<onclick>Dialog.Close(videoosd)</onclick>
+					<onclick>Action(FullScreen)</onclick>
+				</control>
+				<control type="button" id="723">
+					<width>56</width><height>56</height><top>4</top>
 					<label />
 					<texturenofocus>moodyfin/buttons/stop.png</texturenofocus>
 					<texturefocus>moodyfin/buttons/stop_focus.png</texturefocus>
 					<onclick>PlayerControl(Stop)</onclick>
-					<onleft>721</onleft>
 				</control>
 			</control>
 		</control>

@@ -53,8 +53,9 @@ Tip: to open the details page when you press OK on a movie in a library page (as
 
 ## Player
 
-- **Controls** (OK during playback): a floating glass panel with time, progress, time left, subtitles, audio,
-  back 10 s, play / pause, forward 30 s, video settings and stop; the title logo and when it ends.
+- **Controls** (OK during playback), as in the Jellyfin theme: mute with the volume level, subtitles, favourite
+  (Jellyfin titles) | back 10 s, rewind, play / pause, fast forward, forward 30 s | settings, back to the menus, stop;
+  time, progress with chapter marks, time left, the title logo and when it ends.
 - **Pause screen:** after 3 s paused, the title, its facts and plot over the dimmed picture.
 - **Up Next:** 30 s before an episode ends, the next one with Play now / Cancel; it plays when this one ends.
 

@@ -93,7 +93,7 @@ rr 400 600 16 "$M/masks/poster_large.png"
 # icon buttons (128 px, shown at 64): normal = white icon, focus = white square + black icon,
 # on = pale blue square + black icon (the Jellyfin theme's "watched" state)
 mkdir -p "$M/buttons"
-for n in play_arrow movie check skip_next info_outline sort_by_alpha swap_vert visibility filter_alt arrow_back subtitles music_note replay_10 forward_30 pause tune stop close; do
+for n in play_arrow movie check skip_next info_outline sort_by_alpha swap_vert visibility filter_alt arrow_back subtitles music_note replay_10 forward_30 pause tune stop close volume_up volume_off fast_rewind fast_forward settings fullscreen_exit favorite favorite_border; do
   magick -background none -density 400 "icons/$n.svg" -resize 60x60 -fill white -colorize 100 \
     -gravity center -extent 128x128 "$M/buttons/$n.png"
   magick -background none -density 400 "icons/$n.svg" -resize 60x60 -fill black -colorize 100 -gravity center -extent 128x128 /tmp/mf_black.png
@@ -136,3 +136,5 @@ notch() { # notch <badge w> <out>
 notch 70 "$M/masks/thumb_notch_s.png"; notch 81 "$M/masks/thumb_notch_m.png"; notch 88 "$M/masks/thumb_notch_l.png"
 # "New episode" / "New season" tag (08-new-episode-tags.js): #E50914, top corners 3 px, flush with the poster's bottom
 magick -size 24x24 xc:none -fill white -draw "roundrectangle 0,0,23,23,3,3" -draw "rectangle 0,12,23,23" "$M/shapes/tag_top.png"
+# chapter tick on the player bar (Player.Chapters ranges)
+magick -size 4x16 xc:none -fill white -draw "rectangle 1,0,2,15" "$M/shapes/tick.png"

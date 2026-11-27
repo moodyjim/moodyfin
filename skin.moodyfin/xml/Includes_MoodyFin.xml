@@ -966,7 +966,7 @@
 		<value>FF969AA1</value>
 	</variable>
 	<!-- ================================================================ player (VideoOSD, DialogSeekBar, VideoFullScreen) -->
-	<constant name="mf_osd_width">1110</constant>
+	<constant name="mf_osd_width">1400</constant>
 	<!-- the pause screen: 3 s after pausing a video, while no menu is open -->
 	<expression name="mf_pause_screen">Player.Paused + Player.HasVideo + Integer.IsGreater(Skin.TimerElapsedSecs(mf_pause),2) + !Window.IsActive(videoosd) + !Window.IsActive(osdsubtitlesettings) + !Window.IsActive(osdaudiosettings) + !Window.IsActive(osdvideosettings) + !Window.IsActive(playerprocessinfo) + !Player.Seeking</expression>
 	<variable name="MFPlayerLogo">
@@ -982,17 +982,21 @@
 		<value>$INFO[VideoPlayer.Year]</value>
 	</variable>
 
+	<variable name="MFVolumeColor">
+		<value condition="Player.Muted">66FFFFFF</value>
+		<value>mf_accent</value>
+	</variable>
 	<!-- time · progress · time left, for a panel mf_osd_width wide -->
 	<include name="MFPlayerProgress">
 		<control type="label">
-			<left>32</left><top>0</top><width>140</width><height>40</height>
+			<left>32</left><top>0</top><width>150</width><height>40</height>
 			<aligny>center</aligny>
 			<font>mf_semibold22</font>
 			<textcolor>mf_text</textcolor>
 			<label>$INFO[Player.Time]</label>
 		</control>
 		<control type="progress">
-			<left>176</left><top>16</top><width>758</width><height>8</height>
+			<left>190</left><top>16</top><right>190</right><height>8</height>
 			<texturebg border="4" colordiffuse="33FFFFFF">moodyfin/shapes/rr6.png</texturebg>
 			<lefttexture />
 			<midtexture border="4" colordiffuse="66FFFFFF">moodyfin/shapes/rr6.png</midtexture>
@@ -1000,15 +1004,22 @@
 			<info>Player.ProgressCache</info>
 		</control>
 		<control type="progress">
-			<left>176</left><top>16</top><width>758</width><height>8</height>
+			<left>190</left><top>16</top><right>190</right><height>8</height>
 			<texturebg border="4" colordiffuse="00FFFFFF">moodyfin/shapes/rr6.png</texturebg>
 			<lefttexture />
 			<midtexture border="4" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
 			<righttexture />
 			<info>Player.Progress</info>
 		</control>
+		<!-- chapter marks (the Jellyfin theme's draws one tick per chapter on the bar) -->
+		<control type="ranges">
+			<left>190</left><top>12</top><right>190</right><height>16</height>
+			<texturebg colordiffuse="00FFFFFF">colors/white.png</texturebg>
+			<righttexture colordiffuse="B3FFFFFF">moodyfin/shapes/tick.png</righttexture>
+			<info>Player.Chapters</info>
+		</control>
 		<control type="label">
-			<left>938</left><top>0</top><width>140</width><height>40</height>
+			<right>32</right><top>0</top><width>150</width><height>40</height>
 			<align>right</align><aligny>center</aligny>
 			<font>mf_semibold22</font>
 			<textcolor>mf_text</textcolor>

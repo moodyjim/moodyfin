@@ -18,6 +18,8 @@
     action=jump,letter=A,list=520
         A-Z rail: focuses the first item of the list whose sort letter is `letter` ("#" = digits and symbols).
         Binary search over Container(list).ListItemAbsolute(n).SortLetter, so the list must be sorted by name, A-Z.
+    action=favorite
+        Player: marks / unmarks the playing title as a Jellyfin favourite (Window(Home).Property(MoodyFin.Fav) 1/0).
     action=playnext,tvshowid=N
         Plays the show's next episode (the one in progress, else the first unwatched), resuming where it stopped.
 """
@@ -157,6 +159,25 @@ def jump(letter, list_id="520"):
     xbmc.executebuiltin("SetFocus(%s,%d,absolute)" % (list_id, target))
 
 
+def favorite():
+    from . import jellyfin
+    home = xbmcgui.Window(10000)
+    try:
+        jid = jellyfin.item_id(xbmc.Player().getPlayingFile())
+    except RuntimeError:
+        jid = ""
+    if not jid:
+        xbmcgui.Dialog().notification("MoodyFin", "Only Jellyfin titles can be favourites", xbmcgui.NOTIFICATION_INFO, 3000)
+        return
+    try:
+        on = not jellyfin.is_favorite(jid)
+        jellyfin.set_favorite(jid, on)
+    except jellyfin.JellyfinError as e:
+        xbmcgui.Dialog().notification("MoodyFin", str(e), xbmcgui.NOTIFICATION_WARNING, 4000)
+        return
+    home.setProperty("MoodyFin.Fav", "1" if on else "0")
+
+
 def run(argv):
     args = _args(argv)
     action = args.get("action")
@@ -175,6 +196,8 @@ def run(argv):
         upnext.preview(args.get("dbid", "0"))
     elif action == "jump":
         jump(args.get("letter", "#"), args.get("list", "520"))
+    elif action == "favorite":
+        favorite()
     elif action == "playnext":
         playnext(args.get("tvshowid", ""))
     else:

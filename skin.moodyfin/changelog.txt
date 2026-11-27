@@ -1,3 +1,9 @@
+[B]0.8.0[/B]
+- Player controls like the Jellyfin theme's: mute with the volume level, subtitles, favourite (Jellyfin titles) |
+  back 10 s, rewind, play / pause, fast forward, forward 30 s | settings (audio, subtitles, video), back to the menus
+  (video keeps playing), stop. Chapter marks on the progress bar; rewind / fast-forward speed shown.
+- Wider panel (1400).
+
 [B]0.7.4[/B]
 - Player controls: the subtitle and audio menus stay open (they closed straight away).
 - Player controls: left / right go through all the buttons (focus got stuck on the right two).

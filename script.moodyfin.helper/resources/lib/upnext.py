@@ -58,11 +58,24 @@ class UpNext(xbmc.Player):
     # -- player events
     def onAVStarted(self):
         self.reset()
+        threading.Thread(target=self._favourite_state, daemon=True).start()
         try:
             tag = self.getVideoInfoTag()
             if tag.getMediaType() == "episode" and tag.getDbId() > 0:
                 self.next = _next_episode(tag.getDbId())
         except RuntimeError:
+            pass
+
+    def _favourite_state(self):
+        """The player's heart: is the playing Jellyfin title a favourite? (Window(Home).Property(MoodyFin.Fav))"""
+        from . import jellyfin
+        home = xbmcgui.Window(10000)
+        home.clearProperty("MoodyFin.Fav")
+        try:
+            jid = jellyfin.item_id(self.getPlayingFile())
+            if jid:
+                home.setProperty("MoodyFin.Fav", "1" if jellyfin.is_favorite(jid) else "0")
+        except (RuntimeError, jellyfin.JellyfinError):
             pass
 
     def onPlayBackStopped(self):
