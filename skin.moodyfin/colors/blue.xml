@@ -5,7 +5,5 @@
 	<color name="mf_accent_dim">803B82F6</color>
 	<color name="mf_star">FF3B82F6</color>
 	<color name="blue">FF3B82F6</color>
-	<color name="button_focus">FF3B82F6</color>
-	<color name="button_alt_focus">803B82F6</color>
 	<color name="selected">FF3B82F6</color>
 </colors>

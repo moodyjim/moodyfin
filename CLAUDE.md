@@ -77,7 +77,10 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
     `xml/Home.xml`, `xml/DialogVideoInfo.xml` (details), `xml/MyVideoNav.xml` (library: views 520 posters, 521 episodes,
     522 list; SetFocus(520) = current view) and `xml/Custom_1150_MoodyFinSearch.xml` (search, window 11150 in Python)
     are MoodyFin's own; Estuary's versions are gone. Player: `VideoOSD.xml` (panel), `DialogSeekBar.xml` (seek bar and
-    pause screen), `MoodyFin-UpNext.xml` (opened by the helper's `upnext.py`).
+    pause screen), `MoodyFin-UpNext.xml` (opened by the helper's `upnext.py`), `Startup.xml` (splash),
+    `LoginScreen.xml` (profile picker). Estuary's other screens are restyled globally: `button_focus` is a soft light
+    highlight (not the accent), and `media/dialogs/dialog-bg.png` + `media/buttons/dialogbutton-*.png` are redrawn
+    rounded by `tools/build_media.sh` (same sizes/borders as Estuary's).
   - Details page = Kodi's video info dialog. Its `ListItem.*` is always the dialog's item. Kodi ids: 8 Play, 11 Trailer,
     50 Cast (Kodi fills it). Cards open it through the helper (`action=info`), which loads the whole record + cast.
 - `script.moodyfin.helper/` — Python helper the skin requires:
@@ -123,4 +126,5 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
   playback; the skin's `<visible>` decides when it shows).
 - An empty `<texturebg />` on a progress control makes the fill draw at the image's own size: give it a transparent bg.
 - JSON-RPC `Addons.ExecuteAddon` on the helper runs its *plugin* entry, not script.py: use RunScript via devbuiltin.
+- Python `getInfoLabel("Container(id).ListItemAbsolute(n).SortLetter")` + `SetFocus(id,n,absolute)` = letter jump.
 - Test playback with a local ffmpeg clip (`testsrc2`), muted, never a library title (it would change Jellyfin progress).

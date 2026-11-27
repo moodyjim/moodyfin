@@ -5,7 +5,5 @@
 	<color name="mf_accent_dim">80DC2626</color>
 	<color name="mf_star">FFDC2626</color>
 	<color name="blue">FFDC2626</color>
-	<color name="button_focus">FFDC2626</color>
-	<color name="button_alt_focus">80DC2626</color>
 	<color name="selected">FFDC2626</color>
 </colors>

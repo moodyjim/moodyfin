@@ -757,6 +757,11 @@
 		<value condition="Control.IsVisible(10) + !String.IsEmpty(Control.GetLabel(10))">  ·  $INFO[Control.GetLabel(10)]</value>
 	</variable>
 
+	<variable name="MFRailText">
+		<value condition="Control.HasFocus(530)">FF000000</value>
+		<value>99F1F2F4</value>
+	</variable>
+
 	<!-- episode row (list 521): still, progress, title, facts, plot -->
 	<include name="MFEpisodeRow">
 		<param name="list" />
@@ -863,6 +868,16 @@
 			</control>
 		</definition>
 	</include>
+	<!-- ================================================================ sign-in page (LoginScreen) -->
+	<variable name="MFServerName">
+		<value condition="!String.IsEmpty(Window(Home).Property(MoodyFin.Server))">$INFO[Window(Home).Property(MoodyFin.Server)]</value>
+		<value>MoodyFin</value>
+	</variable>
+	<variable name="MFLoginText">
+		<value condition="Control.HasFocus(52)">FF000000</value>
+		<value>FFF1F2F4</value>
+	</variable>
+
 	<!-- ================================================================ search page -->
 	<variable name="MFSearchFieldLabel">
 		<value condition="!String.IsEmpty(Window(1150).Property(mf.query))">$INFO[Window(1150).Property(mf.query)]</value>

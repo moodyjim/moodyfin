@@ -5,7 +5,5 @@
 	<color name="mf_accent_dim">80A855F7</color>
 	<color name="mf_star">FFA855F7</color>
 	<color name="blue">FFA855F7</color>
-	<color name="button_focus">FFA855F7</color>
-	<color name="button_alt_focus">80A855F7</color>
 	<color name="selected">FFA855F7</color>
 </colors>

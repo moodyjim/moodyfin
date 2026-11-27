@@ -1,3 +1,11 @@
+[B]0.6.0[/B]
+- Splash: the flame over a soft glow while Kodi starts.
+- Profile picker (login screen) in the Jellyfin theme's sign-in style: "Welcome to <server>", sign-in panel with profiles.
+- A-Z rail on library poster pages sorted by name: jump to the first title under a letter.
+- Estuary's menus and dialogs: soft light focus highlight with white text instead of the accent fill, rounded
+  dialog panels and buttons. Accent presets no longer change it.
+- Estuary's top bar stays off over video.
+
 [B]0.5.0[/B]
 - Player controls (the Jellyfin theme's floating glass panel): title logo, "Ends at" pill, time / progress / time left,
   subtitles, audio, back 10 s, play / pause, forward 30 s, video settings, stop.

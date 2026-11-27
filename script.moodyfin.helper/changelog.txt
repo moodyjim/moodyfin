@@ -1,3 +1,7 @@
+[B]0.6.0[/B]
+- Action jump (A-Z rail, binary search on the list's sort letters).
+- Window(Home).Property(MoodyFin.Server): the Jellyfin server's name, for the sign-in page.
+
 [B]0.5.0[/B]
 - Up Next (upnext.py, run by the service); action upnextpreview to show the pop-up without playing.
 

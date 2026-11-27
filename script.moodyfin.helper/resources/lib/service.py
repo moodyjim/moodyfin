@@ -3,6 +3,7 @@
 - Window(Home).Property(MoodyFin.Stats)   "1,559 Movies · 241 Shows · 12,212 Episodes"
 - Window(Home).Property(MoodyFin.Reload)  changes after playback and library updates; the rows' content paths carry
                                           it, so Kodi fetches them again
+- Window(Home).Property(MoodyFin.Server)  the Jellyfin server's name (sign-in page), from Jellyfin for Kodi's data.json
 - Up Next pop-up near the end of library episodes (upnext.py)
 - Window(Home).Property(MoodyFin.Ambient) blurred copy of the picture the skin names in its hidden label 9990
                                           (see ambient.py)
@@ -31,6 +32,18 @@ def _stats():
     HOME.setProperty("MoodyFin.Stats", " · ".join(parts))
 
 
+def _server():
+    import json
+    import xbmcvfs
+    path = xbmcvfs.translatePath("special://profile/addon_data/plugin.video.jellyfin/data.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            servers = json.load(f).get("Servers") or []
+        HOME.setProperty("MoodyFin.Server", (servers[0].get("Name") or "") if servers else "")
+    except (OSError, ValueError):
+        pass
+
+
 class Monitor(xbmc.Monitor):
     def __init__(self):
         super().__init__()
@@ -44,6 +57,7 @@ class Monitor(xbmc.Monitor):
 
 def run():
     monitor = Monitor()
+    _server()
     _stats()
     HOME.setProperty("MoodyFin.Reload", str(int(time.time())))
     amb = ambient.Ambient()

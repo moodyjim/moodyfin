@@ -113,3 +113,13 @@ done
 rm -f /tmp/mf_icon.png
 magick -size 176x176 xc:none -fill none -stroke white -strokewidth 5 -draw "circle 87.5,87.5 87.5,4" "$M/shapes/ring_big.png"
 rr 64 64 24 "$M/shapes/rr24.png"; ring 64 64 24 2 "$M/shapes/rr24_line.png"
+# splash: soft glow behind the flame
+magick ../docs/reference/logo-flame-source.png -trim +repage -resize 300x300 -background none -gravity center -extent 640x640 -channel A -blur 0x60 -level 0,60% +channel -fill "#FD5004" -colorize 100 "$M/logo_glow.png"
+
+# Estuary overrides: rounded dialog panels and dialog buttons (same sizes and borders as Estuary's, so every dialog
+# keeps its layout). dialog-bg: border 21 in the XML -> panel from 9 px, radius 12. dialog buttons: border 30/40.
+E=../skin.moodyfin/media
+magick -size 80x80 xc:none -fill "rgba(16,17,19,0.95)" -draw "roundrectangle 9,9,70,70,12,12" \
+  -fill none -stroke "rgba(255,255,255,0.10)" -strokewidth 1 -draw "roundrectangle 9.5,9.5,69.5,69.5,12,12" "$E/dialogs/dialog-bg.png"
+magick -size 80x80 xc:none -fill white -draw "roundrectangle 12,12,67,67,16,16" "$E/buttons/dialogbutton-fo.png"
+magick -size 80x80 xc:none -fill "rgba(255,255,255,0.08)" -draw "roundrectangle 12,12,67,67,16,16" "$E/buttons/dialogbutton-nofo.png"

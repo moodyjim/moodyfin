@@ -5,7 +5,5 @@
 	<color name="mf_accent_dim">8022C55E</color>
 	<color name="mf_star">FF22C55E</color>
 	<color name="blue">FF22C55E</color>
-	<color name="button_focus">FF22C55E</color>
-	<color name="button_alt_focus">8022C55E</color>
 	<color name="selected">FF22C55E</color>
 </colors>

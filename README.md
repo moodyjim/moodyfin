@@ -9,8 +9,8 @@ A Kodi 21 (Omega) skin that brings the Jellyfin theme's look to Kodi.
 Made for a Jellyfin library synced with [Jellyfin for Kodi](https://github.com/jellyfin/jellyfin-kodi), and for
 remote control on CoreELEC boxes.
 
-> Work in progress. Home, details, library, search and the player are done; the remaining screens (settings,
-> dialogs, music) are still Estuary's, in MoodyFin's fonts and colours.
+> Home, details, library, search, player, splash and sign-in are MoodyFin's own; Estuary's other screens (settings,
+> dialogs, music) use MoodyFin's fonts, colours, focus style and rounded panels.
 
 ## What's in it
 
@@ -43,6 +43,8 @@ people; then Next Up and Seasons for shows, Cast & Crew, the movie's Collection 
 - **Library pages** (Favorites, Collections, Movies, Shows, Sports in the menu): title and count, sort, order,
   watched and filter buttons, a poster grid, an episode list for episodes, a plain list for everything else.
 - **Search** (magnifier in the menu): type a few letters; movies, shows and episodes whose title contains them.
+- **A-Z rail:** on poster pages sorted by name, right from the grid, then a letter.
+- **Sign-in page:** turn on Kodi's login screen (*Settings > Profiles > General*) to choose a profile at start.
 
 Tip: to open the details page when you press OK on a movie in a library page (as the Jellyfin theme does), set
 *Settings > Media > Videos > Default select action* to *Show information*.

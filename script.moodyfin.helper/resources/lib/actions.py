@@ -15,6 +15,9 @@
         Window(1150).Property(mf.query) in the skin (11150 here) to show, Property(mf.q) URL-quoted for the rows' plugin paths.
     action=upnextpreview,dbid=N
         Shows the Up Next pop-up for the episode after episode N, without playing anything.
+    action=jump,letter=A,list=520
+        A-Z rail: focuses the first item of the list whose sort letter is `letter` ("#" = digits and symbols).
+        Binary search over Container(list).ListItemAbsolute(n).SortLetter, so the list must be sorted by name, A-Z.
     action=playnext,tvshowid=N
         Plays the show's next episode (the one in progress, else the first unwatched), resuming where it stopped.
 """
@@ -129,6 +132,31 @@ def search():
     win.clearProperty("mf.searching")
 
 
+def _sort_letter(list_id, n):
+    letter = xbmc.getInfoLabel("Container(%s).ListItemAbsolute(%d).SortLetter" % (list_id, n)).upper()[:1]
+    return letter if letter.isalpha() else "#"
+
+
+def jump(letter, list_id="520"):
+    letter = "#" if (letter or "num").lower() == "num" else letter.upper()[:1]
+    total = int(xbmc.getInfoLabel("Container(%s).NumItems" % list_id) or 0)
+    if not total:
+        return
+    # ".." is item 0 when parent items are shown; it isn't counted in NumItems
+    first = 1 if xbmc.getInfoLabel("Container(%s).ListItemAbsolute(0).Label" % list_id) == ".." else 0
+    lo, hi = first, first + total  # first index whose letter >= wanted ("#" sorts before "A")
+    key = (lambda c: "" if c == "#" else c)
+    want = key(letter)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if key(_sort_letter(list_id, mid)) < want:
+            lo = mid + 1
+        else:
+            hi = mid
+    target = min(lo, first + total - 1)
+    xbmc.executebuiltin("SetFocus(%s,%d,absolute)" % (list_id, target))
+
+
 def run(argv):
     args = _args(argv)
     action = args.get("action")
@@ -145,6 +173,8 @@ def run(argv):
     elif action == "upnextpreview":
         from . import upnext
         upnext.preview(args.get("dbid", "0"))
+    elif action == "jump":
+        jump(args.get("letter", "#"), args.get("list", "520"))
     elif action == "playnext":
         playnext(args.get("tvshowid", ""))
     else:

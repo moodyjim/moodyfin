@@ -5,7 +5,5 @@
 	<color name="mf_accent_dim">80EC4899</color>
 	<color name="mf_star">FFEC4899</color>
 	<color name="blue">FFEC4899</color>
-	<color name="button_focus">FFEC4899</color>
-	<color name="button_alt_focus">80EC4899</color>
 	<color name="selected">FFEC4899</color>
 </colors>
