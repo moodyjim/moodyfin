@@ -81,7 +81,9 @@ def main(out):
     with open(os.path.join(out, "addons.xml.md5"), "w", encoding="utf-8", newline="\n") as f:
         f.write(hashlib.md5(xml.encode("utf-8")).hexdigest())
     repo = next(l for l in links if l[0] == "repository.moodyfin")
-    rows = "\n".join('<li><a href="%s">%s</a> %s</li>' % (p, os.path.basename(p), v) for _, v, p in links)
+    # the repository zip is listed once (its top-level copy); the add-ons are installed through it
+    rows = "\n".join('<li><a href="%s">%s</a> %s</li>' % (p, os.path.basename(p), v) for i, v, p in links
+                     if i != "repository.moodyfin")
     html = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MoodyFin for Kodi</title></head>
@@ -89,7 +91,7 @@ def main(out):
 <h1>MoodyFin</h1>
 <p>The Jellyfin theme's look for Kodi 21. In Kodi: <i>Settings &gt; File manager &gt; Add source</i>, enter this page's
 address, then <i>Add-ons &gt; Install from zip file</i> and pick
-<a href="{repo}" style="color:#5CD8FA">{name}</a>. Then <i>Install from repository &gt; MoodyFin Repository</i>.</p>
+<b>{name}</b>. Then <i>Install from repository &gt; MoodyFin Repository</i>.</p>
 <ul>
 <li><a href="{repo}" style="color:#5CD8FA">{name}</a></li>
 {rows}

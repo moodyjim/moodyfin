@@ -283,7 +283,6 @@
 			<animation effect="slide" end="0,42" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)">Conditional</animation>
 			<control type="button" id="1165">
 				<width>268</width><height>40</height>
-			<animation effect="slide" end="0,42" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)">Conditional</animation>
 				<label>Power</label>
 				<font>mf_card_genre</font>
 				<textcolor>E0FFFFFF</textcolor>
@@ -322,7 +321,6 @@
 			<visible>System.HasLoginScreen</visible>
 			<control type="button" id="1166">
 				<width>268</width><height>40</height>
-			<animation effect="slide" end="0,42" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)">Conditional</animation>
 				<label>Sign Out</label>
 				<font>mf_card_genre</font>
 				<textcolor>FFFF7A7A</textcolor>

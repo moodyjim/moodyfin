@@ -1,3 +1,9 @@
+[B]0.10.2[/B]
+- User menu: Power (and Sign Out) on one line again (the label slid twice as far as its icon).
+- Dashboard: each stream's progress bar fills.
+- Wording: the look's source is called the Jellyfin theme.
+- Repository page lists its zip once.
+
 [B]0.10.1[/B]
 - Published: install from the MoodyFin Repository (https://moodyjim.github.io/moodyfin/).
 

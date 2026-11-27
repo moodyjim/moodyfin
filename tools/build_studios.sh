@@ -3,7 +3,7 @@
 # Same look as the theme's CSS `filter: brightness(0) invert(1)`: every drawn pixel becomes white, alpha kept.
 # Needs ImageMagick 7 (magick) with the librsvg delegate.
 set -euo pipefail
-SRC="${1:-/c/workflow/jellyfin/moodyjim-jellyfin-theme/src/Jellyfin.Plugin.*/Assets}"
+SRC="${1:-$(ls -d /c/workflow/jellyfin/moodyjim-jellyfin-theme/src/Jellyfin.Plugin.*/Assets | head -1)}"
 OUT="$(dirname "$0")/../skin.moodyfin/media/moodyfin/studios"
 mkdir -p "$OUT"
 for f in "$SRC"/studio_*.svg; do

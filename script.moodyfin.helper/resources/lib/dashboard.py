@@ -139,6 +139,7 @@ class Dashboard:
         self.tasks = []
         self.failed = []
         self.drives = []
+        self.meter = None       # the theme plugin's meter API ("" = not installed)
 
     def tick(self):
         if not xbmc.getCondVisibility(WINDOW):
@@ -197,10 +198,22 @@ class Dashboard:
         HOME.setProperty(P + "Version", i.get("Version") or "")
         HOME.setProperty(P + "Update", "1" if i.get("HasUpdateAvailable") else "")
         HOME.setProperty(P + "Restart", "1" if i.get("HasPendingRestart") else "")
+        self._theme()
+
+    def _theme(self):
+        """The theme plugin: its version for the server bar, and where its meter lives (its name without spaces is
+        the address of its API, so the name isn't written here)."""
         for p in jellyfin.call("GET", "/Plugins") or []:
             if str(p.get("Id", "")).replace("-", "") == THEME_ID.replace("-", ""):
                 v = str(p.get("Version") or "")
                 HOME.setProperty(P + "Theme", v[:-2] if v.endswith(".0") else v)
+                self.meter = "/" + "".join(ch for ch in (p.get("Name") or "") if ch.isalnum()) + "/Meter"
+                return self.meter
+        self.meter = ""
+        return ""
+
+    def _meter_path(self):
+        return self.meter if self.meter is not None else self._theme()
 
     def _users(self):
         users = jellyfin.call("GET", "/Users") or []
@@ -208,7 +221,9 @@ class Dashboard:
         HOME.setProperty(P + "Users", _num(len(users)))
 
     def _proc(self):
-        p = jellyfin.call("GET", "/<theme plugin>/Meter/Process") or {}
+        if not self._meter_path():
+            return
+        p = jellyfin.call("GET", self.meter + "/Process") or {}
         if p.get("cpuPercent") is not None:
             HOME.setProperty(P + "Cpu", "%d%%" % round(p["cpuPercent"]))
         mem = p.get("memoryMb")
@@ -221,7 +236,9 @@ class Dashboard:
 
     # -- now playing
     def _meter(self):
-        r = jellyfin.call("GET", _q("/<theme plugin>/Meter", seconds=10, streamSeconds=30)) or {}
+        if not self._meter_path():
+            return
+        r = jellyfin.call("GET", _q(self.meter, seconds=10, streamSeconds=30)) or {}
         HOME.setProperty(P + "UpTotal", _mb(r.get("totalMbps")))
         HOME.setProperty(P + "UpStreams", _mb(r.get("streamsMbps")))
         self.rates = r.get("perStream") or {}

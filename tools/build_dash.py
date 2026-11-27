@@ -252,14 +252,37 @@ def np_slot(n):
 					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor><label>$INFO[%(dev)s]</label>
 				</control>
 			</control>
-			<!-- progress, 3 px -->
-			<control type="progress">
+			<!-- progress, 3 px. A progress control can't read a window property as a number, but it can read a list
+			     item's: a one-item list carries it (never focused). -->
+			<control type="list" id="%(barid)d">
 				<left>73</left><top>60</top><width>436</width><height>3</height>
-				<texturebg border="1" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texturebg>
-				<lefttexture />
-				<midtexture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
-				<righttexture />
-				<info>%(pct)s</info>
+				<itemlayout width="436" height="3">
+					<control type="progress">
+						<width>436</width><height>3</height>
+						<texturebg border="1" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+						<lefttexture />
+						<midtexture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+						<righttexture />
+						<info>ListItem.Property(pct)</info>
+					</control>
+				</itemlayout>
+				<focusedlayout width="436" height="3">
+					<control type="progress">
+						<width>436</width><height>3</height>
+						<texturebg border="1" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+						<lefttexture />
+						<midtexture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+						<righttexture />
+						<info>ListItem.Property(pct)</info>
+					</control>
+				</focusedlayout>
+				<content>
+					<item>
+						<label>-</label>
+						<property name="pct">$INFO[%(pct)s]</property>
+						<onclick>noop</onclick>
+					</item>
+				</content>
 			</control>
 			<!-- method pill (600 11 in its colour), what happens to the picture, time . ends -->
 			<control type="grouplist">
@@ -293,7 +316,7 @@ def np_slot(n):
 				<font>mf_card_badge</font><textcolor>80FFFFFF</textcolor><label>$INFO[%(time)s]</label>
 			</control>
 		</control>
-""" % dict(n=n, left=left, top=top, edge=edge, pills=pills, gold=COL["pa"], **{k: q(k) for k in (
+""" % dict(n=n, left=left, top=top, edge=edge, pills=pills, gold=COL["pa"], barid=3110 + n, **{k: q(k) for k in (
         "title", "sub", "poster", "bg", "user", "dev", "av", "initial", "m", "summary", "conv", "mbps", "pct", "time")})
 
 

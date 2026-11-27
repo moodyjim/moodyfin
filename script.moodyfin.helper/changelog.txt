@@ -1,3 +1,6 @@
+[B]0.10.2[/B]
+- Dashboard: the theme plugin's meter address comes from the installed plugin.
+
 [B]0.10.1[/B]
 - Published with the MoodyFin Repository; MIT licence text added.
 
