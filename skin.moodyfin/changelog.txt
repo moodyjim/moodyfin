@@ -1,3 +1,10 @@
+[B]0.8.1[/B]
+- Chapter marks sit on the progress bar (they were stretched and drawn under it).
+- Episode count on show posters like the Jellyfin theme's: small dark rounded badge, 99+ above 99.
+- The logo is a button: back to the home page.
+- The profile picture opens a user menu like the Jellyfin theme's: Jellyfin name and role, Settings, MoodyFin, Jellyfin,
+  Add-ons, Power, Sign Out (with profiles).
+
 [B]0.8.0[/B]
 - Player controls like the Jellyfin theme's: mute with the volume level, subtitles, favourite (Jellyfin titles) |
   back 10 s, rewind, play / pause, fast forward, forward 30 s | settings (audio, subtitles, video), back to the menus

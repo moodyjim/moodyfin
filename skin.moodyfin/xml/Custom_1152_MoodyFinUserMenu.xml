@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MoodyFin user menu, opened by the header's picture (ActivateWindow(1152)). the Jellyfin theme's look/Inject/Header/
+     ue-header-avatar.css: glass panel rgba(14,14,16,.94), 1 px white 8 % border, radius 16, padding 6; head = picture 44
+     (2 px white 12 % ring) + name (Bebas 26, 28 here) + "Administrator" / "Signed in" (600 12 px at 50 %), line under it;
+     items 10 / 12 padding, radius 10, Medium 14 (15 here) at 88 %, icons 20 at 60 %; focused = 7 % white, 3 px accent
+     bar, accent icon; Sign Out #ff7a7a. Jellyfin's web-only items (dashboard, metadata, quick connect) become Kodi's:
+       1161 Settings, 1162 MoodyFin (skin settings), 1163 Jellyfin (add-on settings), 1164 Add-ons,
+       1165 Power, 1166 Sign Out (back to the profile picker; only with profiles)
+     The user comes from the helper: Window(Home).Property(MoodyFin.UserName|UserSub|UserPic). -->
+<window type="dialog" id="1152">
+	<defaultcontrol always="true">1161</defaultcontrol>
+	<depth>DepthDialog</depth>
+	<controls>
+	<control type="group">
+		<right>mf_gutter</right><top>88</top><width>280</width><height>367</height>
+		<animation effect="fade" start="0" end="100" time="150">WindowOpen</animation>
+		<animation effect="zoom" start="96" end="100" center="280,0" time="150" tween="cubic" easing="out">WindowOpen</animation>
+		<animation effect="fade" start="100" end="0" time="120">WindowClose</animation>
+		<!-- panel -->
+		<control type="image">
+			<width>280</width><height>367</height>
+			<texture border="16" colordiffuse="F00E0E10">moodyfin/shapes/rr16.png</texture>
+			<visible>System.HasLoginScreen</visible>
+		</control>
+		<control type="image">
+			<width>280</width><height>367</height>
+			<texture border="16" colordiffuse="14FFFFFF">moodyfin/shapes/rr16_line.png</texture>
+			<visible>System.HasLoginScreen</visible>
+		</control>
+		<control type="image">
+			<width>280</width><height>325</height>
+			<texture border="16" colordiffuse="F00E0E10">moodyfin/shapes/rr16.png</texture>
+			<visible>!System.HasLoginScreen</visible>
+		</control>
+		<control type="image">
+			<width>280</width><height>325</height>
+			<texture border="16" colordiffuse="14FFFFFF">moodyfin/shapes/rr16_line.png</texture>
+			<visible>!System.HasLoginScreen</visible>
+		</control>
+		<!-- head: picture, name, role -->
+		<control type="image">
+			<left>16</left><top>16</top><width>48</width><height>48</height>
+			<texture colordiffuse="1FFFFFFF">moodyfin/shapes/circle.png</texture>
+		</control>
+		<control type="image">
+			<left>18</left><top>18</top><width>44</width><height>44</height>
+			<aspectratio>scale</aspectratio>
+			<texture background="true" diffuse="moodyfin/shapes/circle.png" fallback="DefaultUser.png">$VAR[MFUserPic]</texture>
+		</control>
+		<control type="label">
+			<left>74</left><top>19</top><width>188</width><height>28</height>
+			<aligny>center</aligny>
+			<font>mf_heading28</font>
+			<textcolor>FFFFFFFF</textcolor>
+			<label>$VAR[MFUserName]</label>
+		</control>
+		<control type="label">
+			<left>74</left><top>46</top><width>188</width><height>18</height>
+			<aligny>center</aligny>
+			<font>mf_tag13</font>
+			<textcolor>80FFFFFF</textcolor>
+			<label>$INFO[Window(Home).Property(MoodyFin.UserSub)]</label>
+		</control>
+		<control type="image">
+			<left>6</left><top>76</top><width>268</width><height>1</height>
+			<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+		</control>
+		<!-- Settings -->
+		<control type="group">
+			<left>6</left><top>84</top><width>268</width><height>40</height>
+			<control type="button" id="1161">
+				<width>268</width><height>40</height>
+				<label>Settings</label>
+				<font>mf_card_genre</font>
+				<textcolor>E0FFFFFF</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<textoffsetx>44</textoffsetx>
+				<aligny>center</aligny>
+				<texturefocus border="10" colordiffuse="12FFFFFF">moodyfin/shapes/rr10.png</texturefocus>
+				<texturenofocus />
+				<onclick>Dialog.Close(1152)</onclick>
+				<onclick>ActivateWindow(settings)</onclick>
+				<onup>1166</onup>
+				<ondown>1162</ondown>
+				<onleft>noop</onleft>
+				<onright>noop</onright>
+			</control>
+			<control type="image">
+				<left>0</left><top>9</top><width>3</width><height>22</height>
+				<texture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</texture>
+				<visible>Control.HasFocus(1161)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="99FFFFFF">moodyfin/icons/settings.png</texture>
+				<visible>!Control.HasFocus(1161)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="mf_accent">moodyfin/icons/settings.png</texture>
+				<visible>Control.HasFocus(1161)</visible>
+			</control>
+		</control>
+		<!-- MoodyFin -->
+		<control type="group">
+			<left>6</left><top>126</top><width>268</width><height>40</height>
+			<control type="button" id="1162">
+				<width>268</width><height>40</height>
+				<label>MoodyFin</label>
+				<font>mf_card_genre</font>
+				<textcolor>E0FFFFFF</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<textoffsetx>44</textoffsetx>
+				<aligny>center</aligny>
+				<texturefocus border="10" colordiffuse="12FFFFFF">moodyfin/shapes/rr10.png</texturefocus>
+				<texturenofocus />
+				<onclick>Dialog.Close(1152)</onclick>
+				<onclick>ActivateWindow(skinsettings)</onclick>
+				<onup>1161</onup>
+				<ondown>1163</ondown>
+				<onleft>noop</onleft>
+				<onright>noop</onright>
+			</control>
+			<control type="image">
+				<left>0</left><top>9</top><width>3</width><height>22</height>
+				<texture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</texture>
+				<visible>Control.HasFocus(1162)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="99FFFFFF">moodyfin/icons/palette.png</texture>
+				<visible>!Control.HasFocus(1162)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="mf_accent">moodyfin/icons/palette.png</texture>
+				<visible>Control.HasFocus(1162)</visible>
+			</control>
+		</control>
+		<!-- Jellyfin -->
+		<control type="group">
+			<left>6</left><top>168</top><width>268</width><height>40</height>
+			<control type="button" id="1163">
+				<width>268</width><height>40</height>
+				<label>Jellyfin</label>
+				<font>mf_card_genre</font>
+				<textcolor>E0FFFFFF</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<textoffsetx>44</textoffsetx>
+				<aligny>center</aligny>
+				<texturefocus border="10" colordiffuse="12FFFFFF">moodyfin/shapes/rr10.png</texturefocus>
+				<texturenofocus />
+				<onclick>Dialog.Close(1152)</onclick>
+				<onclick>Addon.OpenSettings(plugin.video.jellyfin)</onclick>
+				<onup>1162</onup>
+				<ondown>1164</ondown>
+				<onleft>noop</onleft>
+				<onright>noop</onright>
+			</control>
+			<control type="image">
+				<left>0</left><top>9</top><width>3</width><height>22</height>
+				<texture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</texture>
+				<visible>Control.HasFocus(1163)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="99FFFFFF">moodyfin/icons/tune.png</texture>
+				<visible>!Control.HasFocus(1163)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="mf_accent">moodyfin/icons/tune.png</texture>
+				<visible>Control.HasFocus(1163)</visible>
+			</control>
+		</control>
+		<control type="image">
+			<left>14</left><top>215</top><width>252</width><height>1</height>
+			<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+		</control>
+		<!-- Add-ons -->
+		<control type="group">
+			<left>6</left><top>223</top><width>268</width><height>40</height>
+			<control type="button" id="1164">
+				<width>268</width><height>40</height>
+				<label>Add-ons</label>
+				<font>mf_card_genre</font>
+				<textcolor>E0FFFFFF</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<textoffsetx>44</textoffsetx>
+				<aligny>center</aligny>
+				<texturefocus border="10" colordiffuse="12FFFFFF">moodyfin/shapes/rr10.png</texturefocus>
+				<texturenofocus />
+				<onclick>Dialog.Close(1152)</onclick>
+				<onclick>ActivateWindow(addonbrowser)</onclick>
+				<onup>1163</onup>
+				<ondown>1165</ondown>
+				<onleft>noop</onleft>
+				<onright>noop</onright>
+			</control>
+			<control type="image">
+				<left>0</left><top>9</top><width>3</width><height>22</height>
+				<texture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</texture>
+				<visible>Control.HasFocus(1164)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="99FFFFFF">moodyfin/icons/extension.png</texture>
+				<visible>!Control.HasFocus(1164)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="mf_accent">moodyfin/icons/extension.png</texture>
+				<visible>Control.HasFocus(1164)</visible>
+			</control>
+		</control>
+		<control type="image">
+			<left>14</left><top>270</top><width>252</width><height>1</height>
+			<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+		</control>
+		<!-- Power -->
+		<control type="group">
+			<left>6</left><top>278</top><width>268</width><height>40</height>
+			<control type="button" id="1165">
+				<width>268</width><height>40</height>
+				<label>Power</label>
+				<font>mf_card_genre</font>
+				<textcolor>E0FFFFFF</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<textoffsetx>44</textoffsetx>
+				<aligny>center</aligny>
+				<texturefocus border="10" colordiffuse="12FFFFFF">moodyfin/shapes/rr10.png</texturefocus>
+				<texturenofocus />
+				<onclick>Dialog.Close(1152)</onclick>
+				<onclick>ActivateWindow(shutdownmenu)</onclick>
+				<onup>1164</onup>
+				<ondown>1166</ondown>
+				<onleft>noop</onleft>
+				<onright>noop</onright>
+			</control>
+			<control type="image">
+				<left>0</left><top>9</top><width>3</width><height>22</height>
+				<texture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</texture>
+				<visible>Control.HasFocus(1165)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="99FFFFFF">moodyfin/icons/power_settings_new.png</texture>
+				<visible>!Control.HasFocus(1165)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="mf_accent">moodyfin/icons/power_settings_new.png</texture>
+				<visible>Control.HasFocus(1165)</visible>
+			</control>
+		</control>
+		<!-- Sign Out -->
+		<control type="group">
+			<left>6</left><top>320</top><width>268</width><height>40</height>
+			<visible>System.HasLoginScreen</visible>
+			<control type="button" id="1166">
+				<width>268</width><height>40</height>
+				<label>Sign Out</label>
+				<font>mf_card_genre</font>
+				<textcolor>FFFF7A7A</textcolor>
+				<focusedcolor>FFFF7A7A</focusedcolor>
+				<textoffsetx>44</textoffsetx>
+				<aligny>center</aligny>
+				<texturefocus border="10" colordiffuse="1AFF5A5A">moodyfin/shapes/rr10.png</texturefocus>
+				<texturenofocus />
+				<onclick>Dialog.Close(1152)</onclick>
+				<onclick>System.LogOff</onclick>
+				<onup>1165</onup>
+				<ondown>1161</ondown>
+				<onleft>noop</onleft>
+				<onright>noop</onright>
+			</control>
+			<control type="image">
+				<left>0</left><top>9</top><width>3</width><height>22</height>
+				<texture border="1" colordiffuse="FFFF7A7A">moodyfin/shapes/rr6.png</texture>
+				<visible>Control.HasFocus(1166)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="FFFF7A7A">moodyfin/icons/logout.png</texture>
+				<visible>!Control.HasFocus(1166)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="FFFF7A7A">moodyfin/icons/logout.png</texture>
+				<visible>Control.HasFocus(1166)</visible>
+			</control>
+		</control>
+	</control>
+	</controls>
+</window>

@@ -26,6 +26,9 @@ done
 # rounded rects for panels/badges, used with border="r"
 rr 48 48 12 "$M/shapes/rr12.png"; ring 48 48 12 3 "$M/shapes/rr12_line.png"
 rr 24 24 6 "$M/shapes/rr6.png"
+# user menu (the Jellyfin theme's ue-header-avatar.css): panel radius 16, items radius 10
+rr 48 48 16 "$M/shapes/rr16.png"; ring 48 48 16 2 "$M/shapes/rr16_line.png"
+rr 40 40 10 "$M/shapes/rr10.png"
 magick -size 64x64 xc:none -fill white -draw "circle 31.5,31.5 31.5,0" "$M/shapes/circle.png"
 magick -size 64x64 xc:none -fill none -stroke white -strokewidth 3 -draw "circle 31.5,31.5 31.5,2" "$M/shapes/circle_line.png"
 

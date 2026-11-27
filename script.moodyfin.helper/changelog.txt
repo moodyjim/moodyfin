@@ -1,3 +1,6 @@
+[B]0.8.1[/B]
+- Reads the signed-in Jellyfin user (name, administrator, picture) for the skin's user menu.
+
 [B]0.8.0[/B]
 - jellyfin.py: the Jellyfin add-on's signed-in user (as Moody Similar does); action favorite; the playing title's
   favourite state on playback start (Window(Home).Property(MoodyFin.Fav)).

@@ -144,6 +144,11 @@
 			<size>14</size>
 		</font>
 		<font>
+			<name>mf_heading28</name>
+			<filename>BebasNeue-Regular.ttf</filename>
+			<size>28</size>
+		</font>
+		<font>
 			<name>mf_heading32</name>
 			<filename>BebasNeue-Regular.ttf</filename>
 			<size>32</size>
@@ -380,6 +385,12 @@
 			<name>mf_tag14b</name>
 			<filename>arial.ttf</filename>
 			<size>14</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_heading28</name>
+			<filename>arial.ttf</filename>
+			<size>28</size>
 			<style>bold</style>
 		</font>
 		<font>

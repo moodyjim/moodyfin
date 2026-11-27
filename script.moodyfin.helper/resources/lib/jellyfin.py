@@ -1,6 +1,6 @@
 """Talks to the Jellyfin server as the Jellyfin for Kodi add-on's signed-in user (its saved address, user and token in
 addon_data/plugin.video.jellyfin/data.json; same way as plugin.video.moodysimilar). Used for the player's favourite
-button. The token is only ever sent to that server.
+button and the header's user menu. The token is only ever sent to that server.
 """
 import json
 import os
@@ -76,3 +76,13 @@ def is_favorite(jid):
 
 def set_favorite(jid, on):
     call("POST" if on else "DELETE", "/Users/{user}/FavoriteItems/%s" % jid)
+
+
+def user():
+    """The signed-in user for the header's menu: name, admin flag, picture URL ("" without one; Jellyfin serves user
+    pictures without a token, so none is put in the URL)."""
+    address, user_id, _ = _login()
+    u = call("GET", "/Users/{user}") or {}
+    tag = u.get("PrimaryImageTag") or ""
+    pic = "%s/Users/%s/Images/Primary?tag=%s&maxHeight=128&quality=90" % (address, user_id, tag) if tag else ""
+    return {"name": u.get("Name") or "", "admin": bool((u.get("Policy") or {}).get("IsAdministrator")), "pic": pic}

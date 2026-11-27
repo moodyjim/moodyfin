@@ -4,10 +4,13 @@
 - Window(Home).Property(MoodyFin.Reload)  changes after playback and library updates; the rows' content paths carry
                                           it, so Kodi fetches them again
 - Window(Home).Property(MoodyFin.Server)  the Jellyfin server's name (sign-in page), from Jellyfin for Kodi's data.json
+- Window(Home).Property(MoodyFin.UserName|UserSub|UserPic)  the Jellyfin user, for the header's user menu
+                                          (UserSub "Administrator" or "Signed in", like the Jellyfin theme's)
 - Up Next pop-up near the end of library episodes (upnext.py)
 - Window(Home).Property(MoodyFin.Ambient) blurred copy of the picture the skin names in its hidden label 9990
                                           (see ambient.py)
 """
+import threading
 import time
 
 import xbmc
@@ -44,6 +47,17 @@ def _server():
         pass
 
 
+def _user():
+    from . import jellyfin
+    try:
+        u = jellyfin.user()
+    except jellyfin.JellyfinError:
+        return
+    HOME.setProperty("MoodyFin.UserName", u["name"])
+    HOME.setProperty("MoodyFin.UserSub", "Administrator" if u["admin"] else "Signed in")
+    HOME.setProperty("MoodyFin.UserPic", u["pic"])
+
+
 class Monitor(xbmc.Monitor):
     def __init__(self):
         super().__init__()
@@ -58,6 +72,7 @@ class Monitor(xbmc.Monitor):
 def run():
     monitor = Monitor()
     _server()
+    threading.Thread(target=_user, daemon=True).start()
     _stats()
     HOME.setProperty("MoodyFin.Reload", str(int(time.time())))
     amb = ambient.Ambient()

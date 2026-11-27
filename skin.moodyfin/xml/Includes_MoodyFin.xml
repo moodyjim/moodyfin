@@ -140,7 +140,16 @@
 				<left>0</left><top>0</top><width>100%</width><height>220</height>
 				<texture colordiffuse="99000000">moodyfin/shapes/grad_up.png</texture>
 			</control>
-			<!-- logo + stats -->
+			<!-- logo (9110: back to the home page) + stats -->
+			<control type="button" id="9110">
+				<left>62</left><top>20</top><width>64</width><height>64</height>
+				<texturefocus colordiffuse="mf_accent">moodyfin/shapes/circle_line.png</texturefocus>
+				<texturenofocus />
+				<label />
+				<onclick>ActivateWindow(home)</onclick>
+				<onright>9101</onright>
+				<ondown>$PARAM[down]</ondown>
+			</control>
 			<control type="image">
 				<left>mf_gutter</left><top>26</top><width>52</width><height>52</height>
 				<aspectratio>keep</aspectratio>
@@ -169,7 +178,7 @@
 					<param name="id" value="9101" /><param name="left" value="8" /><param name="textleft" value="56" /><param name="iconleft" value="26" /><param name="width" value="156" />
 					<param name="icon" value="moodyfin/icons/favorite.png" /><param name="label" value="Favorites" />
 					<param name="onclick" value="ActivateWindow(Videos,library://video/jellyfin_Favoritemovies.xml/,return)" />
-					<param name="onright" value="9102" /><param name="down" value="$PARAM[down]" /><param name="current" value="$EXP[mf_page_favorites]" />
+					<param name="onleft" value="9110" /><param name="onright" value="9102" /><param name="down" value="$PARAM[down]" /><param name="current" value="$EXP[mf_page_favorites]" />
 				</include>
 				<include content="MFNavButton">
 					<param name="id" value="9102" /><param name="left" value="168" /><param name="textleft" value="216" /><param name="iconleft" value="186" /><param name="width" value="176" />
@@ -202,13 +211,13 @@
 					<param name="onleft" value="9105" /><param name="onright" value="9120" /><param name="down" value="$PARAM[down]" /><param name="current" value="Window.IsActive(1150)" />
 				</include>
 			</control>
-			<!-- profile picture (settings) -->
+			<!-- profile picture: the user menu (Custom_1152_MoodyFinUserMenu.xml) -->
 			<control type="button" id="9120">
 				<right>72</right><top>24</top><width>56</width><height>56</height>
 				<texturefocus colordiffuse="mf_accent">moodyfin/shapes/circle_line.png</texturefocus>
 				<texturenofocus />
 				<label />
-				<onclick>ActivateWindow(settings)</onclick>
+				<onclick>ActivateWindow(1152)</onclick>
 				<onleft>9106</onleft>
 				<ondown>$PARAM[down]</ondown>
 			</control>
@@ -220,6 +229,16 @@
 		</control>
 		</definition>
 	</include>
+
+	<!-- the user menu's head (helper: the Jellyfin user; else the Kodi profile) -->
+	<variable name="MFUserName">
+		<value condition="!String.IsEmpty(Window(Home).Property(MoodyFin.UserName))">$INFO[Window(Home).Property(MoodyFin.UserName)]</value>
+		<value>$INFO[System.ProfileName]</value>
+	</variable>
+	<variable name="MFUserPic">
+		<value condition="!String.IsEmpty(Window(Home).Property(MoodyFin.UserPic))">$INFO[Window(Home).Property(MoodyFin.UserPic)]</value>
+		<value>$INFO[System.ProfileThumb]</value>
+	</variable>
 
 	<!-- ================================================================ row heading: accent bar + Bebas title -->
 	<include name="MFRowHeading">
@@ -286,26 +305,40 @@
 					<label>$VAR[MFCardFallbackTitle]</label>
 					<visible>String.IsEmpty(ListItem.Art(poster))</visible>
 				</control>
-				<!-- watched / unwatched episodes -->
+				<!-- watched / unwatched episodes (the Jellyfin theme's .countIndicator / .playedIndicator, ue-card.css):
+				     2em square (28), radius 12 (squircle), rgba(16,17,19,.86), 1 px white 7 % border, font-weight 500
+				     at 88 % (Medium 15), white; 0.225em (4) from the corner; 99+ above 99 (20-cards.js) -->
 				<control type="group">
-					<left>140</left><top>6</top>
+					<left>158</left><top>4</top>
 					<visible>Integer.IsGreater(ListItem.PlayCount,0) | Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0)</visible>
 					<control type="image">
-						<width>44</width><height>30</height>
-						<texture border="15,0,15,0" colordiffuse="D9101113">moodyfin/shapes/pill_40.png</texture>
+						<width>28</width><height>28</height>
+						<texture border="12" colordiffuse="DB101113">moodyfin/shapes/rr12.png</texture>
 					</control>
 					<control type="image">
-						<left>13</left><top>6</top><width>18</width><height>18</height>
+						<width>28</width><height>28</height>
+						<texture border="14" colordiffuse="12FFFFFF">moodyfin/shapes/rr12_line.png</texture>
+					</control>
+					<control type="image">
+						<left>5</left><top>5</top><width>18</width><height>18</height>
 						<texture colordiffuse="mf_text">moodyfin/icons/check.png</texture>
 						<visible>Integer.IsGreater(ListItem.PlayCount,0) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0)</visible>
 					</control>
 					<control type="label">
-						<width>44</width><height>30</height>
+						<width>28</width><height>28</height>
 						<align>center</align><aligny>center</aligny>
-						<font>font_flag</font>
+						<font>mf_card_genre</font>
 						<textcolor>mf_text</textcolor>
 						<label>$INFO[ListItem.Property(UnWatchedEpisodes)]</label>
-						<visible>Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0)</visible>
+						<visible>Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),99)</visible>
+					</control>
+					<control type="label">
+						<width>28</width><height>28</height>
+						<align>center</align><aligny>center</aligny>
+						<font>mf_card_genre</font>
+						<textcolor>mf_text</textcolor>
+						<label>99+</label>
+						<visible>Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),99)</visible>
 					</control>
 				</control>
 				<!-- New episode / New season (the Jellyfin theme's 08-new-episode-tags.js): flush with the poster's bottom edge,
@@ -1014,7 +1047,8 @@
 		<!-- chapter marks (the Jellyfin theme's draws one tick per chapter on the bar) -->
 		<control type="ranges">
 			<left>190</left><top>12</top><right>190</right><height>16</height>
-			<texturebg colordiffuse="00FFFFFF">colors/white.png</texturebg>
+			<!-- the ticks are scaled by height / texturebg's height: same picture as the tick keeps them 16 px -->
+			<texturebg colordiffuse="00FFFFFF">moodyfin/shapes/tick.png</texturebg>
 			<righttexture colordiffuse="B3FFFFFF">moodyfin/shapes/tick.png</righttexture>
 			<info>Player.Chapters</info>
 		</control>
