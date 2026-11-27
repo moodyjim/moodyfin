@@ -9,6 +9,10 @@
 - Never commit API keys (TMDB, Jellyfin tokens). Before every push, scan the diff for 32-hex strings and abort if found.
 - Commit messages must end with: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`
 - Commit or push only when I ask.
+- **Every commit is a version.** `skin.moodyfin` and `script.moodyfin.helper` share one version number; the skin's
+  `addon.xml` requires that exact helper version. Bump patch for fixes, minor for a new screen/phase
+  (major stays 0 until release). Update both `addon.xml` files and both `changelog.txt`, start the commit message with
+  `MoodyFin x.y.z: `, and tag the commit `vx.y.z` (annotated). Push tags with the commit (`git push --follow-tags`).
 
 ## What this is
 MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.

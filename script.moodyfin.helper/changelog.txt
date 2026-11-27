@@ -1,3 +1,6 @@
+[B]0.2.1[/B]
+- Version now shared with the skin (no code changes).
+
 [B]0.1.0[/B]
 - Home rows (plugin://script.moodyfin.helper/?row=hero|continue|top10|latest|recentmovies|recentshows).
 - Library stats, row refresh after playback and library updates, blurred ambient background.

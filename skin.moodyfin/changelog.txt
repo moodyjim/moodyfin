@@ -1,3 +1,10 @@
+[B]0.2.1[/B]
+- Hero rotates every 9 s (it jumped every couple of seconds).
+- Header hides while an info dialog is open.
+- Play looks focused after More info / Back.
+- Top 10 numbers: the "1" shows beside its poster.
+- Skin and helper now share one version number.
+
 [B]0.2.0[/B]
 - Home page (the Jellyfin theme): header with logo, library stats, pill menu (Favorites, Collections, Movies, Shows, Sports,
   Search) and profile; hero with backdrop, title logo, rating/year/genres, plot, Play and More info, rotating every 9 s;

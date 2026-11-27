@@ -16,7 +16,7 @@
 			<left>0</left><top>-10</top><width>10</width><height>1</height>
 			<orientation>horizontal</orientation>
 			<scrolltime>0</scrolltime>
-			<autoscroll time="0" delay="9000" repeat="9000">!Window.IsActive(movieinformation) + !Control.HasFocus(8000)</autoscroll>
+			<autoscroll time="9000" delay="9000">!Window.IsActive(movieinformation) + !Control.HasFocus(8000)</autoscroll>
 			<onup>9100</onup>
 			<ondown>9300</ondown>
 			<onback>9201</onback>
@@ -116,8 +116,13 @@
 					</control>
 					<control type="image">
 						<left>0</left><top>0</top><width>178</width><height>64</height>
+						<texture border="32,0,32,0" colordiffuse="mf_text">moodyfin/shapes/pill_64.png</texture>
+						<visible>Control.HasFocus(8000)</visible>
+					</control>
+					<control type="image">
+						<left>0</left><top>0</top><width>178</width><height>64</height>
 						<texture border="32,0,32,0" colordiffuse="33FFFFFF">moodyfin/shapes/pill_line_64.png</texture>
-						<visible>!Control.HasFocus(9201)</visible>
+						<visible>!Control.HasFocus(9201) + !Control.HasFocus(8000)</visible>
 					</control>
 					<control type="image">
 						<left>192</left><top>0</top><width>232</width><height>64</height>
@@ -126,11 +131,23 @@
 					</control>
 					<control type="image">
 						<left>28</left><top>16</top><width>32</width><height>32</height>
-						<texture colordiffuse="$VAR[MFHeroIcon1]">moodyfin/icons/play_arrow.png</texture>
+						<texture colordiffuse="FFF1F2F4">moodyfin/icons/play_arrow.png</texture>
+						<visible>![Control.HasFocus(9201) | Control.HasFocus(8000)]</visible>
+					</control>
+					<control type="image">
+						<left>28</left><top>16</top><width>32</width><height>32</height>
+						<texture colordiffuse="FF000000">moodyfin/icons/play_arrow.png</texture>
+						<visible>Control.HasFocus(9201) | Control.HasFocus(8000)</visible>
 					</control>
 					<control type="image">
 						<left>222</left><top>17</top><width>30</width><height>30</height>
-						<texture colordiffuse="$VAR[MFHeroIcon2]">moodyfin/icons/info_outline.png</texture>
+						<texture colordiffuse="FFF1F2F4">moodyfin/icons/info_outline.png</texture>
+						<visible>![Control.HasFocus(9202)]</visible>
+					</control>
+					<control type="image">
+						<left>222</left><top>17</top><width>30</width><height>30</height>
+						<texture colordiffuse="FF000000">moodyfin/icons/info_outline.png</texture>
+						<visible>Control.HasFocus(9202)</visible>
 					</control>
 					<control type="label">
 						<left>72</left><top>0</top><width>120</width><height>64</height>
@@ -255,7 +272,7 @@
 					<visible>Skin.HasSetting(mf.top10numbers)</visible>
 					<itemlayout width="330" height="310">
 						<control type="image">
-							<left>0</left><top>45</top><width>170</width><height>240</height>
+							<left>0</left><top>45</top><width>150</width><height>240</height>
 							<aspectratio align="right" aligny="bottom">keep</aspectratio>
 							<texture colordiffuse="66F1F2F4">moodyfin/numbers/$INFO[ListItem.Property(mf.rank)].png</texture>
 						</control>
@@ -263,7 +280,7 @@
 					</itemlayout>
 					<focusedlayout width="330" height="310">
 						<control type="image">
-							<left>0</left><top>45</top><width>170</width><height>240</height>
+							<left>0</left><top>45</top><width>150</width><height>240</height>
 							<aspectratio align="right" aligny="bottom">keep</aspectratio>
 							<texture colordiffuse="CCF1F2F4">moodyfin/numbers/$INFO[ListItem.Property(mf.rank)].png</texture>
 						</control>
