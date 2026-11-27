@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MoodyFin: the Jellyfin theme's look. Shared pieces for Home and (later) the other pages.
+     Sizes are for 1920x1080. Page gutter 72. Cards: thumb 356x200, poster 190x285, radius 12. -->
+<includes>
+	<constant name="mf_gutter">72</constant>
+
+	<!-- ================================================================ ambient background
+	     Black, then a blurred copy of the picture named in label 9990 (made by script.moodyfin.helper), dimmed with
+	     the Jellyfin theme's tint: darker on the left and towards the bottom. -->
+	<variable name="MFAmbientSource">
+		<value condition="ControlGroup(9100).HasFocus | ControlGroup(9200).HasFocus | Control.HasFocus(8000) | Control.HasFocus(9300)">$INFO[Container(8000).ListItem.Art(fanart)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(fanart))">$INFO[ListItem.Art(fanart)]</value>
+		<value>$INFO[Container(8000).ListItem.Art(fanart)]</value>
+	</variable>
+	<include name="MFAmbient">
+		<control type="image">
+			<depth>DepthBackground</depth>
+			<include>FullScreenDimensions</include>
+			<texture colordiffuse="mf_background">colors/white.png</texture>
+		</control>
+		<control type="image">
+			<depth>DepthBackground</depth>
+			<left>-80</left><top>-45</top><right>-80</right><bottom>-45</bottom>
+			<aspectratio>scale</aspectratio>
+			<fadetime>600</fadetime>
+			<texture background="true">$INFO[Window(Home).Property(MoodyFin.Ambient)]</texture>
+		</control>
+		<control type="image">
+			<depth>DepthBackground</depth>
+			<include>FullScreenDimensions</include>
+			<texture colordiffuse="80000000">colors/white.png</texture>
+		</control>
+		<control type="image">
+			<depth>DepthBackground</depth>
+			<left>0</left><top>0</top><width>1250</width><height>1080</height>
+			<texture colordiffuse="61000000">moodyfin/shapes/grad_left.png</texture>
+		</control>
+		<control type="image">
+			<depth>DepthBackground</depth>
+			<left>0</left><top>540</top><width>100%</width><height>540</height>
+			<texture colordiffuse="4D000000">moodyfin/shapes/grad_down.png</texture>
+		</control>
+		<!-- the picture the helper should blur: read by the service as Control.GetLabel(9990) -->
+		<control type="label" id="9990">
+			<left>-4000</left><top>0</top><width>10</width><height>10</height>
+			<font>font10</font>
+			<textcolor>00000000</textcolor>
+			<label>$VAR[MFAmbientSource]</label>
+		</control>
+	</include>
+
+	<!-- ================================================================ header
+	     Logo + library stats on the left, the pill nav in the middle (9100), the profile picture on the right. -->
+	<include name="MFNavButton">
+		<param name="id" />
+		<param name="left" />
+		<param name="iconleft" />
+		<param name="textleft" default="0" />
+		<param name="width" />
+		<param name="icon" />
+		<param name="label" />
+		<param name="onclick" />
+		<param name="onleft" default="noop" />
+		<param name="onright" default="noop" />
+		<definition>
+			<control type="button" id="$PARAM[id]">
+				<left>$PARAM[left]</left><top>8</top><width>$PARAM[width]</width><height>48</height>
+				<label />
+				<texturefocus border="24,0,24,0" colordiffuse="mf_text">moodyfin/shapes/pill_48.png</texturefocus>
+				<texturenofocus />
+				<onclick>$PARAM[onclick]</onclick>
+				<onleft>$PARAM[onleft]</onleft>
+				<onright>$PARAM[onright]</onright>
+				<ondown>9000</ondown>
+			</control>
+			<control type="label">
+				<left>$PARAM[textleft]</left><top>8</top><width>200</width><height>48</height>
+				<aligny>center</aligny>
+				<font>mf_semibold22</font>
+				<textcolor>FFF1F2F4</textcolor>
+				<label>$PARAM[label]</label>
+				<visible>!Control.HasFocus($PARAM[id])</visible>
+			</control>
+			<control type="label">
+				<left>$PARAM[textleft]</left><top>8</top><width>200</width><height>48</height>
+				<aligny>center</aligny>
+				<font>mf_semibold22</font>
+				<textcolor>FF000000</textcolor>
+				<label>$PARAM[label]</label>
+				<visible>Control.HasFocus($PARAM[id])</visible>
+			</control>
+			<control type="image">
+				<left>$PARAM[iconleft]</left><top>20</top><width>24</width><height>24</height>
+				<aspectratio>keep</aspectratio>
+				<texture colordiffuse="mf_text">$PARAM[icon]</texture>
+				<visible>!Control.HasFocus($PARAM[id])</visible>
+			</control>
+			<control type="image">
+				<left>$PARAM[iconleft]</left><top>20</top><width>24</width><height>24</height>
+				<aspectratio>keep</aspectratio>
+				<texture colordiffuse="FF000000">$PARAM[icon]</texture>
+				<visible>Control.HasFocus($PARAM[id])</visible>
+			</control>
+		</definition>
+	</include>
+
+	<include name="MFHeader">
+		<control type="group">
+			<depth>DepthBars</depth>
+			<animation effect="fade" start="0" end="100" time="300">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+			<control type="image">
+				<left>0</left><top>0</top><width>100%</width><height>240</height>
+				<texture colordiffuse="F2000000">moodyfin/shapes/grad_up.png</texture>
+				<visible>ControlGroup(4010).HasFocus | ControlGroup(4020).HasFocus | ControlGroup(4030).HasFocus | ControlGroup(4040).HasFocus | ControlGroup(4050).HasFocus</visible>
+				<animation effect="fade" time="250">VisibleChange</animation>
+			</control>
+			<!-- shade so the header reads over any picture -->
+			<control type="image">
+				<left>0</left><top>0</top><width>100%</width><height>220</height>
+				<texture colordiffuse="99000000">moodyfin/shapes/grad_up.png</texture>
+			</control>
+			<!-- logo + stats -->
+			<control type="image">
+				<left>mf_gutter</left><top>26</top><width>52</width><height>52</height>
+				<aspectratio>keep</aspectratio>
+				<texture>moodyfin/logo.png</texture>
+			</control>
+			<control type="label">
+				<left>140</left><top>26</top><width>440</width><height>52</height>
+				<aligny>center</aligny>
+				<font>mf_small20</font>
+				<textcolor>mf_muted</textcolor>
+				<label>$INFO[Window(Home).Property(MoodyFin.Stats)]</label>
+			</control>
+			<!-- nav pill -->
+			<control type="group" id="9100">
+				<centerleft>50%</centerleft><top>20</top><width>804</width><height>64</height>
+				<control type="image">
+					<left>0</left><top>0</top><width>804</width><height>64</height>
+					<texture border="32,0,32,0" colordiffuse="CC101113">moodyfin/shapes/pill_64.png</texture>
+				</control>
+				<control type="image">
+					<left>0</left><top>0</top><width>804</width><height>64</height>
+					<texture border="32,0,32,0" colordiffuse="1FFFFFFF">moodyfin/shapes/pill_line_64.png</texture>
+				</control>
+				<include content="MFNavButton">
+					<param name="id" value="9101" /><param name="left" value="8" /><param name="textleft" value="56" /><param name="iconleft" value="26" /><param name="width" value="156" />
+					<param name="icon" value="moodyfin/icons/favorite.png" /><param name="label" value="Favorites" />
+					<param name="onclick" value="ActivateWindow(Videos,library://video/jellyfin_Favoritemovies.xml/,return)" />
+					<param name="onright" value="9102" />
+				</include>
+				<include content="MFNavButton">
+					<param name="id" value="9102" /><param name="left" value="168" /><param name="textleft" value="216" /><param name="iconleft" value="186" /><param name="width" value="176" />
+					<param name="icon" value="moodyfin/icons/video_library.png" /><param name="label" value="Collections" />
+					<param name="onclick" value="ActivateWindow(Videos,videodb://movies/sets/,return)" />
+					<param name="onleft" value="9101" /><param name="onright" value="9103" />
+				</include>
+				<include content="MFNavButton">
+					<param name="id" value="9103" /><param name="left" value="348" /><param name="textleft" value="396" /><param name="iconleft" value="366" /><param name="width" value="132" />
+					<param name="icon" value="moodyfin/icons/movie.png" /><param name="label" value="Movies" />
+					<param name="onclick" value="ActivateWindow(Videos,videodb://movies/titles/,return)" />
+					<param name="onleft" value="9102" /><param name="onright" value="9104" />
+				</include>
+				<include content="MFNavButton">
+					<param name="id" value="9104" /><param name="left" value="484" /><param name="textleft" value="532" /><param name="iconleft" value="502" /><param name="width" value="124" />
+					<param name="icon" value="moodyfin/icons/tv.png" /><param name="label" value="Shows" />
+					<param name="onclick" value="ActivateWindow(Videos,videodb://tvshows/titles/,return)" />
+					<param name="onleft" value="9103" /><param name="onright" value="9105" />
+				</include>
+				<include content="MFNavButton">
+					<param name="id" value="9105" /><param name="left" value="612" /><param name="textleft" value="660" /><param name="iconleft" value="630" /><param name="width" value="128" />
+					<param name="icon" value="moodyfin/icons/sports_soccer.png" /><param name="label" value="Sports" />
+					<param name="onclick" value="ActivateWindow(Videos,&quot;videodb://tvshows/titles/?xsp=%7B%22rules%22%3A%7B%22and%22%3A%5B%7B%22field%22%3A%22tag%22%2C%22operator%22%3A%22is%22%2C%22value%22%3A%5B%22Sports%22%5D%7D%5D%7D%2C%22type%22%3A%22tvshows%22%7D&quot;,return)" />
+					<param name="onleft" value="9104" /><param name="onright" value="9106" />
+				</include>
+				<include content="MFNavButton">
+					<param name="id" value="9106" /><param name="left" value="744" /><param name="iconleft" value="759" /><param name="width" value="52" />
+					<param name="icon" value="moodyfin/icons/search.png" /><param name="label" value="" />
+					<param name="onclick" value="ActivateWindow(1107)" />
+					<param name="onleft" value="9105" /><param name="onright" value="9120" />
+				</include>
+			</control>
+			<!-- profile picture (settings) -->
+			<control type="button" id="9120">
+				<right>72</right><top>24</top><width>56</width><height>56</height>
+				<texturefocus colordiffuse="mf_accent">moodyfin/shapes/circle_line.png</texturefocus>
+				<texturenofocus />
+				<label />
+				<onclick>ActivateWindow(settings)</onclick>
+				<onleft>9106</onleft>
+				<ondown>9000</ondown>
+			</control>
+			<control type="image">
+				<right>76</right><top>28</top><width>48</width><height>48</height>
+				<aspectratio>scale</aspectratio>
+				<texture diffuse="moodyfin/shapes/circle.png" fallback="DefaultUser.png">$INFO[System.ProfileThumb]</texture>
+			</control>
+		</control>
+	</include>
+
+	<!-- ================================================================ row heading: accent bar + Bebas title -->
+	<include name="MFRowHeading">
+		<param name="label" />
+		<definition>
+			<control type="image">
+				<left>mf_gutter</left><top>12</top><width>5</width><height>42</height>
+				<texture colordiffuse="mf_accent">colors/white.png</texture>
+			</control>
+			<control type="label">
+				<left>92</left><top>4</top><width>1400</width><height>58</height>
+				<aligny>center</aligny>
+				<font>mf_heading48</font>
+				<textcolor>mf_text</textcolor>
+				<label>$PARAM[label]</label>
+			</control>
+		</definition>
+	</include>
+
+	<!-- ================================================================ cards -->
+	<variable name="MFTypeLabel">
+		<value condition="String.IsEqual(ListItem.Property(mf.type),movie)"> · Movie</value>
+		<value condition="String.IsEqual(ListItem.Property(mf.type),tvshow)"> · Show</value>
+	</variable>
+
+	<!-- poster 190x285, item 206 wide. Params: list = the list's id (for the focus ring) -->
+	<include name="MFPosterCard">
+		<param name="list" />
+		<param name="focused" default="false" />
+		<param name="left" default="0" />
+		<param name="text" default="true" />
+		<definition>
+			<control type="group">
+				<left>$PARAM[left]</left>
+				<control type="image">
+					<width>190</width><height>285</height>
+					<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
+				</control>
+				<control type="image">
+					<width>190</width><height>285</height>
+					<aspectratio>scale</aspectratio>
+					<texture background="true" diffuse="moodyfin/masks/poster.png">$INFO[ListItem.Art(poster)]</texture>
+				</control>
+				<control type="textbox">
+					<left>14</left><top>20</top><width>162</width><height>245</height>
+					<align>center</align><aligny>center</aligny>
+					<font>mf_heading36</font>
+					<textcolor>B3F1F2F4</textcolor>
+					<label>$INFO[ListItem.Label]</label>
+					<visible>String.IsEmpty(ListItem.Art(poster))</visible>
+				</control>
+				<!-- watched / unwatched episodes -->
+				<control type="group">
+					<left>140</left><top>6</top>
+					<visible>Integer.IsGreater(ListItem.PlayCount,0) | Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0)</visible>
+					<control type="image">
+						<width>44</width><height>30</height>
+						<texture border="15,0,15,0" colordiffuse="D9101113">moodyfin/shapes/pill_40.png</texture>
+					</control>
+					<control type="image">
+						<left>13</left><top>6</top><width>18</width><height>18</height>
+						<texture colordiffuse="mf_text">moodyfin/icons/check.png</texture>
+						<visible>Integer.IsGreater(ListItem.PlayCount,0) + !Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0)</visible>
+					</control>
+					<control type="label">
+						<width>44</width><height>30</height>
+						<align>center</align><aligny>center</aligny>
+						<font>font_flag</font>
+						<textcolor>mf_text</textcolor>
+						<label>$INFO[ListItem.Property(UnWatchedEpisodes)]</label>
+						<visible>Integer.IsGreater(ListItem.Property(UnWatchedEpisodes),0)</visible>
+					</control>
+				</control>
+				<!-- New season -->
+				<control type="group">
+					<left>35</left><top>247</top>
+					<visible>!String.IsEmpty(ListItem.Property(mf.tag))</visible>
+					<control type="image">
+						<width>120</width><height>26</height>
+						<texture border="6" colordiffuse="mf_badge_new">moodyfin/shapes/rr6.png</texture>
+					</control>
+					<control type="label">
+						<width>120</width><height>26</height>
+						<align>center</align><aligny>center</aligny>
+						<font>font_flag</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<label>$INFO[ListItem.Property(mf.tag)]</label>
+					</control>
+				</control>
+				<control type="group">
+					<visible>$PARAM[text]</visible>
+					<control type="label">
+						<top>296</top><width>190</width><height>30</height>
+						<font>mf_semibold22</font>
+						<textcolor>mf_text</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>Control.HasFocus($PARAM[list])</scroll>
+					</control>
+					<control type="label">
+						<top>326</top><width>190</width><height>28</height>
+						<font>mf_small20</font>
+						<textcolor>mf_muted</textcolor>
+						<label>$INFO[ListItem.Property(mf.rating),★ , · ]$INFO[ListItem.Property(mf.sub)]$VAR[MFTypeLabel]</label>
+					</control>
+				</control>
+				<control type="image">
+					<left>-3</left><top>-3</top><width>196</width><height>291</height>
+					<texture border="14" colordiffuse="mf_accent">moodyfin/shapes/rr12_line.png</texture>
+					<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
+				</control>
+			</control>
+		</definition>
+	</include>
+
+	<!-- wide shot 356x200 with time left and progress, item 376 wide (Continue Watching & Next Up) -->
+	<include name="MFThumbCard">
+		<param name="list" />
+		<param name="focused" default="false" />
+		<definition>
+			<control type="image">
+				<width>356</width><height>200</height>
+				<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
+			</control>
+			<control type="image">
+				<width>356</width><height>200</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/thumb.png">$INFO[ListItem.Art(wide)]</texture>
+			</control>
+			<control type="image">
+				<width>356</width><height>200</height>
+				<texture colordiffuse="FF000000">moodyfin/masks/thumb_shade.png</texture>
+			</control>
+			<control type="label">
+				<left>14</left><top>8</top><width>320</width><height>30</height>
+				<font>font_flag</font>
+				<textcolor>mf_text</textcolor>
+				<label>$INFO[ListItem.Property(mf.left)]</label>
+			</control>
+			<control type="progress">
+				<left>14</left><top>182</top><width>328</width><height>6</height>
+				<texturebg border="3" colordiffuse="4DFFFFFF">moodyfin/shapes/rr6.png</texturebg>
+				<midtexture border="3" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+				<lefttexture />
+				<righttexture />
+				<info>ListItem.PercentPlayed</info>
+				<visible>Integer.IsGreater(ListItem.PercentPlayed,0)</visible>
+			</control>
+			<control type="label">
+				<top>210</top><width>356</width><height>30</height>
+				<font>mf_semibold22</font>
+				<textcolor>mf_text</textcolor>
+				<label>$INFO[ListItem.Label]</label>
+				<scroll>Control.HasFocus($PARAM[list])</scroll>
+			</control>
+			<control type="label">
+				<top>240</top><width>356</width><height>28</height>
+				<font>mf_small20</font>
+				<textcolor>mf_muted</textcolor>
+				<label>$INFO[ListItem.Property(mf.sub)]$INFO[ListItem.Label2,  ·  ]</label>
+			</control>
+			<control type="image">
+				<left>-3</left><top>-3</top><width>362</width><height>206</height>
+				<texture border="14" colordiffuse="mf_accent">moodyfin/shapes/rr12_line.png</texture>
+				<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
+			</control>
+		</definition>
+	</include>
+
+	<!-- Top 10 #1 as a wide card (badge style): backdrop, logo, genre/rating, overview -->
+	<include name="MFTop10Wide">
+		<param name="list" />
+		<param name="focused" default="false" />
+		<definition>
+			<control type="image">
+				<width>396</width><height>285</height>
+				<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
+			</control>
+			<control type="image">
+				<width>396</width><height>285</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/wide.png">$INFO[ListItem.Art(fanart)]</texture>
+			</control>
+			<control type="image">
+				<width>396</width><height>285</height>
+				<texture colordiffuse="FF000000">moodyfin/masks/wide_shade.png</texture>
+			</control>
+			<control type="image">
+				<left>18</left><top>24</top><width>230</width><height>90</height>
+				<aspectratio align="left" aligny="center">keep</aspectratio>
+				<texture background="true">$INFO[ListItem.Art(clearlogo)]</texture>
+			</control>
+			<control type="label">
+				<left>18</left><top>24</top><width>240</width><height>90</height>
+				<aligny>center</aligny>
+				<font>mf_heading48</font>
+				<textcolor>mf_text</textcolor>
+				<label>$INFO[ListItem.Label]</label>
+				<visible>String.IsEmpty(ListItem.Art(clearlogo))</visible>
+			</control>
+			<control type="label">
+				<left>18</left><top>122</top><width>260</width><height>28</height>
+				<font>font_flag</font>
+				<textcolor>mf_text</textcolor>
+				<label>$INFO[ListItem.Property(mf.rating),★ ,  ·  ]$INFO[ListItem.Property(mf.sub)]$INFO[ListItem.Property(mf.genre),  ·  ,]</label>
+			</control>
+			<control type="textbox">
+				<left>18</left><top>152</top><width>250</width><height>80</height>
+				<font>font_flag</font>
+				<textcolor>CCF1F2F4</textcolor>
+				<label>$INFO[ListItem.Plot]</label>
+			</control>
+			<control type="group">
+				<left>18</left><top>239</top>
+				<control type="image">
+					<width>92</width><height>32</height>
+					<texture border="16,0,16,0" colordiffuse="mf_text">moodyfin/shapes/pill_40.png</texture>
+				</control>
+				<control type="image">
+					<left>12</left><top>7</top><width>18</width><height>18</height>
+					<texture colordiffuse="FF000000">moodyfin/icons/play_arrow.png</texture>
+				</control>
+				<control type="label">
+					<left>34</left><width>52</width><height>32</height>
+					<aligny>center</aligny>
+					<font>font_flag</font>
+					<textcolor>FF000000</textcolor>
+					<label>Play</label>
+				</control>
+			</control>
+			<include content="MFRankBadge" />
+			<control type="image">
+				<left>-3</left><top>-3</top><width>402</width><height>291</height>
+				<texture border="14" colordiffuse="mf_accent">moodyfin/shapes/rr12_line.png</texture>
+				<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
+			</control>
+		</definition>
+	</include>
+	<!-- ================================================================ Home pieces -->
+	<variable name="MFHeroType">
+		<value condition="String.IsEqual(Container(8000).ListItem.Property(mf.type),movie)">  ·  Movie</value>
+		<value condition="String.IsEqual(Container(8000).ListItem.Property(mf.type),tvshow)">  ·  Show</value>
+	</variable>
+	<variable name="MFHeroIcon1">
+		<value condition="Control.HasFocus(9201) | Control.HasFocus(8000)">FF000000</value>
+		<value>FFF1F2F4</value>
+	</variable>
+	<variable name="MFHeroIcon2">
+		<value condition="Control.HasFocus(9202)">FF000000</value>
+		<value>FFF1F2F4</value>
+	</variable>
+
+	<!-- a studio logo in the Home studio row; names = the library's studio names it stands for, | between them -->
+	<include name="MFStudio">
+		<param name="file" />
+		<param name="names" />
+		<definition>
+			<item>
+				<label>$PARAM[file]</label>
+				<icon>moodyfin/studios/$PARAM[file].png</icon>
+				<onclick>RunScript(script.moodyfin.helper,action=studio,names=$PARAM[names])</onclick>
+			</item>
+		</definition>
+	</include>
+
+	<!-- a Home row of posters from the helper: group = the row's group id, id = the list's id, row = helper row name -->
+	<include name="MFPosterRow">
+		<param name="group" />
+		<param name="id" />
+		<param name="label" />
+		<param name="row" />
+		<param name="up" />
+		<param name="down" />
+		<definition>
+			<control type="group" id="$PARAM[group]">
+				<onup>$PARAM[up]</onup>
+				<ondown>$PARAM[down]</ondown>
+				<height>460</height>
+				<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating</visible>
+				<include content="MFRowHeading"><param name="label" value="$PARAM[label]" /></include>
+				<control type="list" id="$PARAM[id]">
+					<left>mf_gutter</left><top>76</top><right>0</right><height>370</height>
+					<onup>$PARAM[up]</onup>
+					<ondown>$PARAM[down]</ondown>
+					<orientation>horizontal</orientation>
+					<scrolltime tween="cubic" easing="out">240</scrolltime>
+					<onback>9201</onback>
+					<itemlayout width="206" height="370"><include content="MFPosterCard"><param name="list" value="$PARAM[id]" /></include></itemlayout>
+					<focusedlayout width="206" height="370"><include content="MFPosterCard"><param name="list" value="$PARAM[id]" /><param name="focused" value="true" /></include></focusedlayout>
+					<content target="videos">plugin://script.moodyfin.helper/?row=$PARAM[row]&amp;reload=$INFO[Window(Home).Property(MoodyFin.Reload)]</content>
+				</control>
+			</control>
+		</definition>
+	</include>
+
+	<include name="MFRankBadge">
+		<control type="group">
+			<left>8</left><top>8</top>
+			<control type="image">
+				<width>34</width><height>34</height>
+				<texture border="6" colordiffuse="mf_badge_new">moodyfin/shapes/rr6.png</texture>
+			</control>
+			<control type="label">
+				<width>34</width><height>34</height>
+				<align>center</align><aligny>center</aligny>
+				<font>font20_title</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<label>$INFO[ListItem.Property(mf.rank)]</label>
+			</control>
+		</control>
+	</include>
+</includes>

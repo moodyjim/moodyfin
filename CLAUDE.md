@@ -16,11 +16,11 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
   - Look/tokens: `look/Inject/Theme/ue-tokens.css`, `ue-ambient.css`; hero `look/Inject/Hero/`; details `look/Inject/Details/`
   - Features: `web-src/js/NN-*.js`, `web-src/theme.css`
 - Reference screenshots (copied into this repo): `docs/reference/`
-  - `home.jpg`, `home-rows.jpg`, `home-wide.png` — header, hero, studio row, Continue Watching, Top 10 (#1 wide card), Latest / Recently added rows
-  - `details-movie.png`, `details-series.png` — centred clearlogo, poster card with badges + "Genre • ★ x", info bar, track rows, cast, collections, more like this, next up, seasons
-  - `library-movies.png` — title + count, toolbar, 12-column poster grid, A–Z rail
-  - `player-osd.png`, `player-paused.png` — floating glass control panel, "Ends at" pill, clearlogo; pause screen "You're watching"
-  - `search.png` — "Discover something new", pill search field, filter chips, sectioned results
+  - `home.jpg`, `home-rows.jpg`, `home-wide.jpg` — header, hero, studio row, Continue Watching, Top 10 (#1 wide card), Latest / Recently added rows
+  - `details-movie.jpg`, `details-series.jpg` — centred clearlogo, poster card with badges + "Genre • ★ x", info bar, track rows, cast, collections, more like this, next up, seasons
+  - `library-movies.jpg` — title + count, toolbar, 12-column poster grid, A–Z rail
+  - `player-osd.jpg`, `player-paused.jpg` — floating glass control panel, "Ends at" pill, clearlogo; pause screen "You're watching"
+  - `search.jpg` — "Discover something new", pill search field, filter chips, sectioned results
   - `login.jpg` — sign-in look (for the profile picker)
 - Sibling Kodi projects (patterns to reuse, never edit from here):
   - `c:\workflow\kodi\moodyskin` — MoodySkin (BBS look) + `plugin.video.moodyskin` helper (PIL artwork, home rows, service)
@@ -35,18 +35,23 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 
 ## Decisions
 - Skin name **MoodyFin**, add-on id `skin.moodyfin`.
-- Logo: the flame from the reference theme (`docs/logo-white.png`, only 48x48 — needs a larger source for Kodi).
+- Logo: the flame, from `docs/reference/logo-flame-source.png` (1266x1242, from the user) -> `media/moodyfin/logo.png`, `resources/icon.png`.
 - Accent colour: changeable in the skin settings.
-- Studio logos: copy the 22 from the reference theme (`src/.../Assets/studio_*.svg`), converted to PNG (Kodi can't show SVG).
+- Studio logos: the 21 from the reference theme (`src/.../Assets/studio_*.svg`), white PNGs (`tools/build_studios.sh`).
+  Each logo stands for one or more library studio names (Home.xml `MFStudio` items); click = helper `action=studio`.
+- Hero / Top 10 come from the library (no TMDB): hero = newest unwatched with a backdrop; Top 10 = best rated added lately.
+- Top 10 style is a skin setting `mf.top10numbers`: off = rank badges + #1 wide card (default), on = outlined numbers.
 - First milestone: the Home page.
 - Repo is private for now and will go public later, so keep licences and third-party notices correct from day one
-  (fonts: SIL OFL; studio logos: KefinTweaks, MIT).
+  (`THIRD-PARTY-NOTICES.md`).
 
 ## Look (from the Jellyfin theme — keep in sync with the reference)
 - Background `#000`, surface `#101113`, raised `#1a1c20`, border `#26292e`, text `#f1f2f4`, muted `#969aa1`.
-- Accent: cyan `#4DD8F5`-ish as on the screenshots (user-selectable).
+- Accent: cyan `#5CD8FA` (sampled from the screenshots); presets in `colors/`.
 - Fonts: **Bebas Neue** (titles, row headings, uppercase), **Funnel Sans** (body). Both SIL OFL — ship TTF in `fonts/` with licences.
 - Cards: 12px corners (diffuse masks), wide thumbs for Continue Watching with progress bar + "Xm left", posters elsewhere.
+- **The user's Jellyfin posters already carry genre • ★ rating at the bottom and quality badges at the top** (better-posters).
+  Never draw those on posters (it doubles them). Badge strips in `media/moodyfin/badges/` are for places without posters.
 - Row headings: Bebas, accent bar on the left.
 - Header: logo + library stats left, centred dark pill nav, avatar right.
 - Hero: full-bleed fanart, clearlogo (or Bebas title), rating · year · type · genres, plot, Play / More info.
@@ -63,10 +68,35 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
     (override only the accent names). New accent-coloured things use `mf_accent`.
   - `media/moodyfin/` — MoodyFin's own textures (logo, masks, badges). Keep Estuary's media where it is.
   - Funnel Sans static weights were cut from the Google Fonts variable font with fontTools (`wght` 400/500/600/700).
-- `script.moodyfin.helper/` — Python helper (blur cache, stats, time left, hero picks). Not created yet.
+  - `xml/Includes_MoodyFin.xml` — MoodyFin includes: `MFAmbient`, `MFHeader`, `MFRowHeading`, cards (`MFPosterCard`,
+    `MFThumbCard`, `MFTop10Wide`), `MFPosterRow`. `xml/Home.xml` is MoodyFin's own (Estuary's Home is gone).
+- `script.moodyfin.helper/` — Python helper the skin requires:
+  - plugin rows `plugin://script.moodyfin.helper/?row=hero|continue|top10[&part=first|rest]|latest|recentmovies|recentshows`
+    (`resources/lib/rows.py`; `items.py` keeps dbid/mediatype/file so Play/resume/Info work; MoodyFin values are
+    `ListItem.Property(mf.*)`, listed in the docstring of `items.py`)
+  - service: `Window(Home).Property(MoodyFin.Stats|Reload|Ambient)`; the ambient blur reads its picture from label 9990
+  - `RunScript(script.moodyfin.helper,action=studio,names=A|B)`
+- `tools/` — `build_media.sh` (masks, pills, gradients, icons, badge strips, Top 10 numbers), `build_studios.sh`,
+  `build_fonts.py` (Funnel Sans static weights + star), `kodi.py` (drive the local Kodi), `icons/` (Material Symbols SVGs).
 - `docs/reference/` — screenshots of the Jellyfin theme + logo source. Not shipped.
 
 ## Dev workflow
-- Skin is symlinked into `%APPDATA%\Kodi\addons\` (same as moodyskin). Edit here, then `ReloadSkin()` in Kodi.
-- Log: `%APPDATA%\Kodi\kodi.log`. Check it after every reload for XML errors.
+- `skin.moodyfin` and `script.moodyfin.helper` are **junctions** in `%APPDATA%\Kodi\addons\` (symlinks need admin here).
+- Local Kodi 21.3 on this PC, JSON-RPC on 127.0.0.1:9090: `python tools/kodi.py restart|keys|shot|info|bool|log`.
+  The user said I may use it for testing. Its window is 2560x1369, so Kodi uses the **2040x1080** layout: never
+  hard-code 1920 widths; use `right`, `centerleft`, `100%`.
+- Restart Kodi to pick up changes (`tools/kodi.py restart`). `ReloadSkin()` from a script crashed Kodi.
+- Jellyfin for Kodi asks "N updates pending... Proceed anyway?" at start: answer **No** (the restart command does).
+- If Kodi is minimized it stops drawing: screenshots fail and visibility doesn't update. Don't restore it over the
+  user's work; ask.
+- Log: `%APPDATA%\Kodi\kodi.log` (helper lines start with `[moodyfin]`).
 - Never edit files in `C:\Program Files\Kodi`.
+
+## Kodi gotchas (learned the hard way)
+- Constants are used by bare name (`<left>mf_gutter</left>`); `$CONSTANT[...]` doesn't exist.
+- A button's `textoffsetx` applies on both sides: icon + text buttons use separate label/image controls.
+- Every item in a list gets the size of the first layout: a wider item (Top 10 #1) needs its own list.
+- A grouplist only moves focus between its direct children: rows (group = heading + list) need explicit
+  `onup`/`ondown` to the neighbouring row **groups**; a hidden group passes focus on through its own onup/ondown.
+- Home scrolling = stacked conditional slide animations on grouplist 9000 (one per block above the focused row).
+- Infolabel booleans over JSON-RPC: `XBMC.GetInfoBooleans` (GetInfoLabels returns "" for them).

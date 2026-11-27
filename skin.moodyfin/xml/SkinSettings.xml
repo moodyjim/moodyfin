@@ -30,6 +30,12 @@
 				<onup>700</onup>
 				<ondown>700</ondown>
 				<visible>Container(9000).HasFocus(1)</visible>
+				<control type="radiobutton" id="7001">
+					<label>Top 10: big outlined numbers (off: rank badges, #1 wide)</label>
+					<include>DefaultSettingButton</include>
+					<selected>Skin.HasSetting(mf.top10numbers)</selected>
+					<onclick>Skin.ToggleSetting(mf.top10numbers)</onclick>
+				</control>
 				<control type="radiobutton" id="701">
 					<label>$LOCALIZE[31095]</label>
 					<include>DefaultSettingButton</include>

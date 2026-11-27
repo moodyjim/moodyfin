@@ -1,0 +1,4 @@
+[B]0.1.0[/B]
+- Home rows (plugin://script.moodyfin.helper/?row=hero|continue|top10|latest|recentmovies|recentshows).
+- Library stats, row refresh after playback and library updates, blurred ambient background.
+- action=studio: opens the library filtered to a studio.
