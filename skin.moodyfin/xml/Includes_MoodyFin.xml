@@ -1062,8 +1062,20 @@
 		<param name="list" />
 		<definition>
 			<control type="image">
-				<width>336</width><height>317</height>
+				<width>336</width><height>269</height>
 				<texture border="12" colordiffuse="FF18181B">moodyfin/shapes/rr12.png</texture>
+			</control>
+			<control type="image">
+				<width>336</width><height>189</height>
+				<aspectratio>stretch</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/pop.png">$INFO[Container($PARAM[list]).ListItem.Art(landscape)]</texture>
+				<visible>String.IsEmpty(Container($PARAM[list]).ListItem.Art(fanart))</visible>
+			</control>
+			<control type="image">
+				<width>336</width><height>189</height>
+				<aspectratio aligny="top">scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/pop.png">$INFO[Container($PARAM[list]).ListItem.Art(poster)]</texture>
+				<visible>String.IsEmpty(Container($PARAM[list]).ListItem.Art(fanart)) + String.IsEmpty(Container($PARAM[list]).ListItem.Art(landscape))</visible>
 			</control>
 			<control type="image">
 				<width>336</width><height>189</height>
@@ -1075,7 +1087,7 @@
 				<texture colordiffuse="FF18181B">moodyfin/shapes/grad_down.png</texture>
 			</control>
 			<control type="image">
-				<width>336</width><height>317</height>
+				<width>336</width><height>269</height>
 				<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr12_line.png</texture>
 			</control>
 			<control type="image">
@@ -1092,37 +1104,9 @@
 				<label>$INFO[Container($PARAM[list]).ListItem.Label]</label>
 				<visible>String.IsEmpty(Container($PARAM[list]).ListItem.Art(clearlogo))</visible>
 			</control>
-			<!-- buttons: a picture of the Jellyfin theme's (OK opens the details page) -->
-			<control type="image">
-				<left>14</left><top>201</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_play_arrow.png</texture>
-			</control>
-			<control type="image">
-				<left>60</left><top>201</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_favorite.png</texture>
-			</control>
-			<control type="image">
-				<left>106</left><top>201</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_check.png</texture>
-				<visible>!Integer.IsGreater(Container($PARAM[list]).ListItem.PlayCount,0)</visible>
-			</control>
-			<control type="image">
-				<left>106</left><top>201</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_check_on.png</texture>
-				<visible>Integer.IsGreater(Container($PARAM[list]).ListItem.PlayCount,0)</visible>
-			</control>
-			<control type="image">
-				<left>106</left><top>201</top><width>38</width><height>38</height>
-				<texture colordiffuse="mf_accent">moodyfin/buttons/pop_check_tick.png</texture>
-				<visible>Integer.IsGreater(Container($PARAM[list]).ListItem.PlayCount,0)</visible>
-			</control>
-			<control type="image">
-				<right>14</right><top>201</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_expand_more.png</texture>
-			</control>
 			<!-- 5.7   2026   1h 36m   [R]   (shows: N Seasons) -->
 			<control type="grouplist">
-				<left>14</left><top>251</top><width>308</width><height>22</height>
+				<left>14</left><top>203</top><width>308</width><height>22</height>
 				<orientation>horizontal</orientation>
 				<itemgap>10</itemgap>
 				<usecontrolwidth>true</usecontrolwidth>
@@ -1186,7 +1170,7 @@
 			</control>
 			<!-- Comedy . Romance -->
 			<control type="label">
-				<left>14</left><top>281</top><width>308</width><height>22</height>
+				<left>14</left><top>233</top><width>308</width><height>22</height>
 				<aligny>center</aligny>
 				<font>mf_card_genre</font>
 				<textcolor>B8FFFFFF</textcolor>
@@ -1194,7 +1178,7 @@
 				<visible>!String.IsEmpty(Container($PARAM[list]).ListItem.Property(mf.genredots))</visible>
 			</control>
 			<control type="label">
-				<left>14</left><top>281</top><width>308</width><height>22</height>
+				<left>14</left><top>233</top><width>308</width><height>22</height>
 				<aligny>center</aligny>
 				<font>mf_card_genre</font>
 				<textcolor>B8FFFFFF</textcolor>
@@ -1208,7 +1192,7 @@
 		<param name="list" />
 		<definition>
 			<control type="group">
-				<top>-12</top><width>336</width><height>317</height>
+				<top>12</top><width>336</width><height>269</height>
 				<visible>Control.HasFocus($PARAM[list]) + System.IdleTime(1) + !Container($PARAM[list]).Scrolling + [String.IsEqual(Container($PARAM[list]).ListItem.DBType,movie) | String.IsEqual(Container($PARAM[list]).ListItem.DBType,tvshow)]</visible>
 				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 				<animation effect="zoom" start="92" end="100" center="auto" time="200" tween="cubic" easing="out">Visible</animation>
@@ -1233,7 +1217,7 @@
 		<param name="list" />
 		<definition>
 			<control type="group">
-				<top>-12</top><width>336</width><height>317</height>
+				<top>12</top><width>336</width><height>269</height>
 				<visible>Control.HasFocus($PARAM[list]) + System.IdleTime(1) + !Container($PARAM[list]).Scrolling + [String.IsEqual(Container($PARAM[list]).ListItem.DBType,movie) | String.IsEqual(Container($PARAM[list]).ListItem.DBType,tvshow)]</visible>
 				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 				<animation effect="zoom" start="92" end="100" center="auto" time="200" tween="cubic" easing="out">Visible</animation>
@@ -1258,7 +1242,7 @@
 		<param name="list" />
 		<definition>
 			<control type="group">
-				<top>-12</top><width>336</width><height>317</height>
+				<top>12</top><width>336</width><height>269</height>
 				<visible>Control.HasFocus($PARAM[list]) + System.IdleTime(1) + !Container($PARAM[list]).Scrolling + [String.IsEqual(Container($PARAM[list]).ListItem.DBType,movie) | String.IsEqual(Container($PARAM[list]).ListItem.DBType,tvshow)]</visible>
 				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 				<animation effect="zoom" start="92" end="100" center="auto" time="200" tween="cubic" easing="out">Visible</animation>

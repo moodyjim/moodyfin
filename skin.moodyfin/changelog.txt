@@ -1,3 +1,7 @@
+[B]0.7.3[/B]
+- Hover card: no buttons (a remote can't reach them without breaking the row's left / right); shorter card.
+- Hover card picture: the backdrop, else the landscape picture, else the top of the poster.
+
 [B]0.7.2[/B]
 - Continue Watching "time left" as in the Jellyfin theme: the picture is cut away around it (notch), text 70 % white.
 - "New episode" / "New season" tags as in the Jellyfin theme: flush with the poster's bottom, #E50914, top corners rounded,

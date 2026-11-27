@@ -8,7 +8,8 @@ list (same left/top as the list) and moved over the focused poster with one cond
 It shows after a second without a key press (System.IdleTime(1)) plus a 0.2 s fade, for movies and shows.
 
 The card follows the Jellyfin theme's web-src/js/35-hover-preview.js: #18181b, radius 12, 16:9 backdrop fading into the card,
-logo (max 62 % wide, 64 tall) or the title in Bebas 30 px; 38 px round buttons (play white) 8 px apart; then
+logo (max 62 % wide, 64 tall) or the title in Bebas 30 px; then (the Jellyfin theme's 38 px buttons left out: a remote
+can't reach them without breaking the row's left/right)
 rating (accent) . year . length . age rating in SemiBold 13 px at 90 % white, genres in Medium 13 px at 72 % white,
 padding 12 / 14. Theme px are about skin units here (their posters ~188 px, ours 190); text is a px or two larger
 for a TV (fonts mf_heading32, mf_card_meta 15, mf_card_genre 15, mf_card_badge 12).
@@ -25,8 +26,7 @@ ITEM_W = 206        # poster slot (190 poster + 16 gap); cards sit 4 px in
 POSTER_W, POSTER_H = 190, 285
 CARD_W = 336
 IMG_H = CARD_W * 9 // 16            # 189
-BTN_Y = IMG_H + 12                  # buttons
-META_Y = BTN_Y + 38 + 12            # rating . year . length . age
+META_Y = IMG_H + 14                 # rating . year . length . age (no buttons: a remote can't reach them)
 GENRE_Y = META_Y + 22 + 8           # genres
 CARD_H = GENRE_Y + 22 + 14
 ROW_H = 390         # poster grid row height
@@ -64,7 +64,7 @@ def body():
     L = "Container($PARAM[list]).ListItem"
     v = {"w": CARD_W, "h": CARD_H, "img": IMG_H, "g0": IMG_H - IMG_H * 65 // 100, "g1": IMG_H * 65 // 100 + 1,
          "ly": IMG_H - 64 - 12, "lw": CARD_W * 62 // 100, "ty": IMG_H - 74 - 10, "tw": CARD_W - 28,
-         "by": BTN_Y, "my": META_Y, "gy": GENRE_Y, "L": L}
+         "my": META_Y, "gy": GENRE_Y, "L": L}
     meta = (meta_label("$INFO[%s.Rating,★ ,]" % L, color="mf_accent")
             + meta_label("$INFO[%s.Year]" % L)
             + meta_label("$INFO[%s.Property(mf.runtime)]" % L, "!String.IsEmpty(%s.Property(mf.runtime))" % L)
@@ -82,6 +82,18 @@ def body():
 			<control type="image">
 				<width>%(w)d</width><height>%(h)d</height>
 				<texture border="12" colordiffuse="FF18181B">moodyfin/shapes/rr12.png</texture>
+			</control>
+			<control type="image">
+				<width>%(w)d</width><height>%(img)d</height>
+				<aspectratio>stretch</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/pop.png">$INFO[%(L)s.Art(landscape)]</texture>
+				<visible>String.IsEmpty(%(L)s.Art(fanart))</visible>
+			</control>
+			<control type="image">
+				<width>%(w)d</width><height>%(img)d</height>
+				<aspectratio aligny="top">scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/pop.png">$INFO[%(L)s.Art(poster)]</texture>
+				<visible>String.IsEmpty(%(L)s.Art(fanart)) + String.IsEmpty(%(L)s.Art(landscape))</visible>
 			</control>
 			<control type="image">
 				<width>%(w)d</width><height>%(img)d</height>
@@ -109,34 +121,6 @@ def body():
 				<textcolor>FFFFFFFF</textcolor>
 				<label>$INFO[%(L)s.Label]</label>
 				<visible>String.IsEmpty(%(L)s.Art(clearlogo))</visible>
-			</control>
-			<!-- buttons: a picture of the Jellyfin theme's (OK opens the details page) -->
-			<control type="image">
-				<left>14</left><top>%(by)d</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_play_arrow.png</texture>
-			</control>
-			<control type="image">
-				<left>60</left><top>%(by)d</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_favorite.png</texture>
-			</control>
-			<control type="image">
-				<left>106</left><top>%(by)d</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_check.png</texture>
-				<visible>!Integer.IsGreater(%(L)s.PlayCount,0)</visible>
-			</control>
-			<control type="image">
-				<left>106</left><top>%(by)d</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_check_on.png</texture>
-				<visible>Integer.IsGreater(%(L)s.PlayCount,0)</visible>
-			</control>
-			<control type="image">
-				<left>106</left><top>%(by)d</top><width>38</width><height>38</height>
-				<texture colordiffuse="mf_accent">moodyfin/buttons/pop_check_tick.png</texture>
-				<visible>Integer.IsGreater(%(L)s.PlayCount,0)</visible>
-			</control>
-			<control type="image">
-				<right>14</right><top>%(by)d</top><width>38</width><height>38</height>
-				<texture>moodyfin/buttons/pop_expand_more.png</texture>
 			</control>
 			<!-- 5.7   2026   1h 36m   [R]   (shows: N Seasons) -->
 			<control type="grouplist">

@@ -1,3 +1,6 @@
+[B]0.7.3[/B]
+- Version shared with the skin (no code changes).
+
 [B]0.7.2[/B]
 - mf.notch (time-left badge width); New episode / New season tags on every show row (air date, else date added).
 

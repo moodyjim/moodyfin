@@ -31,7 +31,7 @@ remote control on CoreELEC boxes.
   Recently Added Shows (with a *New season* tag).
 - **Ambient background:** a blurred copy of the focused title's picture behind the page.
 - **Hover card:** rest on a poster for a second and a wide card shows its backdrop, logo, rating, year, runtime and
-  genres.
+  genres. (No buttons on it: OK opens the details page.)
 
 ## Details page
 

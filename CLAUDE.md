@@ -55,6 +55,8 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
   Theme CSS px are about MoodyFin skin units (their posters ~188 px, ours 190); text may go 1-2 px up for a TV.
 - Made from the theme's source so far: hover card (`35-hover-preview.js`), time-left notch (`03-time-remaining.js`
   tbNotch), New episode / season tags (`08-new-episode-tags.js`).
+- Remote first: no buttons inside the hover card (user's call: they can't be reached without breaking a row's
+  left / right). Don't add focusable things inside cards.
 - Background `#000`, surface `#101113`, raised `#1a1c20`, border `#26292e`, text `#f1f2f4`, muted `#969aa1`.
 - Accent: cyan `#5CD8FA` (sampled from the screenshots); presets in `colors/`.
 - Fonts: **Bebas Neue** (titles, row headings, uppercase), **Funnel Sans** (body). Both SIL OFL — ship TTF in `fonts/` with licences.
