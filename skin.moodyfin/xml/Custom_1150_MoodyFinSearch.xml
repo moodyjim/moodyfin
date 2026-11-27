@@ -77,7 +77,7 @@
 				<visible>Integer.IsGreater(Container(1181).NumItems,0) | Container(1181).IsUpdating | !String.IsEmpty(Window(1150).Property(mf.searching))</visible>
 				<include content="MFRowHeading"><param name="label" value="Episodes" /></include>
 				<control type="list" id="1181">
-					<left>mf_gutter</left><top>76</top><right>0</right><height>284</height>
+					<left>68</left><top>72</top><right>0</right><height>288</height>
 					<onup>1170</onup>
 					<orientation>horizontal</orientation>
 					<scrolltime tween="cubic" easing="out">240</scrolltime>

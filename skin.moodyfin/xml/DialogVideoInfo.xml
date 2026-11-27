@@ -229,7 +229,7 @@
 				<visible>$EXP[mf_is_show] + [Integer.IsGreater(Container(501).NumItems,0) | Container(501).IsUpdating]</visible>
 				<include content="MFRowHeading"><param name="label" value="Next Up" /></include>
 				<control type="list" id="501">
-					<left>mf_gutter</left><top>76</top><right>0</right><height>284</height>
+					<left>68</left><top>72</top><right>0</right><height>288</height>
 					<onup>5000</onup>
 					<ondown>5020</ondown>
 					<orientation>horizontal</orientation>
@@ -248,7 +248,7 @@
 				<visible>$EXP[mf_is_show] + [Integer.IsGreater(Container(502).NumItems,0) | Container(502).IsUpdating]</visible>
 				<include content="MFRowHeading"><param name="label" value="Seasons" /></include>
 				<control type="list" id="502">
-					<left>mf_gutter</left><top>76</top><right>0</right><height>370</height>
+					<left>68</left><top>72</top><right>0</right><height>374</height>
 					<onup>5010</onup>
 					<ondown>5030</ondown>
 					<orientation>horizontal</orientation>
@@ -269,7 +269,7 @@
 				<visible>Integer.IsGreater(Container(50).NumItems,0)</visible>
 				<include content="MFRowHeading"><param name="label" value="Cast &amp; Crew" /></include>
 				<control type="list" id="50">
-					<left>mf_gutter</left><top>76</top><right>0</right><height>320</height>
+					<left>68</left><top>72</top><right>0</right><height>324</height>
 					<onup>5020</onup>
 					<ondown>5040</ondown>
 					<orientation>horizontal</orientation>
@@ -287,7 +287,7 @@
 				<visible>$EXP[mf_is_movie] + Integer.IsGreater(ListItem.SetId,0) + [Integer.IsGreater(Container(504).NumItems,0) | Container(504).IsUpdating]</visible>
 				<include content="MFRowHeading"><param name="label" value="Collection" /></include>
 				<control type="list" id="504">
-					<left>mf_gutter</left><top>76</top><right>0</right><height>370</height>
+					<left>68</left><top>72</top><right>0</right><height>374</height>
 					<onup>5030</onup>
 					<ondown>5050</ondown>
 					<orientation>horizontal</orientation>
@@ -306,7 +306,7 @@
 				<visible>Integer.IsGreater(Container(505).NumItems,0) | Integer.IsGreater(Container(506).NumItems,0) | Container(505).IsUpdating | Container(506).IsUpdating</visible>
 				<include content="MFRowHeading"><param name="label" value="More Like This" /></include>
 				<control type="list" id="505">
-					<left>mf_gutter</left><top>76</top><right>0</right><height>370</height>
+					<left>68</left><top>72</top><right>0</right><height>374</height>
 					<onup>5040</onup>
 					<orientation>horizontal</orientation>
 					<scrolltime tween="cubic" easing="out">240</scrolltime>
@@ -317,7 +317,7 @@
 					<content target="videos">plugin://plugin.video.moodysimilar/?dbid=$INFO[ListItem.DBID]&amp;limit=16</content>
 				</control>
 				<control type="list" id="506">
-					<left>mf_gutter</left><top>76</top><right>0</right><height>370</height>
+					<left>68</left><top>72</top><right>0</right><height>374</height>
 					<onup>5040</onup>
 					<orientation>horizontal</orientation>
 					<scrolltime tween="cubic" easing="out">240</scrolltime>

@@ -1,3 +1,6 @@
+[B]0.6.1[/B]
+- Focus ring no longer cut off at the top (and the left of the first card): cards sit 4 px inside their slot.
+
 [B]0.6.0[/B]
 - Splash: the flame over a soft glow while Kodi starts.
 - Profile picker (login screen) in the Jellyfin theme's sign-in style: "Welcome to <server>", sign-in panel with profiles.

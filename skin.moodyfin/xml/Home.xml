@@ -242,7 +242,7 @@
 				<control type="list" id="401">
 					<onup>9300</onup>
 					<ondown>4020</ondown>
-					<left>mf_gutter</left><top>76</top><right>0</right><height>284</height>
+					<left>68</left><top>72</top><right>0</right><height>288</height>
 					<orientation>horizontal</orientation>
 					<scrolltime tween="cubic" easing="out">240</scrolltime>
 					<onback>9201</onback>
@@ -263,7 +263,7 @@
 				<include content="MFRowHeading"><param name="label" value="Top 10" /></include>
 				<control type="list" id="402">
 					<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.DBType],dbid=$INFO[ListItem.DBID])</onclick>
-					<left>mf_gutter</left><top>76</top><right>0</right><height>310</height>
+					<left>68</left><top>72</top><right>0</right><height>314</height>
 					<onup>4010</onup>
 					<ondown>4030</ondown>
 					<onback>9201</onback>
@@ -290,7 +290,7 @@
 				</control>
 				<control type="list" id="4021">
 					<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.DBType],dbid=$INFO[ListItem.DBID])</onclick>
-					<left>mf_gutter</left><top>76</top><width>412</width><height>310</height>
+					<left>68</left><top>72</top><width>416</width><height>314</height>
 					<onup>4010</onup>
 					<ondown>4030</ondown>
 					<onright>4022</onright>
@@ -303,7 +303,7 @@
 				</control>
 				<control type="list" id="4022">
 					<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.DBType],dbid=$INFO[ListItem.DBID])</onclick>
-					<left>484</left><top>76</top><right>0</right><height>310</height>
+					<left>480</left><top>72</top><right>0</right><height>314</height>
 					<onup>4010</onup>
 					<ondown>4030</ondown>
 					<onleft>4021</onleft>
@@ -313,11 +313,11 @@
 					<visible>!Skin.HasSetting(mf.top10numbers)</visible>
 					<itemlayout width="206" height="310">
 						<include content="MFPosterCard"><param name="list" value="4022" /><param name="text" value="false" /></include>
-						<include content="MFRankBadge" />
+						<control type="group"><left>4</left><top>4</top><include content="MFRankBadge" /></control>
 					</itemlayout>
 					<focusedlayout width="206" height="310">
 						<include content="MFPosterCard"><param name="list" value="4022" /><param name="text" value="false" /><param name="focused" value="true" /></include>
-						<include content="MFRankBadge" />
+						<control type="group"><left>4</left><top>4</top><include content="MFRankBadge" /></control>
 					</focusedlayout>
 					<content target="videos">plugin://script.moodyfin.helper/?row=top10&amp;part=rest&amp;reload=$INFO[Window(Home).Property(MoodyFin.Reload)]</content>
 				</control>

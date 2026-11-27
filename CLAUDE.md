@@ -127,4 +127,6 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 - An empty `<texturebg />` on a progress control makes the fill draw at the image's own size: give it a transparent bg.
 - JSON-RPC `Addons.ExecuteAddon` on the helper runs its *plugin* entry, not script.py: use RunScript via devbuiltin.
 - Python `getInfoLabel("Container(id).ListItemAbsolute(n).SortLetter")` + `SetFocus(id,n,absolute)` = letter jump.
+- Lists clip at their edges: anything drawn outside an item (focus ring at -3) needs the card inset (cards sit 4 px
+  in; lists are 4 px up/left of where the cards appear).
 - Test playback with a local ffmpeg clip (`testsrc2`), muted, never a library title (it would change Jellyfin progress).

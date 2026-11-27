@@ -264,6 +264,9 @@
 		<param name="left" default="0" />
 		<param name="text" default="true" />
 		<definition>
+			<!-- 4 px in from the item's corner: the list clips at its edges and the focus ring sits 3 px outside -->
+			<control type="group">
+			<left>4</left><top>4</top>
 			<control type="group">
 				<left>$PARAM[left]</left>
 				<control type="image">
@@ -343,6 +346,7 @@
 					<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
 				</control>
 			</control>
+			</control>
 		</definition>
 	</include>
 
@@ -351,6 +355,9 @@
 		<param name="list" />
 		<param name="focused" default="false" />
 		<definition>
+			<!-- 4 px in from the item's corner: the list clips at its edges and the focus ring sits 3 px outside -->
+			<control type="group">
+			<left>4</left><top>4</top>
 			<control type="image">
 				<width>356</width><height>200</height>
 				<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
@@ -397,6 +404,7 @@
 				<texture border="14" colordiffuse="mf_accent">moodyfin/shapes/rr12_line.png</texture>
 				<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
 			</control>
+			</control>
 		</definition>
 	</include>
 
@@ -405,6 +413,9 @@
 		<param name="list" />
 		<param name="focused" default="false" />
 		<definition>
+			<!-- 4 px in from the item's corner: the list clips at its edges and the focus ring sits 3 px outside -->
+			<control type="group">
+			<left>4</left><top>4</top>
 			<control type="image">
 				<width>396</width><height>285</height>
 				<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
@@ -467,6 +478,7 @@
 				<texture border="14" colordiffuse="mf_accent">moodyfin/shapes/rr12_line.png</texture>
 				<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
 			</control>
+			</control>
 		</definition>
 	</include>
 	<!-- ================================================================ Home pieces -->
@@ -513,7 +525,7 @@
 				<visible>Integer.IsGreater(Container($PARAM[id]).NumItems,0) | Container($PARAM[id]).IsUpdating | $PARAM[alsovisible]</visible>
 				<include content="MFRowHeading"><param name="label" value="$PARAM[label]" /></include>
 				<control type="list" id="$PARAM[id]">
-					<left>mf_gutter</left><top>76</top><right>0</right><height>370</height>
+					<left>68</left><top>72</top><right>0</right><height>374</height>
 					<onup>$PARAM[up]</onup>
 					<ondown>$PARAM[down]</ondown>
 					<orientation>horizontal</orientation>
@@ -709,6 +721,9 @@
 		<param name="list" />
 		<param name="focused" default="false" />
 		<definition>
+			<!-- 4 px in from the item's corner: the list clips at its edges and the focus ring sits 3 px outside -->
+			<control type="group">
+			<left>4</left><top>4</top>
 			<control type="image">
 				<width>160</width><height>240</height>
 				<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
@@ -740,6 +755,7 @@
 				<left>-3</left><top>-3</top><width>166</width><height>246</height>
 				<texture border="14" colordiffuse="mf_accent">moodyfin/shapes/rr12_line.png</texture>
 				<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
+			</control>
 			</control>
 		</definition>
 	</include>

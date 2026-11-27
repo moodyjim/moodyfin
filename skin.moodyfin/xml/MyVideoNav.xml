@@ -118,7 +118,7 @@
 
 			<!-- 520: poster grid -->
 			<control type="panel" id="520">
-				<left>mf_gutter</left><top>206</top><right>96</right><bottom>0</bottom>
+				<left>68</left><top>202</top><right>96</right><bottom>0</bottom>
 				<onup>7000</onup>
 				<onleft>7000</onleft>
 				<onright condition="Control.IsVisible(530)">530</onright>
