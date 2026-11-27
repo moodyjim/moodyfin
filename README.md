@@ -9,7 +9,8 @@ A Kodi 21 (Omega) skin that brings the Jellyfin theme's look to Kodi.
 Made for a Jellyfin library synced with [Jellyfin for Kodi](https://github.com/jellyfin/jellyfin-kodi), and for
 remote control on CoreELEC boxes.
 
-> Work in progress. The Home page is done; the other screens are still Estuary's, in MoodyFin's fonts and colours.
+> Work in progress. Home and the details pages are done; the other screens are still Estuary's, in MoodyFin's fonts
+> and colours.
 
 ## What's in it
 
@@ -29,6 +30,13 @@ remote control on CoreELEC boxes.
 - **Rows:** Continue Watching & Next Up (time left, progress), Top 10, Latest Releases, Recently Added Movies,
   Recently Added Shows (with a *New season* tag).
 - **Ambient background:** a blurred copy of the focused title's picture behind the page.
+
+## Details page
+
+Opened from a card or More info. Blurred backdrop, title logo, poster, the title's facts, **Play** (resume), **Play
+next** for shows, **Trailer** (when it can play), **Watched**, the file's video / audio / subtitles, plot, tags and
+people; then Next Up and Seasons for shows, Cast & Crew, the movie's Collection and More Like This
+(from [Moody Similar](https://github.com/moodyjim) when installed).
 
 ## Settings
 

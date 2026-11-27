@@ -73,13 +73,16 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
   - `media/moodyfin/` — MoodyFin's own textures (logo, masks, badges). Keep Estuary's media where it is.
   - Funnel Sans static weights were cut from the Google Fonts variable font with fontTools (`wght` 400/500/600/700).
   - `xml/Includes_MoodyFin.xml` — MoodyFin includes: `MFAmbient`, `MFHeader`, `MFRowHeading`, cards (`MFPosterCard`,
-    `MFThumbCard`, `MFTop10Wide`), `MFPosterRow`. `xml/Home.xml` is MoodyFin's own (Estuary's Home is gone).
+    `MFThumbCard`, `MFTop10Wide`, `MFCastCard`), `MFPosterRow`, details variables (`MFVideoLine`, `MFAudioLine`, ...).
+    `xml/Home.xml` and `xml/DialogVideoInfo.xml` (details page) are MoodyFin's own; Estuary's are gone.
+  - Details page = Kodi's video info dialog. Its `ListItem.*` is always the dialog's item. Kodi ids: 8 Play, 11 Trailer,
+    50 Cast (Kodi fills it). Cards open it through the helper (`action=info`), which loads the whole record + cast.
 - `script.moodyfin.helper/` — Python helper the skin requires:
   - plugin rows `plugin://script.moodyfin.helper/?row=hero|continue|top10[&part=first|rest]|latest|recentmovies|recentshows`
     (`resources/lib/rows.py`; `items.py` keeps dbid/mediatype/file so Play/resume/Info work; MoodyFin values are
     `ListItem.Property(mf.*)`, listed in the docstring of `items.py`)
   - service: `Window(Home).Property(MoodyFin.Stats|Reload|Ambient)`; the ambient blur reads its picture from label 9990
-  - `RunScript(script.moodyfin.helper,action=studio,names=A|B)`
+  - `RunScript(script.moodyfin.helper,action=studio|info|watched|play|playnext,...)` (docstring in `actions.py`)
 - `tools/` — `build_media.sh` (masks, pills, gradients, icons, badge strips, Top 10 numbers), `build_studios.sh`,
   `build_fonts.py` (Funnel Sans static weights + star), `kodi.py` (drive the local Kodi), `icons/` (Material Symbols SVGs).
 - `docs/reference/` — screenshots of the Jellyfin theme + logo source. Not shipped.
@@ -104,3 +107,8 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
   `onup`/`ondown` to the neighbouring row **groups**; a hidden group passes focus on through its own onup/ondown.
 - Home scrolling = stacked conditional slide animations on grouplist 9000 (one per block above the focused row).
 - Infolabel booleans over JSON-RPC: `XBMC.GetInfoBooleans` (GetInfoLabels returns "" for them).
+- A list with its own `<onclick>` replaces Kodi's default click; `$INFO[ListItem.*]` in it is the clicked item.
+- A `diffuse` mask doesn't follow `aspectratio scale` cropping: give masked backdrops a 16:9 box with `stretch`.
+- `$VAR[]` doesn't work in a button's texture; use a `togglebutton` with `usealttexture`.
+- Image `colordiffuse="$VAR[...]"` didn't update reliably: use two images with visible conditions.
+- Autoscroll: `<autoscroll time="9000">` - `time` is the interval between moves.

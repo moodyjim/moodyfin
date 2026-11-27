@@ -87,6 +87,36 @@ def _common(li, tag, d):
         tag.setLastPlayed(d["lastplayed"])
     if d.get("dateadded"):
         tag.setDateAdded(d["dateadded"])
+    runtime = d.get("runtime", 0)
+    if runtime:
+        mins = max(1, runtime // 60)
+        li.setProperty("mf.runtime", "%dh %dm" % (mins // 60, mins % 60) if mins >= 60 else "%dm" % mins)
+    _extra(tag, d)
+
+
+def _extra(tag, d):
+    """Fields only the details page needs (present when the record came from rpc.details)."""
+    if d.get("cast"):
+        tag.setCast([xbmc.Actor(c.get("name", ""), c.get("role", ""), c.get("order", 0), c.get("thumbnail", ""))
+                     for c in d["cast"]])
+    if d.get("director"):
+        tag.setDirectors(d["director"])
+    if d.get("writer"):
+        tag.setWriters(d["writer"])
+    if d.get("tag"):
+        tag.setTags(d["tag"])
+    if d.get("country"):
+        tag.setCountries(d["country"])
+    if d.get("trailer"):
+        tag.setTrailer(d["trailer"])
+    if d.get("set"):
+        tag.setSet(d["set"])
+    if d.get("setid"):
+        tag.setSetId(d["setid"])
+    if d.get("votes"):
+        tag.setVotes(int(d["votes"]) if str(d["votes"]).isdigit() else 0)
+    if d.get("uniqueid"):
+        tag.setUniqueIDs(d["uniqueid"])
 
 
 def movie(d):
@@ -174,3 +204,52 @@ def episode(d, show_art=None):
     li.setProperty("IsPlayable", "true")
     li.setPath(d.get("file", ""))
     return li, False
+
+
+def season(d, tvshowid):
+    """A season card: poster, "10 episodes", unwatched count; opens the season's episodes."""
+    li = xbmcgui.ListItem(d.get("label") or "Season %d" % d.get("season", 0), offscreen=True)
+    art = dict(d.get("art") or {})
+    for key in ("poster", "fanart", "clearlogo"):
+        if not art.get(key) and art.get("tvshow." + key):
+            art[key] = art["tvshow." + key]
+    li.setArt(art)
+    tag = li.getVideoInfoTag()
+    tag.setDbId(d["seasonid"])
+    tag.setMediaType("season")
+    tag.setSeason(d.get("season", 0))
+    tag.setTvShowTitle(d.get("showtitle", ""))
+    total, watched = d.get("episode", 0), d.get("watchedepisodes", 0)
+    li.setProperty("TotalEpisodes", str(total))
+    li.setProperty("WatchedEpisodes", str(watched))
+    li.setProperty("UnWatchedEpisodes", str(max(0, total - watched)))
+    li.setProperty("mf.sub", "%d episode%s" % (total, "" if total == 1 else "s"))
+    li.setProperty("mf.type", "season")
+    path = "videodb://tvshows/titles/%d/%d/" % (int(tvshowid), d.get("season", 0))
+    li.setPath(path)
+    return li, True
+
+
+def movieset(d):
+    """A collection card; opens the collection."""
+    li = xbmcgui.ListItem(d.get("title", ""), offscreen=True)
+    li.setArt(d.get("art") or {})
+    tag = li.getVideoInfoTag()
+    tag.setDbId(d["setid"])
+    tag.setMediaType("set")
+    tag.setPlot(d.get("plot", ""))
+    n = len(d.get("movies") or [])
+    li.setProperty("mf.sub", "%d movie%s" % (n, "" if n == 1 else "s"))
+    li.setProperty("mf.type", "set")
+    path = "videodb://movies/sets/%d/" % d["setid"]
+    li.setPath(path)
+    return li, True
+
+
+def full(kind, dbid):
+    """The details page's item: the whole library record, cast included."""
+    from . import rpc
+    d = rpc.details(kind, dbid)
+    if not d:
+        return None
+    return {"movie": movie, "tvshow": tvshow, "episode": episode}[kind](d)[0]

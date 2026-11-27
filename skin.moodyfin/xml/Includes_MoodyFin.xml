@@ -486,6 +486,7 @@
 					<orientation>horizontal</orientation>
 					<scrolltime tween="cubic" easing="out">240</scrolltime>
 					<onback>9201</onback>
+					<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.DBType],dbid=$INFO[ListItem.DBID])</onclick>
 					<itemlayout width="206" height="370"><include content="MFPosterCard"><param name="list" value="$PARAM[id]" /></include></itemlayout>
 					<focusedlayout width="206" height="370"><include content="MFPosterCard"><param name="list" value="$PARAM[id]" /><param name="focused" value="true" /></include></focusedlayout>
 					<content target="videos">plugin://script.moodyfin.helper/?row=$PARAM[row]&amp;reload=$INFO[Window(Home).Property(MoodyFin.Reload)]</content>
@@ -509,5 +510,204 @@
 				<label>$INFO[ListItem.Property(mf.rank)]</label>
 			</control>
 		</control>
+	</include>
+	<!-- ================================================================ details page (DialogVideoInfo) -->
+	<expression name="mf_watched">[String.IsEqual(Window.Property(mf.watched),1) | [String.IsEmpty(Window.Property(mf.watched)) + Integer.IsGreater(ListItem.PlayCount,0)]]</expression>
+	<expression name="mf_is_movie">String.IsEqual(ListItem.DBType,movie)</expression>
+	<expression name="mf_is_show">String.IsEqual(ListItem.DBType,tvshow)</expression>
+	<expression name="mf_is_episode">String.IsEqual(ListItem.DBType,episode)</expression>
+	<variable name="MFDetailsPoster">
+		<value condition="!String.IsEmpty(ListItem.Art(poster))">$INFO[ListItem.Art(poster)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(tvshow.poster))">$INFO[ListItem.Art(tvshow.poster)]</value>
+		<value condition="!String.IsEmpty(ListItem.Art(season.poster))">$INFO[ListItem.Art(season.poster)]</value>
+		<value>$INFO[ListItem.Art(thumb)]</value>
+	</variable>
+	<variable name="MFDetailsLogo">
+		<value condition="!String.IsEmpty(ListItem.Art(clearlogo))">$INFO[ListItem.Art(clearlogo)]</value>
+		<value>$INFO[ListItem.Art(tvshow.clearlogo)]</value>
+	</variable>
+	<variable name="MFDetailsTitle">
+		<value condition="$EXP[mf_is_episode]">$INFO[ListItem.Title]</value>
+		<value>$INFO[ListItem.Title]</value>
+	</variable>
+	<variable name="MFDetailsFirst">
+		<value condition="$EXP[mf_is_episode]">$INFO[ListItem.Season,S,]$INFO[ListItem.Episode, · E,]$INFO[ListItem.TVShowTitle,  ·  ,]</value>
+		<value>$INFO[ListItem.Year]</value>
+	</variable>
+	<variable name="MFDuration">
+		<value condition="!String.IsEmpty(ListItem.Property(mf.runtime))">$INFO[ListItem.Property(mf.runtime)]</value>
+		<value condition="!String.IsEmpty(ListItem.Duration)">$INFO[ListItem.Duration(mins)] min</value>
+	</variable>
+	<variable name="MFVideoLine">
+		<value condition="!String.IsEmpty(ListItem.VideoCodec)">$VAR[MFVideoRes]$VAR[MFVideoCodec]$VAR[MFVideoHdr]</value>
+	</variable>
+	<variable name="MFVideoRes">
+		<value condition="String.IsEqual(ListItem.VideoResolution,4K)">4K</value>
+		<value condition="String.IsEqual(ListItem.VideoResolution,1080)">1080p</value>
+		<value condition="String.IsEqual(ListItem.VideoResolution,720)">720p</value>
+		<value condition="!String.IsEmpty(ListItem.VideoResolution)">SD</value>
+	</variable>
+	<variable name="MFVideoCodec">
+		<value condition="String.IsEqual(ListItem.VideoCodec,hevc) | String.IsEqual(ListItem.VideoCodec,h265)"> HEVC</value>
+		<value condition="String.IsEqual(ListItem.VideoCodec,h264) | String.IsEqual(ListItem.VideoCodec,avc1)"> H.264</value>
+		<value condition="String.IsEqual(ListItem.VideoCodec,av1)"> AV1</value>
+		<value condition="String.IsEqual(ListItem.VideoCodec,vp9)"> VP9</value>
+		<value condition="!String.IsEmpty(ListItem.VideoCodec)"> $INFO[ListItem.VideoCodec]</value>
+	</variable>
+	<variable name="MFVideoHdr">
+		<value condition="String.IsEqual(ListItem.HdrType,dolbyvision)"> Dolby Vision</value>
+		<value condition="String.IsEqual(ListItem.HdrType,hdr10)"> HDR10</value>
+		<value condition="String.IsEqual(ListItem.HdrType,hdr10plus)"> HDR10+</value>
+		<value condition="String.IsEqual(ListItem.HdrType,hlg)"> HLG</value>
+	</variable>
+	<variable name="MFAudioLine">
+		<value condition="!String.IsEmpty(ListItem.AudioCodec) + !String.IsEmpty(ListItem.AudioLanguage)">$VAR[MFAudioLang] · $VAR[MFAudioCodec]$VAR[MFAudioChannels]</value>
+		<value condition="!String.IsEmpty(ListItem.AudioCodec)">$VAR[MFAudioCodec]$VAR[MFAudioChannels]</value>
+	</variable>
+	<variable name="MFAudioLang">
+		<value condition="String.IsEqual(ListItem.AudioLanguage,eng)">English</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,spa)">Spanish</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,fre)">French</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,fra)">French</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,ger)">German</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,deu)">German</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,ita)">Italian</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,jpn)">Japanese</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,kor)">Korean</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,chi)">Chinese</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,zho)">Chinese</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,por)">Portuguese</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,rus)">Russian</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,dut)">Dutch</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,nld)">Dutch</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,swe)">Swedish</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,nor)">Norwegian</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,nob)">Norwegian</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,dan)">Danish</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,fin)">Finnish</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,pol)">Polish</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,hin)">Hindi</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,ara)">Arabic</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,tur)">Turkish</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,heb)">Hebrew</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,tha)">Thai</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,ice)">Icelandic</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,isl)">Icelandic</value>
+		<value condition="String.IsEqual(ListItem.AudioLanguage,und)">Unknown</value>
+		<value>$INFO[ListItem.AudioLanguage]</value>
+	</variable>
+	<variable name="MFSubLang">
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,eng)">English</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,spa)">Spanish</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,fre)">French</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,fra)">French</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,ger)">German</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,deu)">German</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,ita)">Italian</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,jpn)">Japanese</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,kor)">Korean</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,chi)">Chinese</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,zho)">Chinese</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,por)">Portuguese</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,rus)">Russian</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,dut)">Dutch</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,nld)">Dutch</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,swe)">Swedish</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,nor)">Norwegian</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,nob)">Norwegian</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,dan)">Danish</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,fin)">Finnish</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,pol)">Polish</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,hin)">Hindi</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,ara)">Arabic</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,tur)">Turkish</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,heb)">Hebrew</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,tha)">Thai</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,ice)">Icelandic</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,isl)">Icelandic</value>
+		<value condition="String.IsEqual(ListItem.SubtitleLanguage,und)">Unknown</value>
+		<value>$INFO[ListItem.SubtitleLanguage]</value>
+	</variable>
+	<variable name="MFAudioCodec">
+		<value condition="String.IsEqual(ListItem.AudioCodec,truehd)">Dolby TrueHD</value>
+		<value condition="String.IsEqual(ListItem.AudioCodec,eac3)">Dolby Digital Plus</value>
+		<value condition="String.IsEqual(ListItem.AudioCodec,ac3)">Dolby Digital</value>
+		<value condition="String.StartsWith(ListItem.AudioCodec,dtshd)">DTS-HD</value>
+		<value condition="String.IsEqual(ListItem.AudioCodec,dts)">DTS</value>
+		<value condition="String.IsEqual(ListItem.AudioCodec,aac)">AAC</value>
+		<value condition="String.IsEqual(ListItem.AudioCodec,mp3)">MP3</value>
+		<value>$INFO[ListItem.AudioCodec]</value>
+	</variable>
+	<variable name="MFAudioChannels">
+		<value condition="String.IsEqual(ListItem.AudioChannels,8)"> · 7.1</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,6)"> · 5.1</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,2)"> · Stereo</value>
+		<value condition="String.IsEqual(ListItem.AudioChannels,1)"> · Mono</value>
+	</variable>
+
+	<!-- a label + value line on the details page (inside a vertical grouplist) -->
+	<include name="MFDetailsLine">
+		<param name="label" />
+		<param name="value" />
+		<param name="cond" default="true" />
+		<param name="height" default="36" />
+		<definition>
+			<control type="group">
+				<height>$PARAM[height]</height>
+				<visible>$PARAM[cond]</visible>
+				<control type="label">
+					<width>150</width><height>$PARAM[height]</height>
+					<font>mf_small20</font>
+					<textcolor>mf_muted</textcolor>
+					<label>$PARAM[label]</label>
+				</control>
+				<control type="label">
+					<left>150</left><right>0</right><height>$PARAM[height]</height>
+					<font>mf_semibold22</font>
+					<textcolor>mf_text</textcolor>
+					<label>$PARAM[value]</label>
+				</control>
+			</control>
+		</definition>
+	</include>
+
+	<!-- cast photo 160x240 with name and role, item 176 wide -->
+	<include name="MFCastCard">
+		<param name="list" />
+		<param name="focused" default="false" />
+		<definition>
+			<control type="image">
+				<width>160</width><height>240</height>
+				<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
+			</control>
+			<control type="image">
+				<left>50</left><top>90</top><width>60</width><height>60</height>
+				<texture colordiffuse="40FFFFFF">DefaultActor.png</texture>
+				<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEmpty(ListItem.Icon)</visible>
+			</control>
+			<control type="image">
+				<width>160</width><height>240</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/poster_small.png">$INFO[ListItem.Art(thumb)]</texture>
+			</control>
+			<control type="label">
+				<top>250</top><width>160</width><height>28</height>
+				<font>font_flag</font>
+				<textcolor>mf_text</textcolor>
+				<label>$INFO[ListItem.Label]</label>
+				<scroll>Control.HasFocus($PARAM[list])</scroll>
+			</control>
+			<control type="label">
+				<top>276</top><width>160</width><height>26</height>
+				<font>mf_small20</font>
+				<textcolor>mf_muted</textcolor>
+				<label>$INFO[ListItem.Label2]</label>
+			</control>
+			<control type="image">
+				<left>-3</left><top>-3</top><width>166</width><height>246</height>
+				<texture border="14" colordiffuse="mf_accent">moodyfin/shapes/rr12_line.png</texture>
+				<visible>Control.HasFocus($PARAM[list]) + $PARAM[focused]</visible>
+			</control>
+		</definition>
 	</include>
 </includes>

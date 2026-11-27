@@ -87,3 +87,21 @@ for n in 1 2 3 4 5 6 7 8 9 10; do
     -gravity center -annotate +0+0 "$n" -trim +repage "$M/numbers/$n.png"
 done
 echo "masks + numbers done"
+
+# details page: big poster mask, cast photo mask
+rr 400 600 16 "$M/masks/poster_large.png"
+# icon buttons (128 px, shown at 64): normal = white icon, focus = white square + black icon,
+# on = pale blue square + black icon (the Jellyfin theme's "watched" state)
+mkdir -p "$M/buttons"
+for n in play_arrow movie check skip_next info_outline; do
+  magick -background none -density 400 "icons/$n.svg" -resize 60x60 -fill white -colorize 100 \
+    -gravity center -extent 128x128 "$M/buttons/$n.png"
+  magick -background none -density 400 "icons/$n.svg" -resize 60x60 -fill black -colorize 100 -gravity center -extent 128x128 /tmp/mf_black.png
+  magick -size 128x128 xc:none -fill white -draw "roundrectangle 0,0,127,127,22,22" /tmp/mf_black.png -gravity center -composite "$M/buttons/${n}_focus.png"
+  magick -size 128x128 xc:none -fill "#A9BBCC" -draw "roundrectangle 0,0,127,127,22,22" /tmp/mf_black.png -gravity center -composite "$M/buttons/${n}_on.png"
+done
+rm -f /tmp/mf_black.png
+echo "buttons done"
+ring 24 24 5 2 "$M/shapes/rr6_line.png"
+# details backdrop mask: opaque to 30 %, gone at 72 % (the image box is 16:9, nothing cropped, so the mask lines up)
+magick -size 16x512 xc:white -alpha set -channel A -fx "yy=j/h; yy<0.3 ? 1 : (yy<0.72 ? 1-(yy-0.3)/0.42 : 0)" +channel "$M/masks/details.png"

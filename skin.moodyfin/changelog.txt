@@ -1,3 +1,12 @@
+[B]0.3.0[/B]
+- Details page (the Jellyfin theme's title page) for movies, shows and episodes: blurred backdrop, centred title logo, big
+  poster, info band (title, year / S·E, runtime, age rating, star rating, ends at), Play / Play next / Trailer /
+  Watched buttons, video / audio / subtitle lines, plot, tags, director, writers, studios, genres.
+- Rows on it: Next Up and Seasons (shows), Cast & Crew, Collection (movies in one), More Like This
+  (plugin.video.moodysimilar for movies when it is installed, else same-genre titles).
+- Home: cards in Top 10, Latest Releases and Recently Added open the details page; More info too.
+- Backdrop fades work (the picture box is 16:9 so the fade mask lines up).
+
 [B]0.2.1[/B]
 - Hero rotates every 9 s (it jumped every couple of seconds).
 - Header hides while an info dialog is open.

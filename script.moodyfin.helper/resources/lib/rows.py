@@ -134,8 +134,53 @@ def _top10(params):
     return out
 
 
-ROWS = {"hero": hero_row, "continue": continue_row, "top10": _top10, "latest": latest_row,
-        "recentmovies": recentmovies_row, "recentshows": recentshows_row}
+def nextup_row(params):
+    """The next episode to watch for one show: the in-progress one, else the first unwatched."""
+    sid = int(params.get("tvshowid", 0) or 0)
+    if not sid:
+        return []
+    eps = rpc.episodes(SORT_LASTPLAYED, 1, INPROGRESS, tvshowid=sid)
+    if not eps:
+        eps = rpc.episodes({"method": "episode", "order": "ascending"}, 1, {"and": [UNWATCHED, NOT_SPECIALS]}, tvshowid=sid)
+    return [items.episode(e) for e in eps]
+
+
+def seasons_row(params):
+    sid = int(params.get("tvshowid", 0) or 0)
+    return [items.season(d, sid) for d in rpc.seasons(sid) if d.get("season", 0) > 0] if sid else []
+
+
+def collection_row(params):
+    setid = int(params.get("setid", 0) or 0)
+    d = rpc.movie_set(setid) if setid else None
+    return [items.movieset(d)] if d else []
+
+
+def similar_row(params, limit=16):
+    """Same first two genres, best rated first (fallback when plugin.video.moodysimilar isn't there)."""
+    kind, dbid = params.get("type", "movie"), int(params.get("dbid", 0) or 0)
+    if kind not in ("movie", "tvshow") or not dbid:
+        return []
+    d = rpc.details(kind, dbid) or {}
+    genres = (d.get("genre") or [])[:2]
+    if not genres:
+        return []
+    filt = {"and": [{"field": "genre", "operator": "is", "value": g} for g in genres]}
+    sort = {"method": "rating", "order": "descending"}
+    if kind == "movie":
+        found = [items.movie(m) for m in rpc.movies(sort, limit + 1, filt) if m["movieid"] != dbid]
+    else:
+        found = [items.tvshow(t) for t in rpc.shows(sort, limit + 1, filt) if t["tvshowid"] != dbid]
+    return found[:limit]
+
+
+def _plain(fn):
+    return lambda params: fn()
+
+
+ROWS = {"hero": _plain(hero_row), "continue": _plain(continue_row), "top10": _top10, "latest": _plain(latest_row),
+        "recentmovies": _plain(recentmovies_row), "recentshows": _plain(recentshows_row), "nextup": nextup_row,
+        "seasons": seasons_row, "collection": collection_row, "similar": similar_row}
 
 
 def run(argv):
@@ -145,7 +190,7 @@ def run(argv):
     entries = []
     if row:
         try:
-            entries = row(params) if row is _top10 else row()
+            entries = row(params)
         except Exception as exc:  # a broken row must not take Home down
             xbmc.log("[moodyfin] row %s failed: %r" % (params.get("row"), exc), xbmc.LOGERROR)
     xbmcplugin.setContent(handle, "videos")

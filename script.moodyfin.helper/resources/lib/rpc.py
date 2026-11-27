@@ -55,3 +55,33 @@ def count(method, key, filt=None):
     if filt:
         p["filter"] = filt
     return call(method, p).get("limits", {}).get("total", 0)
+
+
+DETAIL_EXTRA = {
+    "movie": ["cast", "director", "writer", "tag", "country", "trailer", "set", "setid", "votes", "uniqueid"],
+    "tvshow": ["cast", "tag", "votes", "uniqueid", "originaltitle"],
+    "episode": ["cast", "director", "writer", "votes", "uniqueid", "season", "tvshowid"],
+}
+
+
+def details(kind, dbid):
+    """Full record for the details page (with cast)."""
+    method, key, props = {
+        "movie": ("VideoLibrary.GetMovieDetails", "moviedetails", MOVIE_PROPS),
+        "tvshow": ("VideoLibrary.GetTVShowDetails", "tvshowdetails", SHOW_PROPS),
+        "episode": ("VideoLibrary.GetEpisodeDetails", "episodedetails", EPISODE_PROPS),
+    }[kind]
+    props = list(dict.fromkeys(props + DETAIL_EXTRA[kind]))
+    return call(method, {kind + "id": int(dbid), "properties": props}).get(key)
+
+
+def seasons(tvshowid):
+    p = {"tvshowid": int(tvshowid), "properties": ["season", "showtitle", "episode", "watchedepisodes", "art", "playcount"],
+         "sort": {"method": "season", "order": "ascending"}}
+    return call("VideoLibrary.GetSeasons", p).get("seasons", [])
+
+
+def movie_set(setid):
+    return call("VideoLibrary.GetMovieSetDetails",
+                {"setid": int(setid), "properties": ["title", "plot", "art"],
+                 "movies": {"properties": ["title"]}}).get("setdetails")

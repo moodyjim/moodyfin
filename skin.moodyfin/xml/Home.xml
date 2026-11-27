@@ -49,8 +49,8 @@
 				<height>850</height>
 				<visible>Integer.IsGreater(Container(8000).NumItems,0) | Container(8000).IsUpdating</visible>
 				<control type="image">
-					<left>0</left><top>0</top><width>100%</width><height>1080</height>
-					<aspectratio aligny="top">scale</aspectratio>
+					<left>0</left><top>0</top><width>100%</width><height>1100</height>
+					<aspectratio>stretch</aspectratio>
 					<fadetime>500</fadetime>
 					<texture background="true" diffuse="moodyfin/masks/hero.png">$INFO[Container(8000).ListItem.Art(fanart)]</texture>
 				</control>
@@ -107,8 +107,7 @@
 						<label />
 						<texturefocus border="32,0,32,0" colordiffuse="mf_text">moodyfin/shapes/pill_64.png</texturefocus>
 						<texturenofocus border="32,0,32,0" colordiffuse="99101113">moodyfin/shapes/pill_64.png</texturenofocus>
-						<onclick>SetFocus(8000)</onclick>
-						<onclick>Action(Info)</onclick>
+						<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[Container(8000).ListItem.DBType],dbid=$INFO[Container(8000).ListItem.DBID])</onclick>
 						<onleft>9201</onleft>
 						<onright>Control.Move(8000,1)</onright>
 						<onup>9100</onup>
@@ -263,6 +262,7 @@
 				<visible>Integer.IsGreater(Container(402).NumItems,0) | Integer.IsGreater(Container(4022).NumItems,0) | Container(402).IsUpdating | Container(4022).IsUpdating</visible>
 				<include content="MFRowHeading"><param name="label" value="Top 10" /></include>
 				<control type="list" id="402">
+					<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.DBType],dbid=$INFO[ListItem.DBID])</onclick>
 					<left>mf_gutter</left><top>76</top><right>0</right><height>310</height>
 					<onup>4010</onup>
 					<ondown>4030</ondown>
@@ -289,6 +289,7 @@
 					<content target="videos">plugin://script.moodyfin.helper/?row=top10&amp;reload=$INFO[Window(Home).Property(MoodyFin.Reload)]</content>
 				</control>
 				<control type="list" id="4021">
+					<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.DBType],dbid=$INFO[ListItem.DBID])</onclick>
 					<left>mf_gutter</left><top>76</top><width>412</width><height>310</height>
 					<onup>4010</onup>
 					<ondown>4030</ondown>
@@ -301,6 +302,7 @@
 					<content target="videos">plugin://script.moodyfin.helper/?row=top10&amp;part=first&amp;reload=$INFO[Window(Home).Property(MoodyFin.Reload)]</content>
 				</control>
 				<control type="list" id="4022">
+					<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.DBType],dbid=$INFO[ListItem.DBID])</onclick>
 					<left>484</left><top>76</top><right>0</right><height>310</height>
 					<onup>4010</onup>
 					<ondown>4030</ondown>

@@ -1,3 +1,7 @@
+[B]0.3.0[/B]
+- Rows: nextup, seasons, collection, similar.
+- Actions: info (details page with the whole record and cast), watched (toggle), play, playnext.
+
 [B]0.2.1[/B]
 - Version now shared with the skin (no code changes).
 
