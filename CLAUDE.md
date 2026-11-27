@@ -134,6 +134,9 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 - An empty `<texturebg />` on a progress control makes the fill draw at the image's own size: give it a transparent bg.
 - JSON-RPC `Addons.ExecuteAddon` on the helper runs its *plugin* entry, not script.py: use RunScript via devbuiltin.
 - Python `getInfoLabel("Container(id).ListItemAbsolute(n).SortLetter")` + `SetFocus(id,n,absolute)` = letter jump.
+- A dialog's window-level `<visible>` that turns false *closes* it (VideoOSD then also closes its audio / subtitle
+  menus): hide its contents with a group's `<visible>` instead.
+- Inside a grouplist, the children's onleft / onright are ignored at its edges: set them on the grouplist.
 - Lists clip at their edges: anything drawn outside an item (focus ring at -3) needs the card inset (cards sit 4 px
   in; lists are 4 px up/left of where the cards appear).
 - Hover card (`MFPopupRow` / `MFPopupRowTop10` / `MFPopupGrid`, written by `tools/build_popup.py`): its own control

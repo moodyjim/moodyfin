@@ -6,8 +6,11 @@
 	<defaultcontrol always="true">710</defaultcontrol>
 	<include>Animation_BottomSlide</include>
 	<depth>DepthOSD</depth>
-	<visible>![Window.IsVisible(SliderDialog) | Window.IsVisible(1110) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdsubtitlesettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
 	<controls>
+		<!-- hidden (not closed) while one of its menus is open: a window-level <visible> would close the OSD,
+		     and Kodi closes the OSD's menus with it -->
+		<control type="group">
+		<visible>![Window.IsVisible(SliderDialog) | Window.IsVisible(1110) | Window.IsVisible(osdaudiosettings) | Window.IsVisible(osdsubtitlesettings) | Window.IsVisible(osdvideosettings) | Window.IsVisible(VideoBookmarks) | Window.IsVisible(playerprocessinfo) | Window.IsVisible(osdcmssettings) | Window.IsVisible(PVROSDChannels) | Window.IsVisible(pvrchannelguide)]</visible>
 		<!-- shades so the controls read over any picture -->
 		<control type="image">
 			<left>0</left><top>0</top><width>100%</width><height>320</height>
@@ -53,6 +56,8 @@
 			<!-- left: subtitles, audio -->
 			<control type="grouplist" id="700">
 				<left>28</left><top>98</top><width>180</width><height>72</height>
+				<onleft>noop</onleft>
+				<onright>711</onright>
 				<orientation>horizontal</orientation>
 				<itemgap>8</itemgap>
 				<control type="button" id="701">
@@ -116,6 +121,8 @@
 			<!-- right: video settings, stop -->
 			<control type="grouplist" id="720">
 				<right>28</right><top>98</top><width>180</width><height>72</height>
+				<onleft>712</onleft>
+				<onright>noop</onright>
 				<orientation>horizontal</orientation>
 				<align>right</align>
 				<itemgap>8</itemgap>
@@ -137,6 +144,7 @@
 					<onleft>721</onleft>
 				</control>
 			</control>
+		</control>
 		</control>
 	</controls>
 </window>

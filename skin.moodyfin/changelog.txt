@@ -1,3 +1,7 @@
+[B]0.7.4[/B]
+- Player controls: the subtitle and audio menus stay open (they closed straight away).
+- Player controls: left / right go through all the buttons (focus got stuck on the right two).
+
 [B]0.7.3[/B]
 - Hover card: no buttons (a remote can't reach them without breaking the row's left / right); shorter card.
 - Hover card picture: the backdrop, else the landscape picture, else the top of the poster.
