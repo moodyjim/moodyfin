@@ -1,3 +1,12 @@
+[B]0.5.0[/B]
+- Player controls (the Jellyfin theme's floating glass panel): title logo, "Ends at" pill, time / progress / time left,
+  subtitles, audio, back 10 s, play / pause, forward 30 s, video settings, stop.
+- Seek bar: the time / progress part while seeking or just after pausing.
+- Pause screen (Netflix style) 3 s after pausing: "You're watching", logo, year, age rating, length, rating, plot.
+- Up Next pop-up 30 s before an episode ends (Play now / Cancel); plays the next episode when this one ends.
+  Off in Skin settings > General. Not shown when the Up Next add-on is installed.
+- Estuary's top bar no longer shows over video.
+
 [B]0.4.0[/B]
 - Library pages (the Jellyfin theme's Movies page): header with the current section marked, title and "12 of 1535",
   sort / order / watched / filter buttons with the current sort shown, and three views picked by content:

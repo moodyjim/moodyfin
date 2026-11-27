@@ -76,7 +76,8 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
     `MFThumbCard`, `MFTop10Wide`, `MFCastCard`), `MFPosterRow`, details variables (`MFVideoLine`, `MFAudioLine`, ...).
     `xml/Home.xml`, `xml/DialogVideoInfo.xml` (details), `xml/MyVideoNav.xml` (library: views 520 posters, 521 episodes,
     522 list; SetFocus(520) = current view) and `xml/Custom_1150_MoodyFinSearch.xml` (search, window 11150 in Python)
-    are MoodyFin's own; Estuary's versions are gone.
+    are MoodyFin's own; Estuary's versions are gone. Player: `VideoOSD.xml` (panel), `DialogSeekBar.xml` (seek bar and
+    pause screen), `MoodyFin-UpNext.xml` (opened by the helper's `upnext.py`).
   - Details page = Kodi's video info dialog. Its `ListItem.*` is always the dialog's item. Kodi ids: 8 Play, 11 Trailer,
     50 Cast (Kodi fills it). Cards open it through the helper (`action=info`), which loads the whole record + cast.
 - `script.moodyfin.helper/` — Python helper the skin requires:
@@ -118,3 +119,8 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
   while it loads (search sets `mf.searching` for a few seconds).
 - Custom window `Custom_1150_*.xml` is window 11150 for Python (`xbmcgui.Window`); the skin's `Window(1150)` adds 10000.
 - Media windows: `<defaultcontrol>` / SetFocus must name a view id that exists (520), not 50.
+- Kodi doesn't draw VideoFullScreen.xml's own controls over a paused video: overlays go in DialogSeekBar (open during
+  playback; the skin's `<visible>` decides when it shows).
+- An empty `<texturebg />` on a progress control makes the fill draw at the image's own size: give it a transparent bg.
+- JSON-RPC `Addons.ExecuteAddon` on the helper runs its *plugin* entry, not script.py: use RunScript via devbuiltin.
+- Test playback with a local ffmpeg clip (`testsrc2`), muted, never a library title (it would change Jellyfin progress).

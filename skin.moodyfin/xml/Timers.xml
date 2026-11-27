@@ -15,4 +15,10 @@
         <reset>Player.Seeking | Player.Forwarding | Player.Rewinding | Player.HasPerformedSeek(1)</reset>
         <stop>Integer.IsGreaterOrEqual(Skin.TimerElapsedSecs(1109_topbaroverlay),5) | Player.Playing</stop>
     </timer>
+    <timer>
+        <name>mf_pause</name>
+        <description>MoodyFin pause screen: how long playback has been paused</description>
+        <start reset="true">Player.Paused + Player.HasVideo</start>
+        <stop>!Player.Paused | !Player.HasVideo</stop>
+    </timer>
 </timers>

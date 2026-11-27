@@ -36,6 +36,12 @@
 					<selected>Skin.HasSetting(mf.top10numbers)</selected>
 					<onclick>Skin.ToggleSetting(mf.top10numbers)</onclick>
 				</control>
+				<control type="radiobutton" id="7002">
+					<label>Up Next pop-up near the end of an episode</label>
+					<include>DefaultSettingButton</include>
+					<selected>!Skin.HasSetting(mf.noupnext)</selected>
+					<onclick>Skin.ToggleSetting(mf.noupnext)</onclick>
+				</control>
 				<control type="radiobutton" id="701">
 					<label>$LOCALIZE[31095]</label>
 					<include>DefaultSettingButton</include>

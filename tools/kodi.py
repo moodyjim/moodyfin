@@ -11,6 +11,7 @@
     python kodi.py enable skin.moodyfin
     python kodi.py log [n]              last MoodyFin/error lines of kodi.log
 
+Kodi 21 sometimes hangs while quitting after playback; restart force-closes it after 30 s (settings are saved first).
 Kodi stops drawing while its window is minimized: screenshots fail and visibility doesn't update. Don't ReloadSkin()
 through a script: it crashed Kodi 21.3 here. Restart instead.
 """
@@ -104,6 +105,11 @@ def restart():
         if not running():
             break
         time.sleep(0.5)
+    else:
+        # Kodi 21 sometimes hangs at "Stopping all" after playback; settings are already saved by then
+        subprocess.run(["taskkill", "/F", "/IM", "kodi.exe"], capture_output=True)
+        time.sleep(2)
+        print("Kodi hung while quitting: closed it")
     subprocess.Popen([KODI_EXE])
     for _ in range(90):
         time.sleep(1)

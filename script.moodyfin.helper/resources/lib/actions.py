@@ -13,6 +13,8 @@
     action=search
         Asks for a search (Kodi's keyboard, starting from the last one) and puts it on the search page:
         Window(1150).Property(mf.query) in the skin (11150 here) to show, Property(mf.q) URL-quoted for the rows' plugin paths.
+    action=upnextpreview,dbid=N
+        Shows the Up Next pop-up for the episode after episode N, without playing anything.
     action=playnext,tvshowid=N
         Plays the show's next episode (the one in progress, else the first unwatched), resuming where it stopped.
 """
@@ -140,6 +142,9 @@ def run(argv):
         play(args.get("type", ""), args.get("dbid", ""))
     elif action == "search":
         search()
+    elif action == "upnextpreview":
+        from . import upnext
+        upnext.preview(args.get("dbid", "0"))
     elif action == "playnext":
         playnext(args.get("tvshowid", ""))
     else:

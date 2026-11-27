@@ -3,6 +3,7 @@
 - Window(Home).Property(MoodyFin.Stats)   "1,559 Movies · 241 Shows · 12,212 Episodes"
 - Window(Home).Property(MoodyFin.Reload)  changes after playback and library updates; the rows' content paths carry
                                           it, so Kodi fetches them again
+- Up Next pop-up near the end of library episodes (upnext.py)
 - Window(Home).Property(MoodyFin.Ambient) blurred copy of the picture the skin names in its hidden label 9990
                                           (see ambient.py)
 """
@@ -11,7 +12,7 @@ import time
 import xbmc
 import xbmcgui
 
-from . import ambient, rpc
+from . import ambient, rpc, upnext
 
 HOME = xbmcgui.Window(10000)
 LIBRARY_EVENTS = ("VideoLibrary.OnScanFinished", "VideoLibrary.OnCleanFinished", "VideoLibrary.OnUpdate",
@@ -46,12 +47,14 @@ def run():
     _stats()
     HOME.setProperty("MoodyFin.Reload", str(int(time.time())))
     amb = ambient.Ambient()
+    up = upnext.UpNext()
     while not monitor.abortRequested():
         if monitor.dirty_at and time.time() >= monitor.dirty_at and not xbmc.Player().isPlayingVideo():
             monitor.dirty_at = 0.0
             _stats()
             HOME.setProperty("MoodyFin.Reload", str(int(time.time())))
         amb.tick()
+        up.tick()
         if monitor.waitForAbort(0.25):
             break
     amb.stop()

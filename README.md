@@ -9,8 +9,8 @@ A Kodi 21 (Omega) skin that brings the Jellyfin theme's look to Kodi.
 Made for a Jellyfin library synced with [Jellyfin for Kodi](https://github.com/jellyfin/jellyfin-kodi), and for
 remote control on CoreELEC boxes.
 
-> Work in progress. Home, details, library and search pages are done; the player and the remaining screens are
-> still Estuary's, in MoodyFin's fonts and colours.
+> Work in progress. Home, details, library, search and the player are done; the remaining screens (settings,
+> dialogs, music) are still Estuary's, in MoodyFin's fonts and colours.
 
 ## What's in it
 
@@ -47,12 +47,20 @@ people; then Next Up and Seasons for shows, Cast & Crew, the movie's Collection 
 Tip: to open the details page when you press OK on a movie in a library page (as the Jellyfin theme does), set
 *Settings > Media > Videos > Default select action* to *Show information*.
 
+## Player
+
+- **Controls** (OK during playback): a floating glass panel with time, progress, time left, subtitles, audio,
+  back 10 s, play / pause, forward 30 s, video settings and stop; the title logo and when it ends.
+- **Pause screen:** after 3 s paused, the title, its facts and plot over the dimmed picture.
+- **Up Next:** 30 s before an episode ends, the next one with Play now / Cancel; it plays when this one ends.
+
 ## Settings
 
 - **Accent colour:** *Settings > Interface > Skin > Colours*: Default (cyan), Molten, Red, Blue, Green, Purple, Amber,
   Pink, White.
 - **Top 10 style:** *Skin settings > General > Top 10: big outlined numbers*. Off (default): rank badges, with #1 as a
   wide card.
+- **Up Next pop-up:** *Skin settings > General*.
 
 ## Install (development)
 

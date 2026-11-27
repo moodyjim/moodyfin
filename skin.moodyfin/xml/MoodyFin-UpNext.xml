@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MoodyFin Up Next pop-up, opened by script.moodyfin.helper (upnext.py) 30 s before an episode ends.
+     3001 Play now, 3002 Cancel. Window properties: mf.title, mf.sub, mf.thumb, mf.left. -->
+<window>
+	<defaultcontrol always="true">3001</defaultcontrol>
+	<depth>DepthOSD+</depth>
+	<animation effect="slide" start="700,0" end="0,0" time="350" tween="cubic" easing="out">WindowOpen</animation>
+	<animation effect="slide" start="0,0" end="700,0" time="250" tween="cubic" easing="in">WindowClose</animation>
+	<controls>
+		<control type="group">
+			<right>mf_gutter</right><bottom>80</bottom><width>720</width><height>252</height>
+			<control type="image">
+				<width>720</width><height>252</height>
+				<texture border="24" colordiffuse="E6101113">moodyfin/shapes/rr24.png</texture>
+			</control>
+			<control type="image">
+				<width>720</width><height>252</height>
+				<texture border="24" colordiffuse="26FFFFFF">moodyfin/shapes/rr24_line.png</texture>
+			</control>
+			<control type="image">
+				<left>24</left><top>24</top><width>356</width><height>200</height>
+				<texture border="12" colordiffuse="mf_surface">moodyfin/shapes/rr12.png</texture>
+			</control>
+			<control type="image">
+				<left>24</left><top>24</top><width>356</width><height>200</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/thumb.png">$INFO[Window.Property(mf.thumb)]</texture>
+			</control>
+			<control type="label">
+				<left>404</left><top>22</top><width>292</width><height>34</height>
+				<font>mf_heading36</font>
+				<textcolor>mf_accent</textcolor>
+				<label>Up next</label>
+			</control>
+			<control type="label">
+				<left>404</left><top>58</top><width>292</width><height>32</height>
+				<font>mf_semibold25</font>
+				<textcolor>mf_text</textcolor>
+				<label>$INFO[Window.Property(mf.title)]</label>
+			</control>
+			<control type="textbox">
+				<left>404</left><top>90</top><width>292</width><height>56</height>
+				<font>mf_small20</font>
+				<textcolor>D9F1F2F4</textcolor>
+				<label>$INFO[Window.Property(mf.sub)]</label>
+			</control>
+			<control type="label">
+				<left>404</left><top>146</top><width>292</width><height>28</height>
+				<font>mf_small20</font>
+				<textcolor>mf_muted</textcolor>
+				<label>$INFO[Window.Property(mf.left)]</label>
+			</control>
+			<control type="button" id="3001">
+				<left>404</left><top>180</top><width>150</width><height>48</height>
+				<label>Play now</label>
+				<font>font_flag</font>
+				<align>center</align><aligny>center</aligny>
+				<textcolor>mf_text</textcolor>
+				<focusedcolor>FF000000</focusedcolor>
+				<texturefocus border="24,0,24,0" colordiffuse="mf_text">moodyfin/shapes/pill_48.png</texturefocus>
+				<texturenofocus border="24,0,24,0" colordiffuse="33FFFFFF">moodyfin/shapes/pill_line_48.png</texturenofocus>
+				<onright>3002</onright>
+			</control>
+			<control type="button" id="3002">
+				<left>566</left><top>180</top><width>130</width><height>48</height>
+				<label>Cancel</label>
+				<font>font_flag</font>
+				<align>center</align><aligny>center</aligny>
+				<textcolor>mf_text</textcolor>
+				<focusedcolor>FF000000</focusedcolor>
+				<texturefocus border="24,0,24,0" colordiffuse="mf_text">moodyfin/shapes/pill_48.png</texturefocus>
+				<texturenofocus border="24,0,24,0" colordiffuse="33FFFFFF">moodyfin/shapes/pill_line_48.png</texturenofocus>
+				<onleft>3001</onleft>
+			</control>
+		</control>
+	</controls>
+</window>

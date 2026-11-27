@@ -872,4 +872,95 @@
 		<value condition="!String.IsEmpty(Window(1150).Property(mf.query))">FFF1F2F4</value>
 		<value>FF969AA1</value>
 	</variable>
+	<!-- ================================================================ player (VideoOSD, DialogSeekBar, VideoFullScreen) -->
+	<constant name="mf_osd_width">1110</constant>
+	<!-- the pause screen: 3 s after pausing a video, while no menu is open -->
+	<expression name="mf_pause_screen">Player.Paused + Player.HasVideo + Integer.IsGreater(Skin.TimerElapsedSecs(mf_pause),2) + !Window.IsActive(videoosd) + !Window.IsActive(osdsubtitlesettings) + !Window.IsActive(osdaudiosettings) + !Window.IsActive(osdvideosettings) + !Window.IsActive(playerprocessinfo) + !Player.Seeking</expression>
+	<variable name="MFPlayerLogo">
+		<value condition="!String.IsEmpty(Player.Art(clearlogo))">$INFO[Player.Art(clearlogo)]</value>
+		<value>$INFO[Player.Art(tvshow.clearlogo)]</value>
+	</variable>
+	<variable name="MFPlayerTitle">
+		<value condition="!String.IsEmpty(VideoPlayer.TVShowTitle)">$INFO[VideoPlayer.TVShowTitle]</value>
+		<value>$INFO[VideoPlayer.Title]</value>
+	</variable>
+	<variable name="MFPlayerSub">
+		<value condition="!String.IsEmpty(VideoPlayer.TVShowTitle)">$INFO[VideoPlayer.Season,S,]$INFO[VideoPlayer.Episode, · E,]$INFO[VideoPlayer.Title,  ·  ,]</value>
+		<value>$INFO[VideoPlayer.Year]</value>
+	</variable>
+
+	<!-- time · progress · time left, for a panel mf_osd_width wide -->
+	<include name="MFPlayerProgress">
+		<control type="label">
+			<left>32</left><top>0</top><width>140</width><height>40</height>
+			<aligny>center</aligny>
+			<font>mf_semibold22</font>
+			<textcolor>mf_text</textcolor>
+			<label>$INFO[Player.Time]</label>
+		</control>
+		<control type="progress">
+			<left>176</left><top>16</top><width>758</width><height>8</height>
+			<texturebg border="4" colordiffuse="33FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+			<lefttexture />
+			<midtexture border="4" colordiffuse="66FFFFFF">moodyfin/shapes/rr6.png</midtexture>
+			<righttexture />
+			<info>Player.ProgressCache</info>
+		</control>
+		<control type="progress">
+			<left>176</left><top>16</top><width>758</width><height>8</height>
+			<texturebg border="4" colordiffuse="00FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+			<lefttexture />
+			<midtexture border="4" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+			<righttexture />
+			<info>Player.Progress</info>
+		</control>
+		<control type="label">
+			<left>938</left><top>0</top><width>140</width><height>40</height>
+			<align>right</align><aligny>center</aligny>
+			<font>mf_semibold22</font>
+			<textcolor>mf_text</textcolor>
+			<label>$INFO[Player.TimeRemaining,-,]</label>
+		</control>
+	</include>
+
+	<!-- "Ends at 11:40 PM" pill, centred above the panel; param bottom -->
+	<include name="MFEndsAt">
+		<param name="bottom" />
+		<definition>
+			<control type="group">
+				<centerleft>50%</centerleft><bottom>$PARAM[bottom]</bottom><width>260</width><height>44</height>
+				<visible>!String.IsEmpty(Player.FinishTime) + Player.HasDuration</visible>
+				<control type="image">
+					<width>260</width><height>44</height>
+					<texture border="22,0,22,0" colordiffuse="CC101113">moodyfin/shapes/pill_48.png</texture>
+				</control>
+				<control type="image">
+					<width>260</width><height>44</height>
+					<texture border="22,0,22,0" colordiffuse="26FFFFFF">moodyfin/shapes/pill_line_48.png</texture>
+				</control>
+				<control type="label">
+					<width>260</width><height>44</height>
+					<align>center</align><aligny>center</aligny>
+					<font>font_flag</font>
+					<textcolor>mf_text</textcolor>
+					<label>$INFO[Player.FinishTime,Ends at ,]</label>
+				</control>
+			</control>
+		</definition>
+	</include>
+
+	<!-- glass panel background, mf_osd_width wide; param height -->
+	<include name="MFGlassPanel">
+		<param name="height" />
+		<definition>
+			<control type="image">
+				<width>mf_osd_width</width><height>$PARAM[height]</height>
+				<texture border="24" colordiffuse="D9101113">moodyfin/shapes/rr24.png</texture>
+			</control>
+			<control type="image">
+				<width>mf_osd_width</width><height>$PARAM[height]</height>
+				<texture border="24" colordiffuse="26FFFFFF">moodyfin/shapes/rr24_line.png</texture>
+			</control>
+		</definition>
+	</include>
 </includes>

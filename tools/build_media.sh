@@ -93,7 +93,7 @@ rr 400 600 16 "$M/masks/poster_large.png"
 # icon buttons (128 px, shown at 64): normal = white icon, focus = white square + black icon,
 # on = pale blue square + black icon (the Jellyfin theme's "watched" state)
 mkdir -p "$M/buttons"
-for n in play_arrow movie check skip_next info_outline sort_by_alpha swap_vert visibility filter_alt arrow_back; do
+for n in play_arrow movie check skip_next info_outline sort_by_alpha swap_vert visibility filter_alt arrow_back subtitles music_note replay_10 forward_30 pause tune stop close; do
   magick -background none -density 400 "icons/$n.svg" -resize 60x60 -fill white -colorize 100 \
     -gravity center -extent 128x128 "$M/buttons/$n.png"
   magick -background none -density 400 "icons/$n.svg" -resize 60x60 -fill black -colorize 100 -gravity center -extent 128x128 /tmp/mf_black.png
@@ -105,3 +105,11 @@ echo "buttons done"
 ring 24 24 5 2 "$M/shapes/rr6_line.png"
 # details backdrop mask: opaque to 30 %, gone at 72 % (the image box is 16:9, nothing cropped, so the mask lines up)
 magick -size 16x512 xc:white -alpha set -channel A -fx "yy=j/h; yy<0.3 ? 1 : (yy<0.72 ? 1-(yy-0.3)/0.42 : 0)" +channel "$M/masks/details.png"
+# player: big play / pause (white circle, black icon), 160 px
+for n in play_arrow pause; do
+  magick -background none -density 400 "icons/$n.svg" -resize 84x84 -fill black -colorize 100 -gravity center -extent 160x160 /tmp/mf_icon.png
+  magick -size 160x160 xc:none -fill white -draw "circle 79.5,79.5 79.5,1" /tmp/mf_icon.png -gravity center -composite "$M/buttons/${n}_big.png"
+done
+rm -f /tmp/mf_icon.png
+magick -size 176x176 xc:none -fill none -stroke white -strokewidth 5 -draw "circle 87.5,87.5 87.5,4" "$M/shapes/ring_big.png"
+rr 64 64 24 "$M/shapes/rr24.png"; ring 64 64 24 2 "$M/shapes/rr24_line.png"
