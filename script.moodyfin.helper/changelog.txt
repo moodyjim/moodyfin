@@ -1,3 +1,6 @@
+[B]0.10.3[/B]
+- Version to match the skin (repository fix).
+
 [B]0.10.2[/B]
 - Dashboard: the theme plugin's meter address comes from the installed plugin.
 

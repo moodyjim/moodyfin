@@ -96,6 +96,10 @@ address, then <i>Add-ons &gt; Install from zip file</i> and pick
 <li><a href="{repo}" style="color:#5CD8FA">{name}</a></li>
 {rows}
 </ul>
+<!-- Kodi caches this page as the folder's listing once it is browsed as a source, and then believes only what is
+     linked here exists: the repository's index files have to be listed too, or "Could not connect to repository". -->
+<p style="color:#969aa1;font-size:13px"><a href="addons.xml" style="color:#969aa1">addons.xml</a> ·
+<a href="addons.xml.md5" style="color:#969aa1">addons.xml.md5</a></p>
 <p><a href="https://github.com/moodyjim/moodyfin" style="color:#5CD8FA">Source on GitHub</a></p>
 </body></html>
 """.format(repo=os.path.basename(repo[2]), name=os.path.basename(repo[2]), rows=rows)

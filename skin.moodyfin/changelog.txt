@@ -1,3 +1,7 @@
+[B]0.10.3[/B]
+- Repository: fixed "Could not connect to repository" after browsing the source in Kodi (the page now lists the
+  repository's index files, which Kodi otherwise takes for missing).
+
 [B]0.10.2[/B]
 - User menu: Power (and Sign Out) on one line again (the label slid twice as far as its icon).
 - Dashboard: each stream's progress bar fills.

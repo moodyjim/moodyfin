@@ -101,7 +101,7 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
   - `RunScript(script.moodyfin.helper,action=studio|info|watched|play|playnext,...)` (docstring in `actions.py`)
 - `repository.moodyfin/` — Kodi repository add-on (own version, 1.0.x). `tools/build_repo.py` builds the repo site
   (addons.xml + md5 + zips); `.github/workflows/pages.yml` publishes it to https://moodyjim.github.io/moodyfin/ on
-  every `v*` tag. The Ugoos installs from there. Repo is public: never commit server names, tokens or screenshots.
+  every push to main. The Ugoos installs from there. Repo is public: never commit server names, tokens or screenshots.
 - `tools/` — `build_media.sh` (masks, pills, gradients, icons, badge strips, Top 10 numbers), `build_studios.sh`,
   `build_fonts.py` (Funnel Sans static weights + star), `kodi.py` (drive the local Kodi), `icons/` (Material Symbols SVGs).
 - `docs/reference/` — screenshots of the Jellyfin theme + logo source. Not shipped.
@@ -162,4 +162,7 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 - `String.IsEqual(ListItem.Property(x),Window(Home).Property(y))` compares two infolabels.
 - A `ranges` control scales its textures by height / texturebg's height: use the tick picture as the (transparent) bg.
 - Funnel Sans has no arrows, ●, ⏸ or ▶ (it has • × › ·): use Material icons for those.
+- Kodi caches a browsed web folder's listing (the page's links) and then says files not linked there don't exist,
+  without asking the server: the repo site's index.html must link addons.xml and addons.xml.md5 ("Could not connect
+  to repository" otherwise). A restart clears the cache.
 - Test playback with a local ffmpeg clip (`testsrc2`), muted, never a library title (it would change Jellyfin progress).

@@ -1,9 +1,11 @@
-# Publishes the Kodi add-on repository (tools/build_repo.py) to GitHub Pages for every version tag.
+# Publishes the Kodi add-on repository (tools/build_repo.py) to GitHub Pages on every push to main (every commit
+# here is a version). Not on tags: the github-pages environment only lets main deploy, and GitHub sends no tag events
+# when more than three tags are pushed at once.
 name: Kodi repository
 
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
