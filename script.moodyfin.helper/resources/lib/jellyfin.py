@@ -47,11 +47,15 @@ def _login():
     return s["address"].rstrip("/"), s["UserId"], auth
 
 
-def call(method, path):
-    """path may contain {user}. Returns the decoded JSON ({} for an empty body)."""
+def call(method, path, body=None):
+    """path may contain {user}; body (a dict / list) is sent as JSON. Returns the decoded JSON ({} for an empty body)."""
     address, user_id, auth = _login()
-    req = urllib.request.Request(address + path.replace("{user}", user_id), method=method,
-                                 headers={"Authorization": auth, "Accept": "application/json"})
+    headers = {"Authorization": auth, "Accept": "application/json"}
+    data = None
+    if body is not None:
+        data = json.dumps(body).encode("utf-8")
+        headers["Content-Type"] = "application/json"
+    req = urllib.request.Request(address + path.replace("{user}", user_id), data=data, method=method, headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
             body = resp.read()
@@ -60,6 +64,15 @@ def call(method, path):
         raise JellyfinError("Jellyfin said %d" % e.code)
     except urllib.error.URLError as e:
         raise JellyfinError("Can't reach Jellyfin (%s)" % e.reason)
+
+
+def me():
+    """The signed-in user's id (to keep an administrator from locking themselves out)."""
+    return _login()[1]
+
+
+def device_id():
+    return (_read(DATA_DIR + "jellyfin_guid") or "").strip()
 
 
 def item_id(path):

@@ -19,7 +19,7 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 - Reference theme (read-only, never edit): `c:\workflow\jellyfin\moodyjim-jellyfin-theme`
   - Look/tokens: `look/Inject/Theme/ue-tokens.css`, `ue-ambient.css`; hero `look/Inject/Hero/`; details `look/Inject/Details/`
   - Features: `web-src/js/NN-*.js`, `web-src/theme.css`
-- Reference screenshots (copied into this repo): `docs/reference/`
+- Reference screenshots (local only, gitignored: they show other people's servers): `docs/reference/*.jpg`
   - `home.jpg`, `home-rows.jpg`, `home-wide.jpg` — header, hero, studio row, Continue Watching, Top 10 (#1 wide card), Latest / Recently added rows
   - `details-movie.jpg`, `details-series.jpg` — centred clearlogo, poster card with badges + "Genre • ★ x", info bar, track rows, cast, collections, more like this, next up, seasons
   - `library-movies.jpg` — title + count, toolbar, 12-column poster grid, A–Z rail
@@ -88,7 +88,8 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
     `LoginScreen.xml` (profile picker). `Custom_1152_MoodyFinUserMenu.xml` = the avatar's user menu;
     `Custom_1153_MoodyFinDashboard.xml` = the Jellyfin theme's admin dashboard (written by `tools/build_dash.py`, data from the
     helper's `dashboard.py`; opened from the user menu, administrators only; no nav pill, Kodi's System menu on the
-    left = `MFDashMenu`). Estuary's other screens are restyled globally: `button_focus` is a soft light
+    left = `MFDashMenu`). `Custom_1154_MoodyFinAdmin.xml` = Jellyfin's admin pages (General, Users, Libraries, Devices,
+    Activity, Plugins, Scheduled tasks; `tools/build_admin.py`, helper `admin.py`); page = `Window(Home).Property(MoodyFin.AdminPage)`. Estuary's other screens are restyled globally: `button_focus` is a soft light
     highlight (not the accent), and `media/dialogs/dialog-bg.png` + `media/buttons/dialogbutton-*.png` are redrawn
     rounded by `tools/build_media.sh` (same sizes/borders as Estuary's).
   - Details page = Kodi's video info dialog. Its `ListItem.*` is always the dialog's item. Kodi ids: 8 Play, 11 Trailer,
@@ -154,6 +155,9 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 - A list's item layout can't hold grouplists or buttons (they don't draw): rows that need auto-width chips are fixed
   slots fed by window properties. A grouplist puts every child at its top (`<top>` is ignored): centre small things
   in a full-height image with `aspectratio keep`.
+- A list inside a grouplist wraps round at its end instead of following its own `ondown`: place such lists by hand.
+- Navigation can be conditional: `<onleft condition="...">SetFocus(list,n,absolute)</onleft>` (several lines).
+- `String.IsEqual(ListItem.Property(x),Window(Home).Property(y))` compares two infolabels.
 - A `ranges` control scales its textures by height / texturebg's height: use the tick picture as the (transparent) bg.
 - Funnel Sans has no arrows, ●, ⏸ or ▶ (it has • × › ·): use Material icons for those.
 - Test playback with a local ffmpeg clip (`testsrc2`), muted, never a library title (it would change Jellyfin progress).

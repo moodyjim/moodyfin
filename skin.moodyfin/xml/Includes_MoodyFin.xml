@@ -236,13 +236,18 @@
 		</definition>
 	</include>
 
-	<!-- ================================================================ dashboard menu (left)
+	<!-- ================================================================ dashboard / admin menu (left)
 	     the Jellyfin theme's admin drawer (19-dashboard-skin.js): rgba(10,10,13,.94), 1 px white 8 % edge; section headings
-	     Bebas 18 (20 here) at 45 %, letter-spaced; items 48 tall, 2 / 10 px margin, radius 12, MUI's 16 px text
-	     and 24 px icons; focused = 6 % white + 3 px to the right; this page = accent .28 -> .06 with a
-	     3 px accent bar and an accent icon. Items: Kodi's System page (Estuary's Settings.xml).
-	     3690 MoodyFin (home page), 3700 System, 3710 Settings. -->
+	     Bebas 18 (20 here) at 45 %; items 48 tall, 2 / 10 px margin, radius 12, MUI's 16 px text and 24 px icons;
+	     focused = 6 % white + 3 px to the right; this page = accent .28 -> .06 with a 3 px accent bar and an accent icon.
+	     Jellyfin's sections (SERVER, DEVICES, PLUGINS, ADVANCED) open the dashboard (1153) and the admin pages (1154,
+	     Window(Home).Property(MoodyFin.AdminPage)); KODI + SETTINGS = Kodi's System page (Estuary's Settings.xml).
+	     Fixed places (a list in a grouplist wrapped round instead of moving on); the whole menu slides up 460
+	     while KODI / SETTINGS have focus. 3690 MoodyFin (home page), lists 3700-3704, 3710.
+	     Param right = where right goes from the menu. MFDashMenuLeft = onleft lines for the page beside it. -->
 	<include name="MFDashMenu">
+		<param name="right" default="3001" />
+		<definition>
 		<control type="group">
 		<animation effect="fade" start="0" end="100" time="300">WindowOpen</animation>
 		<control type="image">
@@ -253,13 +258,15 @@
 			<left>239</left><top>0</top><width>1</width><height>100%</height>
 			<texture colordiffuse="14FFFFFF">colors/white.png</texture>
 		</control>
+		<control type="group">
+		<animation effect="slide" end="0,-460" time="250" tween="cubic" easing="out" condition="Control.HasFocus(3704) | Control.HasFocus(3710)">Conditional</animation>
 		<!-- MoodyFin + Kodi version: back to the home page -->
 		<control type="button" id="3690">
 			<left>10</left><top>14</top><width>220</width><height>64</height>
 			<label /><texturenofocus />
 			<texturefocus border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texturefocus>
 			<onclick>ActivateWindow(home)</onclick>
-			<onup>noop</onup><ondown>3700</ondown><onleft>noop</onleft><onright>3001</onright>
+			<onup>noop</onup><ondown>3700</ondown><onleft>noop</onleft><onright>$PARAM[right]</onright>
 		</control>
 		<control type="image">
 			<left>24</left><top>26</top><width>40</width><height>40</height>
@@ -274,247 +281,636 @@
 			<left>76</left><top>48</top><width>150</width><height>18</height><aligny>center</aligny>
 			<font>mf_medium13</font><textcolor>99FFFFFF</textcolor><label>Kodi $INFO[System.BuildVersionShort]</label>
 		</control>
-		<control type="label">
-			<left>16</left><top>92</top><width>208</width><height>48</height><aligny>center</aligny>
-			<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>SYSTEM</label>
+			<control type="label">
+				<left>16</left><top>88</top><width>208</width><height>48</height><aligny>center</aligny>
+				<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>SERVER</label>
+			</control>
+			<control type="list" id="3700">
+				<left>0</left><top>136</top><width>240</width><height>208</height>
+				<orientation>vertical</orientation>
+				<scrolltime>0</scrolltime>
+				<onup>3690</onup><ondown>3701</ondown><onleft>noop</onleft><onright>$PARAM[right]</onright>
+				<itemlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>false</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>Control.HasFocus(3700)</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3700)">Conditional</animation>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>
+					<item>
+						<label>Dashboard</label>
+						<icon>moodyfin/icons/dashboard.png</icon>
+						<onclick>SetProperty(MoodyFin.AdminPage,dashboard,home)</onclick>
+						<onclick>ReplaceWindow(1153)</onclick>
+						<property name="page">dashboard</property>
+					</item>
+					<item>
+						<label>General</label>
+						<icon>moodyfin/icons/settings.png</icon>
+						<onclick>SetProperty(MoodyFin.AdminPage,general,home)</onclick>
+						<onclick>ReplaceWindow(1154)</onclick>
+						<property name="page">general</property>
+					</item>
+					<item>
+						<label>Users</label>
+						<icon>moodyfin/icons/group.png</icon>
+						<onclick>SetProperty(MoodyFin.AdminPage,users,home)</onclick>
+						<onclick>ReplaceWindow(1154)</onclick>
+						<property name="page">users</property>
+					</item>
+					<item>
+						<label>Libraries</label>
+						<icon>moodyfin/icons/video_library.png</icon>
+						<onclick>SetProperty(MoodyFin.AdminPage,libraries,home)</onclick>
+						<onclick>ReplaceWindow(1154)</onclick>
+						<property name="page">libraries</property>
+					</item>
+				</content>
+			</control>
+			<control type="label">
+				<left>16</left><top>344</top><width>208</width><height>48</height><aligny>center</aligny>
+				<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>DEVICES</label>
+			</control>
+			<control type="list" id="3701">
+				<left>0</left><top>392</top><width>240</width><height>104</height>
+				<orientation>vertical</orientation>
+				<scrolltime>0</scrolltime>
+				<onup>3700</onup><ondown>3702</ondown><onleft>noop</onleft><onright>$PARAM[right]</onright>
+				<itemlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>false</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>Control.HasFocus(3701)</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3701)">Conditional</animation>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>
+					<item>
+						<label>Devices</label>
+						<icon>moodyfin/icons/devices.png</icon>
+						<onclick>SetProperty(MoodyFin.AdminPage,devices,home)</onclick>
+						<onclick>ReplaceWindow(1154)</onclick>
+						<property name="page">devices</property>
+					</item>
+					<item>
+						<label>Activity</label>
+						<icon>moodyfin/icons/insights.png</icon>
+						<onclick>SetProperty(MoodyFin.AdminPage,activity,home)</onclick>
+						<onclick>ReplaceWindow(1154)</onclick>
+						<property name="page">activity</property>
+					</item>
+				</content>
+			</control>
+			<control type="label">
+				<left>16</left><top>496</top><width>208</width><height>48</height><aligny>center</aligny>
+				<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>PLUGINS</label>
+			</control>
+			<control type="list" id="3702">
+				<left>0</left><top>544</top><width>240</width><height>52</height>
+				<orientation>vertical</orientation>
+				<scrolltime>0</scrolltime>
+				<onup>3701</onup><ondown>3703</ondown><onleft>noop</onleft><onright>$PARAM[right]</onright>
+				<itemlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>false</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>Control.HasFocus(3702)</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3702)">Conditional</animation>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>
+					<item>
+						<label>Plugins</label>
+						<icon>moodyfin/icons/extension.png</icon>
+						<onclick>SetProperty(MoodyFin.AdminPage,plugins,home)</onclick>
+						<onclick>ReplaceWindow(1154)</onclick>
+						<property name="page">plugins</property>
+					</item>
+				</content>
+			</control>
+			<control type="label">
+				<left>16</left><top>596</top><width>208</width><height>48</height><aligny>center</aligny>
+				<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>ADVANCED</label>
+			</control>
+			<control type="list" id="3703">
+				<left>0</left><top>644</top><width>240</width><height>52</height>
+				<orientation>vertical</orientation>
+				<scrolltime>0</scrolltime>
+				<onup>3702</onup><ondown>3704</ondown><onleft>noop</onleft><onright>$PARAM[right]</onright>
+				<itemlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>false</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>Control.HasFocus(3703)</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3703)">Conditional</animation>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>
+					<item>
+						<label>Scheduled tasks</label>
+						<icon>moodyfin/icons/schedule.png</icon>
+						<onclick>SetProperty(MoodyFin.AdminPage,tasks,home)</onclick>
+						<onclick>ReplaceWindow(1154)</onclick>
+						<property name="page">tasks</property>
+					</item>
+				</content>
+			</control>
+			<control type="label">
+				<left>16</left><top>696</top><width>208</width><height>48</height><aligny>center</aligny>
+				<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>KODI</label>
+			</control>
+			<control type="list" id="3704">
+				<left>0</left><top>744</top><width>240</width><height>208</height>
+				<orientation>vertical</orientation>
+				<scrolltime>0</scrolltime>
+				<onup>3703</onup><ondown>3710</ondown><onleft>noop</onleft><onright>$PARAM[right]</onright>
+				<itemlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>false</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>Control.HasFocus(3704)</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3704)">Conditional</animation>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>
+					<item>
+						<label>$LOCALIZE[10003]</label>
+						<icon>moodyfin/icons/folder.png</icon>
+						<onclick>ActivateWindow(filemanager)</onclick>
+					</item>
+					<item>
+						<label>$LOCALIZE[24001]</label>
+						<icon>moodyfin/icons/extension.png</icon>
+						<onclick>ActivateWindow(addonbrowser)</onclick>
+					</item>
+					<item>
+						<label>$LOCALIZE[138]</label>
+						<icon>moodyfin/icons/info.png</icon>
+						<onclick>ActivateWindow(systeminfo)</onclick>
+					</item>
+					<item>
+						<label>$LOCALIZE[31067]</label>
+						<icon>moodyfin/icons/history.png</icon>
+						<onclick>ActivateWindow(eventlog)</onclick>
+					</item>
+				</content>
+			</control>
+			<control type="label">
+				<left>16</left><top>952</top><width>208</width><height>48</height><aligny>center</aligny>
+				<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>SETTINGS</label>
+			</control>
+			<control type="list" id="3710">
+				<left>0</left><top>1000</top><width>240</width><height>520</height>
+				<orientation>vertical</orientation>
+				<scrolltime>0</scrolltime>
+				<onup>3704</onup><ondown>noop</ondown><onleft>noop</onleft><onright>$PARAM[right]</onright>
+				<itemlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>false</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout width="240" height="52">
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+						<visible>Control.HasFocus(3710)</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="image">
+						<left>10</left><top>2</top><width>220</width><height>48</height>
+						<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+						<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+					</control>
+					<control type="group">
+						<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3710)">Conditional</animation>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+							<visible>!String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="image">
+							<left>26</left><top>14</top><width>24</width><height>24</height>
+							<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+							<visible>String.IsEqual(ListItem.Property(page),Window(Home).Property(MoodyFin.AdminPage))</visible>
+						</control>
+						<control type="label">
+							<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+							<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+						</control>
+					</control>
+				</focusedlayout>
+				<content>
+					<item>
+						<label>$LOCALIZE[14200]</label>
+						<icon>moodyfin/icons/smart_display.png</icon>
+						<onclick>ActivateWindow(PlayerSettings)</onclick>
+					</item>
+					<item>
+						<label>$LOCALIZE[14211]</label>
+						<icon>moodyfin/icons/perm_media.png</icon>
+						<onclick>ActivateWindow(MediaSettings)</onclick>
+					</item>
+					<item>
+						<label>$LOCALIZE[14204]</label>
+						<icon>moodyfin/icons/tv_guide.png</icon>
+						<onclick>ActivateWindow(PVRSettings)</onclick>
+					</item>
+					<item>
+						<label>$LOCALIZE[14036]</label>
+						<icon>moodyfin/icons/settings_input_antenna.png</icon>
+						<onclick>ActivateWindow(ServiceSettings)</onclick>
+					</item>
+					<item>
+						<label>$LOCALIZE[15016]</label>
+						<icon>moodyfin/icons/sports_esports.png</icon>
+						<onclick>ActivateWindow(GameSettings)</onclick>
+						<visible>System.GetBool(gamesgeneral.enable)</visible>
+					</item>
+					<item>
+						<label>$LOCALIZE[14206]</label>
+						<icon>moodyfin/icons/design_services.png</icon>
+						<onclick>ActivateWindow(InterfaceSettings)</onclick>
+					</item>
+					<item>
+						<label>$LOCALIZE[13200]</label>
+						<icon>moodyfin/icons/person.png</icon>
+						<onclick>ActivateWindow(Profiles)</onclick>
+					</item>
+					<item>
+						<label>$LOCALIZE[13000]</label>
+						<icon>moodyfin/icons/settings.png</icon>
+						<onclick>ActivateWindow(SystemSettings)</onclick>
+					</item>
+					<item>
+						<label>CoreELEC</label>
+						<icon>moodyfin/icons/memory.png</icon>
+						<onclick>RunAddon(service.coreelec.settings)</onclick>
+						<visible>System.AddonIsEnabled(service.coreelec.settings)</visible>
+					</item>
+					<item>
+						<label>LibreELEC</label>
+						<icon>moodyfin/icons/memory.png</icon>
+						<onclick>RunAddon(service.libreelec.settings)</onclick>
+						<visible>System.AddonIsEnabled(service.libreelec.settings)</visible>
+					</item>
+				</content>
+			</control>
 		</control>
-		<control type="list" id="3700">
-			<left>0</left><top>140</top><width>240</width><height>260</height>
-			<orientation>vertical</orientation>
-			<scrolltime>0</scrolltime>
-			<onup>3690</onup><ondown>3710</ondown><onleft>noop</onleft><onright>3001</onright>
-			<itemlayout width="240" height="52">
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
-					<visible>false</visible>
-				</control>
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
-					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-				</control>
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
-					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-				</control>
-				<control type="group">
-					
-					<control type="image">
-						<left>26</left><top>14</top><width>24</width><height>24</height>
-						<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
-						<visible>String.IsEmpty(ListItem.Property(current))</visible>
-					</control>
-					<control type="image">
-						<left>26</left><top>14</top><width>24</width><height>24</height>
-						<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
-						<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-					</control>
-					<control type="label">
-						<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
-						<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
-					</control>
-				</control>
-			</itemlayout>
-			<focusedlayout width="240" height="52">
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
-					<visible>Control.HasFocus(3700)</visible>
-				</control>
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
-					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-				</control>
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
-					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-				</control>
-				<control type="group">
-					<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3700)">Conditional</animation>
-					<control type="image">
-						<left>26</left><top>14</top><width>24</width><height>24</height>
-						<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
-						<visible>String.IsEmpty(ListItem.Property(current))</visible>
-					</control>
-					<control type="image">
-						<left>26</left><top>14</top><width>24</width><height>24</height>
-						<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
-						<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-					</control>
-					<control type="label">
-						<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
-						<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
-					</control>
-				</control>
-			</focusedlayout>
-			<content>
-				<item>
-					<label>Dashboard</label>
-					<icon>moodyfin/icons/dashboard.png</icon>
-					<onclick>noop</onclick>
-					<property name="current">1</property>
-				</item>
-				<item>
-					<label>$LOCALIZE[10003]</label>
-					<icon>moodyfin/icons/folder.png</icon>
-					<onclick>ActivateWindow(filemanager)</onclick>
-				</item>
-				<item>
-					<label>$LOCALIZE[24001]</label>
-					<icon>moodyfin/icons/extension.png</icon>
-					<onclick>ActivateWindow(addonbrowser)</onclick>
-				</item>
-				<item>
-					<label>$LOCALIZE[138]</label>
-					<icon>moodyfin/icons/info.png</icon>
-					<onclick>ActivateWindow(systeminfo)</onclick>
-				</item>
-				<item>
-					<label>$LOCALIZE[31067]</label>
-					<icon>moodyfin/icons/history.png</icon>
-					<onclick>ActivateWindow(eventlog)</onclick>
-				</item>
-			</content>
 		</control>
-		<control type="label">
-			<left>16</left><top>404</top><width>208</width><height>48</height><aligny>center</aligny>
-			<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>SETTINGS</label>
-		</control>
-		<control type="list" id="3710">
-			<left>0</left><top>452</top><width>240</width><height>520</height>
-			<orientation>vertical</orientation>
-			<scrolltime>0</scrolltime>
-			<onup>3700</onup><ondown>noop</ondown><onleft>noop</onleft><onright>3001</onright>
-			<itemlayout width="240" height="52">
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
-					<visible>false</visible>
-				</control>
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
-					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-				</control>
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
-					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-				</control>
-				<control type="group">
-					
-					<control type="image">
-						<left>26</left><top>14</top><width>24</width><height>24</height>
-						<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
-						<visible>String.IsEmpty(ListItem.Property(current))</visible>
-					</control>
-					<control type="image">
-						<left>26</left><top>14</top><width>24</width><height>24</height>
-						<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
-						<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-					</control>
-					<control type="label">
-						<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
-						<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
-					</control>
-				</control>
-			</itemlayout>
-			<focusedlayout width="240" height="52">
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
-					<visible>Control.HasFocus(3710)</visible>
-				</control>
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
-					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-				</control>
-				<control type="image">
-					<left>10</left><top>2</top><width>220</width><height>48</height>
-					<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
-					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-				</control>
-				<control type="group">
-					<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3710)">Conditional</animation>
-					<control type="image">
-						<left>26</left><top>14</top><width>24</width><height>24</height>
-						<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
-						<visible>String.IsEmpty(ListItem.Property(current))</visible>
-					</control>
-					<control type="image">
-						<left>26</left><top>14</top><width>24</width><height>24</height>
-						<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
-						<visible>!String.IsEmpty(ListItem.Property(current))</visible>
-					</control>
-					<control type="label">
-						<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
-						<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
-					</control>
-				</control>
-			</focusedlayout>
-			<content>
-				<item>
-					<label>$LOCALIZE[14200]</label>
-					<icon>moodyfin/icons/smart_display.png</icon>
-					<onclick>ActivateWindow(PlayerSettings)</onclick>
-				</item>
-				<item>
-					<label>$LOCALIZE[14211]</label>
-					<icon>moodyfin/icons/perm_media.png</icon>
-					<onclick>ActivateWindow(MediaSettings)</onclick>
-				</item>
-				<item>
-					<label>$LOCALIZE[14204]</label>
-					<icon>moodyfin/icons/tv_guide.png</icon>
-					<onclick>ActivateWindow(PVRSettings)</onclick>
-				</item>
-				<item>
-					<label>$LOCALIZE[14036]</label>
-					<icon>moodyfin/icons/settings_input_antenna.png</icon>
-					<onclick>ActivateWindow(ServiceSettings)</onclick>
-				</item>
-				<item>
-					<label>$LOCALIZE[15016]</label>
-					<icon>moodyfin/icons/sports_esports.png</icon>
-					<onclick>ActivateWindow(GameSettings)</onclick>
-					<visible>System.GetBool(gamesgeneral.enable)</visible>
-				</item>
-				<item>
-					<label>$LOCALIZE[14206]</label>
-					<icon>moodyfin/icons/design_services.png</icon>
-					<onclick>ActivateWindow(InterfaceSettings)</onclick>
-				</item>
-				<item>
-					<label>$LOCALIZE[13200]</label>
-					<icon>moodyfin/icons/person.png</icon>
-					<onclick>ActivateWindow(Profiles)</onclick>
-				</item>
-				<item>
-					<label>$LOCALIZE[13000]</label>
-					<icon>moodyfin/icons/settings.png</icon>
-					<onclick>ActivateWindow(SystemSettings)</onclick>
-				</item>
-				<item>
-					<label>CoreELEC</label>
-					<icon>moodyfin/icons/memory.png</icon>
-					<onclick>RunAddon(service.coreelec.settings)</onclick>
-					<visible>System.AddonIsEnabled(service.coreelec.settings)</visible>
-				</item>
-				<item>
-					<label>LibreELEC</label>
-					<icon>moodyfin/icons/memory.png</icon>
-					<onclick>RunAddon(service.libreelec.settings)</onclick>
-					<visible>System.AddonIsEnabled(service.libreelec.settings)</visible>
-				</item>
-			</content>
-		</control>
-		</control>
+		</definition>
 	</include>
+	<include name="MFDashMenuLeft">
+		<onleft condition="String.IsEqual(Window(Home).Property(MoodyFin.AdminPage),dashboard)">SetFocus(3700,0,absolute)</onleft>
+		<onleft condition="String.IsEqual(Window(Home).Property(MoodyFin.AdminPage),general)">SetFocus(3700,1,absolute)</onleft>
+		<onleft condition="String.IsEqual(Window(Home).Property(MoodyFin.AdminPage),users)">SetFocus(3700,2,absolute)</onleft>
+		<onleft condition="String.IsEqual(Window(Home).Property(MoodyFin.AdminPage),libraries)">SetFocus(3700,3,absolute)</onleft>
+		<onleft condition="String.IsEqual(Window(Home).Property(MoodyFin.AdminPage),devices)">SetFocus(3701,0,absolute)</onleft>
+		<onleft condition="String.IsEqual(Window(Home).Property(MoodyFin.AdminPage),activity)">SetFocus(3701,1,absolute)</onleft>
+		<onleft condition="String.IsEqual(Window(Home).Property(MoodyFin.AdminPage),plugins)">SetFocus(3702,0,absolute)</onleft>
+		<onleft condition="String.IsEqual(Window(Home).Property(MoodyFin.AdminPage),tasks)">SetFocus(3703,0,absolute)</onleft>
+	</include>
+
+	<!-- admin pages (Custom_1154_MoodyFinAdmin.xml): Activity's toolbar button -->
+	<variable name="MFAdminFilter">
+		<value condition="String.IsEqual(Window(Home).Property(MoodyFin.Admin.Filter),user)">Showing: users</value>
+		<value condition="String.IsEqual(Window(Home).Property(MoodyFin.Admin.Filter),system)">Showing: system</value>
+		<value>Showing: everything</value>
+	</variable>
 
 	<!-- dashboard (Custom_1153_MoodyFinDashboard.xml) -->
 	<variable name="MFDashScanLabel">

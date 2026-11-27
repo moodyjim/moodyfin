@@ -464,6 +464,7 @@ def page():
      Opened from the user menu (administrators). -->
 <window id="1153">
 	<defaultcontrol always="true">3001</defaultcontrol>
+	<onload>SetProperty(MoodyFin.AdminPage,dashboard,home)</onload>
 	<backgroundcolor>background</backgroundcolor>
 	<controls>
 		<include>MFAmbient</include>
@@ -533,7 +534,7 @@ def page():
 			<texturenofocus border="18,0,18,0" colordiffuse="mf_accent">moodyfin/shapes/pill_40.png</texturenofocus>
 			<texturefocus border="18,0,18,0" colordiffuse="mf_accent">moodyfin/shapes/pill_40.png</texturefocus>
 			<onclick>RunScript(script.moodyfin.helper,action=dashscan)</onclick>
-			<onup>9120</onup><ondown>3200</ondown><onleft>3700</onleft><onright>3002</onright>
+			<onup>9120</onup><ondown>3200</ondown><include>MFDashMenuLeft</include><onright>3002</onright>
 		</control>
 		<control type="image">
 			<right>242</right><top>14</top><width>222</width><height>44</height>
@@ -598,7 +599,7 @@ def page():
 			<left>-4</left><top>196</top><width>878</width><height>226</height>
 			<orientation>horizontal</orientation>
 			<scrolltime tween="cubic" easing="out">200</scrolltime>
-			<onup>3001</onup><ondown>noop</ondown><onleft>3700</onleft><onright>3600</onright>
+			<onup>3001</onup><ondown>noop</ondown><include>MFDashMenuLeft</include><onright>3600</onright>
 			<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.Property(mf.kind)],dbid=$INFO[ListItem.Property(mf.dbid)])</onclick>
 			<itemlayout width="124" height="226">
 %(rec)s			</itemlayout>
@@ -655,7 +656,7 @@ def page():
 		</control>
 		</control>
 
-		<include content="MFDashMenu" />
+		<include content="MFDashMenu"><param name="right" value="3001" /></include>
 		<include content="MFHeader"><param name="down" value="3001" /><param name="stats" value="false" /><param name="nav" value="false" /><param name="avatarleft" value="3001" /></include>
 	</controls>
 </window>

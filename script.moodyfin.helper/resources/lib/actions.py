@@ -22,6 +22,9 @@
         Player: marks / unmarks the playing title as a Jellyfin favourite (Window(Home).Property(MoodyFin.Fav) 1/0).
     action=dashscan / action=dashserver
         Dashboard: scan all Jellyfin libraries / the Server menu (restart, shut down; each asks first).
+    action=admin,id=... / action=admintool
+        Admin pages (window 1154): what to do with a row (Kodi's pickers, asks before anything final) / the page's
+        toolbar button (Libraries: scan all; Activity: all / users / system).
     action=playnext,tvshowid=N
         Plays the show's next episode (the one in progress, else the first unwatched), resuming where it stopped.
 """
@@ -206,6 +209,12 @@ def run(argv):
     elif action == "dashserver":
         from . import dashboard
         dashboard.server_menu()
+    elif action == "admin":
+        from . import admin
+        admin.act(args.get("id", ""))
+    elif action == "admintool":
+        from . import admin
+        admin.tool()
     elif action == "playnext":
         playnext(args.get("tvshowid", ""))
     else:

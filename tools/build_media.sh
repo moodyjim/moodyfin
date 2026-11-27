@@ -32,6 +32,11 @@ rr 48 48 16 "$M/shapes/rr16.png"; ring 48 48 16 2 "$M/shapes/rr16_line.png"
 rr 40 40 10 "$M/shapes/rr10.png"
 # dashboard (the Jellyfin theme's 19-dashboard-skin.js): boxes radius 14, chips radius 7
 rr 40 40 14 "$M/shapes/rr14.png"; ring 40 40 14 2 "$M/shapes/rr14_line.png"
+rr 48 48 18 "$M/shapes/rr18.png"; ring 48 48 18 2 "$M/shapes/rr18_line.png"   # admin pages (--tbd-radius 18)
+rr 44 44 10 "$M/masks/tile44.png"
+# the Jellyfin theme's chips (MuiChip): radius 8, colour at 14 % with a 35 % 1 px edge, alpha baked in so any colour can tint them
+magick -size 48x48 xc:none -fill "rgba(255,255,255,0.14)" -draw "roundrectangle 0,0,47,47,8,8" PNG32:"$M/shapes/chip_bg.png"
+magick -size 48x48 xc:none -fill none -stroke "rgba(255,255,255,0.35)" -strokewidth 1 -draw "roundrectangle 0.5,0.5,47.5,47.5,8,8" PNG32:"$M/shapes/chip_line.png"
 rr 24 24 7 "$M/shapes/rr7.png"; ring 24 24 7 2 "$M/shapes/rr7_line.png"
 magick -size 52x68 xc:none -fill white -draw "roundrectangle 0,21,51,46,13,13" "$M/shapes/chip26_68.png"  # 26 px pill in a 68 px row
 # dashboard menu (the Jellyfin theme's drawer): selected item = accent .28 -> .06 left to right, radius 12, 3 px inset bar

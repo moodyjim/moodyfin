@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.moodyfin.helper" name="MoodyFin Helper" version="0.9.0" provider-name="moodyjim">
+<addon id="script.moodyfin.helper" name="MoodyFin Helper" version="0.10.0" provider-name="moodyjim">
   <requires>
     <import addon="xbmc.python" version="3.0.1"/>
     <!-- blur for the ambient background; without it the skin shows the plain picture, dimmed -->

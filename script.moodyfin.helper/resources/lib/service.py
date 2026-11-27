@@ -6,7 +6,7 @@
 - Window(Home).Property(MoodyFin.Server)  the Jellyfin server's name (sign-in page), from Jellyfin for Kodi's data.json
 - Window(Home).Property(MoodyFin.UserName|UserSub|UserPic)  the Jellyfin user, for the header's user menu
                                           (UserSub "Administrator" or "Signed in", like the Jellyfin theme's)
-- the dashboard's data while it is open (dashboard.py)
+- the dashboard's data while it is open (dashboard.py), the admin pages' (admin.py)
 - Up Next pop-up near the end of library episodes (upnext.py)
 - Window(Home).Property(MoodyFin.Ambient) blurred copy of the picture the skin names in its hidden label 9990
                                           (see ambient.py)
@@ -17,7 +17,7 @@ import time
 import xbmc
 import xbmcgui
 
-from . import ambient, dashboard, rpc, upnext
+from . import admin, ambient, dashboard, rpc, upnext
 
 HOME = xbmcgui.Window(10000)
 LIBRARY_EVENTS = ("VideoLibrary.OnScanFinished", "VideoLibrary.OnCleanFinished", "VideoLibrary.OnUpdate",
@@ -79,6 +79,7 @@ def run():
     amb = ambient.Ambient()
     up = upnext.UpNext()
     dash = dashboard.Dashboard()
+    adm = admin.Admin()
     while not monitor.abortRequested():
         if monitor.dirty_at and time.time() >= monitor.dirty_at and not xbmc.Player().isPlayingVideo():
             monitor.dirty_at = 0.0
@@ -87,6 +88,7 @@ def run():
         amb.tick()
         up.tick()
         dash.tick()
+        adm.tick()
         if monitor.waitForAbort(0.25):
             break
     amb.stop()

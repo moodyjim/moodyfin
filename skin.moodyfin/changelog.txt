@@ -1,3 +1,9 @@
+[B]0.10.0[/B]
+- Admin pages (dashboard menu): General, Users, Libraries, Devices, Activity, Plugins, Scheduled tasks, in the Jellyfin theme's
+  admin look. OK on a row opens what can be done with it (asks before anything final).
+- Dashboard menu: Jellyfin's sections (Server, Devices, Plugins, Advanced) above Kodi's; it scrolls; the page you're on
+  is highlighted, and left from a page lands on its menu item.
+
 [B]0.9.0[/B]
 - Dashboard (avatar menu > Dashboard, administrators): the Jellyfin theme's admin dashboard home. Now Playing (streams by play
   method, upload Mbps, a card per stream), server bar (version, uptime, CPU, memory, transcoding, devices, users),

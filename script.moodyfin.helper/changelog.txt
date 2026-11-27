@@ -1,3 +1,7 @@
+[B]0.10.0[/B]
+- admin.py: the admin pages' data and actions (users, libraries, devices, activity, plugins, tasks, server settings).
+- jellyfin.call sends JSON bodies.
+
 [B]0.9.0[/B]
 - dashboard.py: reads the dashboard's data from Jellyfin while it is open (theme plugin's meter for CPU, memory, uptime,
   Mbps); rows row=dash&part=act|sto|task|att|rec; actions dashscan, dashserver.

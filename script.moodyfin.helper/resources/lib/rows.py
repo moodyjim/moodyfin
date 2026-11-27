@@ -1,6 +1,6 @@
 """Plugin source for MoodyFin's Home rows: plugin://script.moodyfin.helper/?row=<name>[&reload=...]
 
-Rows: hero, continue, top10, latest, recentmovies, recentshows; dash&part=... (the dashboard's lists, dashboard.py). `reload` is only there so the skin can make Kodi
+Rows: hero, continue, top10, latest, recentmovies, recentshows; dash&part=... (the dashboard's lists, dashboard.py); admin (the admin page, admin.py). `reload` is only there so the skin can make Kodi
 fetch a row again (the service changes it after playback and library updates).
 """
 import datetime
@@ -10,7 +10,7 @@ from urllib.parse import parse_qsl
 import xbmc
 import xbmcplugin
 
-from . import dashboard, items, rpc
+from . import admin, dashboard, items, rpc
 
 SORT_LASTPLAYED = {"method": "lastplayed", "order": "descending"}
 SORT_ADDED = {"method": "dateadded", "order": "descending"}
@@ -220,7 +220,8 @@ def _plain(fn):
 ROWS = {"hero": _plain(hero_row), "continue": _plain(continue_row), "top10": _top10, "latest": _plain(latest_row),
         "recentmovies": _plain(recentmovies_row), "recentshows": _plain(recentshows_row), "nextup": nextup_row,
         "seasons": seasons_row, "collection": collection_row, "similar": similar_row,
-        "search": search_row, "dash": lambda params: dashboard.rows(params.get("part", ""))}
+        "search": search_row, "dash": lambda params: dashboard.rows(params.get("part", "")),
+        "admin": lambda params: admin.rows(params.get("reload", ""))}
 
 
 def run(argv):
