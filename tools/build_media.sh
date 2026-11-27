@@ -123,16 +123,18 @@ magick -size 80x80 xc:none -fill "rgba(16,17,19,0.95)" -draw "roundrectangle 9,9
   -fill none -stroke "rgba(255,255,255,0.10)" -strokewidth 1 -draw "roundrectangle 9.5,9.5,69.5,69.5,12,12" "$E/dialogs/dialog-bg.png"
 magick -size 80x80 xc:none -fill white -draw "roundrectangle 12,12,67,67,16,16" "$E/buttons/dialogbutton-fo.png"
 magick -size 80x80 xc:none -fill "rgba(255,255,255,0.08)" -draw "roundrectangle 12,12,67,67,16,16" "$E/buttons/dialogbutton-nofo.png"
-# hover card buttons, 96 px: play = white disc + black icon; others = thin white ring + white icon
-for n in play_arrow favorite check expand_more; do
-  if [ "$n" = play_arrow ]; then
-    magick -background none -density 400 "icons/$n.svg" -resize 46x46 -fill black -colorize 100 -gravity center -extent 96x96 /tmp/mf_i.png
-    magick -size 96x96 xc:none -fill white -draw "circle 47.5,47.5 47.5,1" /tmp/mf_i.png -gravity center -composite "$M/buttons/pop_$n.png"
-  else
-    magick -background none -density 400 "icons/$n.svg" -resize 40x40 -fill white -colorize 100 -gravity center -extent 96x96 /tmp/mf_i.png
-    magick -size 96x96 xc:none -fill "rgba(16,17,19,0.6)" -stroke "rgba(255,255,255,0.55)" -strokewidth 3 -draw "circle 47.5,47.5 47.5,3" /tmp/mf_i.png -gravity center -composite "$M/buttons/pop_$n.png"
-  fi
+# hover card buttons (the Jellyfin theme's hover preview: 38 px circles), drawn at 96 px.
+# play = white disc + black icon (26/38); others = rgba(40,40,44,.6) disc, light ring, white icon (19/38);
+# check_on = the watched state's lit ring; check_tick = the tick alone (tinted with the accent in the skin)
+icon() { magick -background none -density 400 "icons/$1.svg" -resize ${2}x${2} -fill "$3" -colorize 100 -gravity center -extent 96x96 "$4"; }
+icon play_arrow 66 black /tmp/mf_i.png
+magick -size 96x96 xc:none -fill white -draw "circle 47.5,47.5 47.5,1" /tmp/mf_i.png -gravity center -composite "$M/buttons/pop_play_arrow.png"
+for n in favorite check expand_more; do
+  icon $n 48 white /tmp/mf_i.png
+  magick -size 96x96 xc:none -fill "rgba(40,40,44,0.6)" -stroke "rgba(255,255,255,0.45)" -strokewidth 3 -draw "circle 47.5,47.5 47.5,3" /tmp/mf_i.png -gravity center -composite "$M/buttons/pop_$n.png"
 done
+magick -size 96x96 xc:none -fill "rgba(255,255,255,0.12)" -stroke white -strokewidth 3 -draw "circle 47.5,47.5 47.5,3" "$M/buttons/pop_check_on.png"
+icon check 48 white "$M/buttons/pop_check_tick.png"
 rm -f /tmp/mf_i.png
-# hover card backdrop: rounded top corners only (360x202, 16:9)
-magick -size 360x230 xc:none -fill white -draw "roundrectangle 0,0,359,229,12,12" -crop 360x202+0+0 +repage "$M/masks/pop.png"
+# hover card backdrop: rounded top corners only (336x189, 16:9)
+magick -size 336x215 xc:none -fill white -draw "roundrectangle 0,0,335,214,12,12" -crop 336x189+0+0 +repage "$M/masks/pop.png"

@@ -1,3 +1,7 @@
+[B]0.7.1[/B]
+- Hover card made to the Jellyfin theme's hover preview: 336 px, #18181b, Bebas 32 title, 38 px buttons, SemiBold / Medium
+  15 px text, rating in the highlight colour, genres with dim dots, watched check lit in the highlight colour.
+
 [B]0.7.0[/B]
 - Hover card (the Jellyfin theme's title popup): after about a second on a movie or show poster, a wide card over it with
   the backdrop, title logo, play / favourite / watched / more buttons, rating, year, runtime, age rating (shows:

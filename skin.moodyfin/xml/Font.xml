@@ -134,6 +134,26 @@
 		</font>
 		<!-- MoodyFin -->
 		<font>
+			<name>mf_heading32</name>
+			<filename>BebasNeue-Regular.ttf</filename>
+			<size>32</size>
+		</font>
+		<font>
+			<name>mf_card_meta</name>
+			<filename>FunnelSans-SemiBold.ttf</filename>
+			<size>15</size>
+		</font>
+		<font>
+			<name>mf_card_genre</name>
+			<filename>FunnelSans-Medium.ttf</filename>
+			<size>15</size>
+		</font>
+		<font>
+			<name>mf_card_badge</name>
+			<filename>FunnelSans-SemiBold.ttf</filename>
+			<size>12</size>
+		</font>
+		<font>
 			<name>mf_semibold20</name>
 			<filename>FunnelSans-SemiBold.ttf</filename>
 			<size>20</size>
@@ -340,6 +360,29 @@
 			<size>26</size>
 		</font>
 		<!-- MoodyFin -->
+		<font>
+			<name>mf_heading32</name>
+			<filename>arial.ttf</filename>
+			<size>32</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_card_meta</name>
+			<filename>arial.ttf</filename>
+			<size>15</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_card_genre</name>
+			<filename>arial.ttf</filename>
+			<size>15</size>
+		</font>
+		<font>
+			<name>mf_card_badge</name>
+			<filename>arial.ttf</filename>
+			<size>12</size>
+			<style>bold</style>
+		</font>
 		<font>
 			<name>mf_semibold20</name>
 			<filename>arial.ttf</filename>

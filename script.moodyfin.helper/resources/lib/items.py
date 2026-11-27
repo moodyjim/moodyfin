@@ -76,6 +76,8 @@ def _common(li, tag, d):
     genres = d.get("genre") or []
     li.setProperty("mf.genre", genres[0] if genres else "")
     li.setProperty("mf.genres", "  ·  ".join(genres[:2]))
+    # hover card: "Comedy • Romance" with a dim dot (the Jellyfin theme's)
+    li.setProperty("mf.genredots", "  [COLOR 66FFFFFF]•[/COLOR]  ".join(genres[:3]))
     li.setProperty("mf.rating", _rating(d.get("rating", 0)))
     li.setArt(d.get("art") or {})
     tag.setTitle(d.get("title", ""))
