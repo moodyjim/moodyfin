@@ -131,6 +131,12 @@
 				<focusedlayout width="206" height="390"><include content="MFPosterCard"><param name="list" value="520" /><param name="focused" value="true" /></include></focusedlayout>
 			</control>
 
+			<!-- hover card over the poster grid -->
+			<control type="group">
+				<left>68</left><top>202</top>
+				<include content="MFPopupGrid"><param name="list" value="520" /></include>
+			</control>
+
 			<!-- A-Z rail (poster grid sorted by name, A-Z): the helper jumps to the first title under a letter -->
 			<control type="list" id="530">
 				<right>24</right><top>210</top><width>48</width><bottom>20</bottom>

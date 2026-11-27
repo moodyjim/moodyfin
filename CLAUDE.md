@@ -129,4 +129,8 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 - Python `getInfoLabel("Container(id).ListItemAbsolute(n).SortLetter")` + `SetFocus(id,n,absolute)` = letter jump.
 - Lists clip at their edges: anything drawn outside an item (focus ring at -3) needs the card inset (cards sit 4 px
   in; lists are 4 px up/left of where the cards appear).
+- Hover card (`MFPopupRow` / `MFPopupRowTop10` / `MFPopupGrid`, written by `tools/build_popup.py`): its own control
+  after the list, moved over the focused slot by conditional slides on Container.Position (or Column/Row); shows on
+  `System.IdleTime(1)`. Any input hides it, **including kodi.py's screenshot action**: check it with a Windows screen
+  capture of the Kodi window instead.
 - Test playback with a local ffmpeg clip (`testsrc2`), muted, never a library title (it would change Jellyfin progress).

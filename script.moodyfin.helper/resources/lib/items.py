@@ -163,6 +163,7 @@ def tvshow(d):
     if d.get("premiered"):
         tag.setPremiered(d["premiered"])
     li.setProperty("TotalEpisodes", str(d.get("episode", 0)))
+    li.setProperty("TotalSeasons", str(d.get("season", 0)))
     li.setProperty("WatchedEpisodes", str(d.get("watchedepisodes", 0)))
     li.setProperty("UnWatchedEpisodes", str(max(0, d.get("episode", 0) - d.get("watchedepisodes", 0))))
     li.setProperty("mf.sub", str(d.get("year") or ""))

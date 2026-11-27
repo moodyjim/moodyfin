@@ -241,11 +241,11 @@
 
 	<!-- ================================================================ cards -->
 	<variable name="MFCardSub">
-		<value condition="!String.IsEmpty(ListItem.Property(mf.type))">$INFO[ListItem.Property(mf.rating),★ , · ]$INFO[ListItem.Property(mf.sub)]$VAR[MFTypeLabel]</value>
+		<value condition="!String.IsEmpty(ListItem.Property(mf.type))">$INFO[ListItem.Property(mf.rating),[COLOR mf_accent]★ ,[/COLOR] · ]$INFO[ListItem.Property(mf.sub)]$VAR[MFTypeLabel]</value>
 		<value condition="String.IsEqual(ListItem.DBType,season)">$INFO[ListItem.Property(NumEpisodes),, episodes]</value>
 		<value condition="String.IsEqual(ListItem.DBType,set)">$INFO[ListItem.Property(Total),, movies]</value>
-		<value condition="String.IsEqual(ListItem.DBType,movie)">$INFO[ListItem.Rating,★ , · ]$INFO[ListItem.Year] · Movie</value>
-		<value condition="String.IsEqual(ListItem.DBType,tvshow)">$INFO[ListItem.Rating,★ , · ]$INFO[ListItem.Year] · Show</value>
+		<value condition="String.IsEqual(ListItem.DBType,movie)">$INFO[ListItem.Rating,[COLOR mf_accent]★ ,[/COLOR] · ]$INFO[ListItem.Year] · Movie</value>
+		<value condition="String.IsEqual(ListItem.DBType,tvshow)">$INFO[ListItem.Rating,[COLOR mf_accent]★ ,[/COLOR] · ]$INFO[ListItem.Year] · Show</value>
 		<value>$INFO[ListItem.Year]</value>
 	</variable>
 	<variable name="MFCardFallbackTitle">
@@ -327,15 +327,15 @@
 				<control type="group">
 					<visible>$PARAM[text]</visible>
 					<control type="label">
-						<top>296</top><width>190</width><height>30</height>
-						<font>mf_semibold22</font>
+						<top>294</top><width>190</width><height>28</height>
+						<font>mf_semibold20</font>
 						<textcolor>mf_text</textcolor>
 						<label>$INFO[ListItem.Label]</label>
 						<scroll>Control.HasFocus($PARAM[list])</scroll>
 					</control>
 					<control type="label">
-						<top>326</top><width>190</width><height>28</height>
-						<font>mf_small20</font>
+						<top>320</top><width>190</width><height>26</height>
+						<font>mf_small18</font>
 						<textcolor>mf_muted</textcolor>
 						<label>$VAR[MFCardSub]</label>
 					</control>
@@ -535,6 +535,10 @@
 					<itemlayout width="206" height="370"><include content="MFPosterCard"><param name="list" value="$PARAM[id]" /></include></itemlayout>
 					<focusedlayout width="206" height="370"><include content="MFPosterCard"><param name="list" value="$PARAM[id]" /><param name="focused" value="true" /></include></focusedlayout>
 					<content target="videos">plugin://script.moodyfin.helper/?row=$PARAM[row]&amp;reload=$INFO[Window(Home).Property(MoodyFin.Reload)]</content>
+				</control>
+				<control type="group">
+					<left>68</left><top>72</top>
+					<include content="MFPopupRow"><param name="list" value="$PARAM[id]" /></include>
 				</control>
 			</control>
 		</definition>
@@ -994,4 +998,219 @@
 			</control>
 		</definition>
 	</include>
+	<!-- MFPopup:begin (written by tools/build_popup.py) -->
+	<!-- hover card body; param list = the list whose focused item it shows -->
+	<include name="MFPopupBody">
+		<param name="list" />
+		<definition>
+			<control type="image">
+				<width>360</width><height>344</height>
+				<texture border="12" colordiffuse="F7141518">moodyfin/shapes/rr12.png</texture>
+			</control>
+			<control type="image">
+				<width>360</width><height>202</height>
+				<aspectratio>stretch</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/pop.png">$INFO[Container($PARAM[list]).ListItem.Art(fanart)]</texture>
+			</control>
+			<control type="image">
+				<top>82</top><width>360</width><height>122</height>
+				<texture colordiffuse="F2141518">moodyfin/shapes/grad_down.png</texture>
+			</control>
+			<control type="image">
+				<width>360</width><height>344</height>
+				<texture border="14" colordiffuse="1FFFFFFF">moodyfin/shapes/rr12_line.png</texture>
+			</control>
+			<control type="image">
+				<left>16</left><top>104</top><width>250</width><height>88</height>
+				<aspectratio align="left" aligny="bottom">keep</aspectratio>
+				<texture background="true">$INFO[Container($PARAM[list]).ListItem.Art(clearlogo)]</texture>
+			</control>
+			<control type="label">
+				<left>16</left><top>130</top><width>328</width><height>64</height>
+				<aligny>bottom</aligny>
+				<font>mf_heading48</font>
+				<textcolor>mf_text</textcolor>
+				<label>$INFO[Container($PARAM[list]).ListItem.Label]</label>
+				<visible>String.IsEmpty(Container($PARAM[list]).ListItem.Art(clearlogo))</visible>
+			</control>
+			<!-- buttons: a picture of the Jellyfin theme's (OK opens the details page) -->
+			<control type="image">
+				<left>16</left><top>212</top><width>48</width><height>48</height>
+				<texture>moodyfin/buttons/pop_play_arrow.png</texture>
+			</control>
+			<control type="image">
+				<left>74</left><top>212</top><width>48</width><height>48</height>
+				<texture>moodyfin/buttons/pop_favorite.png</texture>
+			</control>
+			<control type="image">
+				<left>132</left><top>212</top><width>48</width><height>48</height>
+				<texture>moodyfin/buttons/pop_check.png</texture>
+			</control>
+			<control type="image">
+				<left>132</left><top>212</top><width>48</width><height>48</height>
+				<texture colordiffuse="mf_accent">moodyfin/shapes/circle_line.png</texture>
+				<visible>Integer.IsGreater(Container($PARAM[list]).ListItem.PlayCount,0)</visible>
+			</control>
+			<control type="image">
+				<right>16</right><top>212</top><width>48</width><height>48</height>
+				<texture>moodyfin/buttons/pop_expand_more.png</texture>
+			</control>
+			<!-- ★ 6.9   2026   2h 8m   [R]   (shows: N Seasons) -->
+			<control type="grouplist">
+				<left>16</left><top>272</top><width>328</width><height>30</height>
+				<orientation>horizontal</orientation>
+				<itemgap>16</itemgap>
+				<usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>30</height>
+					<aligny>center</aligny>
+					<font>mf_semibold20</font>
+					<label>$INFO[Container($PARAM[list]).ListItem.Rating,[COLOR mf_accent]★ ,[/COLOR]]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>30</height>
+					<aligny>center</aligny>
+					<font>mf_semibold20</font>
+					<textcolor>mf_text</textcolor>
+					<label>$INFO[Container($PARAM[list]).ListItem.Year]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>30</height>
+					<aligny>center</aligny>
+					<font>mf_semibold20</font>
+					<textcolor>mf_text</textcolor>
+					<label>$INFO[Container($PARAM[list]).ListItem.Property(mf.runtime)]</label>
+					<visible>!String.IsEmpty(Container($PARAM[list]).ListItem.Property(mf.runtime))</visible>
+				</control>
+				<control type="label">
+					<width>auto</width><height>30</height>
+					<aligny>center</aligny>
+					<font>mf_semibold20</font>
+					<textcolor>mf_text</textcolor>
+					<label>$INFO[Container($PARAM[list]).ListItem.Duration(mins),, min]</label>
+					<visible>String.IsEmpty(Container($PARAM[list]).ListItem.Property(mf.runtime)) + String.IsEqual(Container($PARAM[list]).ListItem.DBType,movie)</visible>
+				</control>
+				<control type="label">
+					<width>auto</width><height>30</height>
+					<aligny>center</aligny>
+					<font>mf_semibold20</font>
+					<textcolor>mf_text</textcolor>
+					<label>$INFO[Container($PARAM[list]).ListItem.Property(TotalSeasons),, Seasons]</label>
+					<visible>String.IsEqual(Container($PARAM[list]).ListItem.DBType,tvshow) + Integer.IsGreater(Container($PARAM[list]).ListItem.Property(TotalSeasons),1)</visible>
+				</control>
+				<control type="label">
+					<width>auto</width><height>30</height>
+					<aligny>center</aligny>
+					<font>mf_semibold20</font>
+					<textcolor>mf_text</textcolor>
+					<label>1 Season</label>
+					<visible>String.IsEqual(Container($PARAM[list]).ListItem.DBType,tvshow) + String.IsEqual(Container($PARAM[list]).ListItem.Property(TotalSeasons),1)</visible>
+				</control>
+				<control type="button">
+					<top>3</top><width>auto</width><height>24</height>
+					<label>$INFO[Container($PARAM[list]).ListItem.Mpaa]</label>
+					<font>font_flag</font>
+					<textoffsetx>8</textoffsetx>
+					<aligny>center</aligny>
+					<disabledcolor>E6F1F2F4</disabledcolor>
+					<texturenofocus border="5" colordiffuse="B3F1F2F4">moodyfin/shapes/rr6_line.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Container($PARAM[list]).ListItem.Mpaa)</visible>
+				</control>
+			</control>
+			<control type="label">
+				<left>16</left><top>304</top><width>328</width><height>28</height>
+				<font>mf_small18</font>
+				<textcolor>mf_muted</textcolor>
+				<label>$INFO[Container($PARAM[list]).ListItem.Property(mf.genres)]</label>
+				<visible>!String.IsEmpty(Container($PARAM[list]).ListItem.Property(mf.genres))</visible>
+			</control>
+			<control type="label">
+				<left>16</left><top>304</top><width>328</width><height>28</height>
+				<font>mf_small18</font>
+				<textcolor>mf_muted</textcolor>
+				<label>$INFO[Container($PARAM[list]).ListItem.Genre]</label>
+				<visible>String.IsEmpty(Container($PARAM[list]).ListItem.Property(mf.genres))</visible>
+			</control>
+		</definition>
+	</include>
+	<!-- hover card over a horizontal poster list; place it right after the list with the list's left/top -->
+	<include name="MFPopupRow">
+		<param name="list" />
+		<definition>
+			<control type="group">
+				<top>-10</top><width>360</width><height>344</height>
+				<visible>Control.HasFocus($PARAM[list]) + System.IdleTime(1) + !Container($PARAM[list]).Scrolling + [String.IsEqual(Container($PARAM[list]).ListItem.DBType,movie) | String.IsEqual(Container($PARAM[list]).ListItem.DBType,tvshow)]</visible>
+				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+				<animation effect="zoom" start="92" end="100" center="auto" time="200" tween="cubic" easing="out">Visible</animation>
+				<animation effect="slide" end="-40,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,0)">Conditional</animation>
+				<animation effect="slide" end="125,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,1)">Conditional</animation>
+				<animation effect="slide" end="331,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,2)">Conditional</animation>
+				<animation effect="slide" end="537,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,3)">Conditional</animation>
+				<animation effect="slide" end="743,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,4)">Conditional</animation>
+				<animation effect="slide" end="949,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,5)">Conditional</animation>
+				<animation effect="slide" end="1155,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,6)">Conditional</animation>
+				<animation effect="slide" end="1361,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,7)">Conditional</animation>
+				<animation effect="slide" end="1468,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,8)">Conditional</animation>
+				<animation effect="slide" end="1468,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,9)">Conditional</animation>
+				<animation effect="slide" end="1468,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,10)">Conditional</animation>
+				<animation effect="slide" end="1468,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,11)">Conditional</animation>
+				<include content="MFPopupBody"><param name="list" value="$PARAM[list]" /></include>
+			</control>
+		</definition>
+	</include>
+	<!-- hover card over a horizontal poster list; place it right after the list with the list's left/top -->
+	<include name="MFPopupRowTop10">
+		<param name="list" />
+		<definition>
+			<control type="group">
+				<top>-10</top><width>360</width><height>344</height>
+				<visible>Control.HasFocus($PARAM[list]) + System.IdleTime(1) + !Container($PARAM[list]).Scrolling + [String.IsEqual(Container($PARAM[list]).ListItem.DBType,movie) | String.IsEqual(Container($PARAM[list]).ListItem.DBType,tvshow)]</visible>
+				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+				<animation effect="zoom" start="92" end="100" center="auto" time="200" tween="cubic" easing="out">Visible</animation>
+				<animation effect="slide" end="-40,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,0)">Conditional</animation>
+				<animation effect="slide" end="125,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,1)">Conditional</animation>
+				<animation effect="slide" end="331,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,2)">Conditional</animation>
+				<animation effect="slide" end="537,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,3)">Conditional</animation>
+				<animation effect="slide" end="743,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,4)">Conditional</animation>
+				<animation effect="slide" end="949,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,5)">Conditional</animation>
+				<animation effect="slide" end="1056,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,6)">Conditional</animation>
+				<animation effect="slide" end="1056,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,7)">Conditional</animation>
+				<animation effect="slide" end="1056,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,8)">Conditional</animation>
+				<animation effect="slide" end="1056,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,9)">Conditional</animation>
+				<animation effect="slide" end="1056,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,10)">Conditional</animation>
+				<animation effect="slide" end="1056,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Position,11)">Conditional</animation>
+				<include content="MFPopupBody"><param name="list" value="$PARAM[list]" /></include>
+			</control>
+		</definition>
+	</include>
+	<!-- hover card over the poster panel (520); place it right after the panel with the panel's left/top -->
+	<include name="MFPopupGrid">
+		<param name="list" />
+		<definition>
+			<control type="group">
+				<top>-10</top><width>360</width><height>344</height>
+				<visible>Control.HasFocus($PARAM[list]) + System.IdleTime(1) + !Container($PARAM[list]).Scrolling + [String.IsEqual(Container($PARAM[list]).ListItem.DBType,movie) | String.IsEqual(Container($PARAM[list]).ListItem.DBType,tvshow)]</visible>
+				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+				<animation effect="zoom" start="92" end="100" center="auto" time="200" tween="cubic" easing="out">Visible</animation>
+				<animation effect="slide" end="-40,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,0)">Conditional</animation>
+				<animation effect="slide" end="125,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,1)">Conditional</animation>
+				<animation effect="slide" end="331,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,2)">Conditional</animation>
+				<animation effect="slide" end="537,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,3)">Conditional</animation>
+				<animation effect="slide" end="743,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,4)">Conditional</animation>
+				<animation effect="slide" end="949,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,5)">Conditional</animation>
+				<animation effect="slide" end="1155,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,6)">Conditional</animation>
+				<animation effect="slide" end="1361,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,7)">Conditional</animation>
+				<animation effect="slide" end="1468,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,8)">Conditional</animation>
+				<animation effect="slide" end="1468,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,9)">Conditional</animation>
+				<animation effect="slide" end="1468,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,10)">Conditional</animation>
+				<animation effect="slide" end="1468,0" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Column,11)">Conditional</animation>
+				<animation effect="slide" end="0,390" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Row,1)">Conditional</animation>
+				<animation effect="slide" end="0,510" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Row,2)">Conditional</animation>
+				<animation effect="slide" end="0,510" time="0" condition="Integer.IsEqual(Container($PARAM[list]).Row,3)">Conditional</animation>
+				<include content="MFPopupBody"><param name="list" value="$PARAM[list]" /></include>
+			</control>
+		</definition>
+	</include>
+	<!-- MFPopup:end -->
 </includes>

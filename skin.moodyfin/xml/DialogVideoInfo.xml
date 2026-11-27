@@ -327,6 +327,11 @@
 					<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.DBType],dbid=$INFO[ListItem.DBID])</onclick>
 					<content target="videos">plugin://script.moodyfin.helper/?row=similar&amp;type=$INFO[ListItem.DBType]&amp;dbid=$INFO[ListItem.DBID]</content>
 				</control>
+				<control type="group">
+					<left>68</left><top>72</top>
+					<include content="MFPopupRow"><param name="list" value="505" /></include>
+					<include content="MFPopupRow"><param name="list" value="506" /></include>
+				</control>
 			</control>
 			<control type="image"><height>80</height><texture /></control>
 		</control>

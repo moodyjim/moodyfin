@@ -1,3 +1,6 @@
+[B]0.7.0[/B]
+- Show items carry TotalSeasons (hover card).
+
 [B]0.6.1[/B]
 - Version shared with the skin (no code changes).
 

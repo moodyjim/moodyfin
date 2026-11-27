@@ -1,3 +1,9 @@
+[B]0.7.0[/B]
+- Hover card (the Jellyfin theme's title popup): after about a second on a movie or show poster, a wide card over it with
+  the backdrop, title logo, play / favourite / watched / more buttons, rating, year, runtime, age rating (shows:
+  seasons) and genres. On Home rows, Top 10, search, More Like This and library poster pages.
+- Text under posters a size smaller; the star and score in the highlight colour.
+
 [B]0.6.1[/B]
 - Focus ring no longer cut off at the top (and the left of the first card): cards sit 4 px inside their slot.
 

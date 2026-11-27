@@ -134,6 +134,16 @@
 		</font>
 		<!-- MoodyFin -->
 		<font>
+			<name>mf_semibold20</name>
+			<filename>FunnelSans-SemiBold.ttf</filename>
+			<size>20</size>
+		</font>
+		<font>
+			<name>mf_small18</name>
+			<filename>FunnelSans-Medium.ttf</filename>
+			<size>18</size>
+		</font>
+		<font>
 			<name>mf_small20</name>
 			<filename>FunnelSans-Medium.ttf</filename>
 			<size>20</size>
@@ -330,6 +340,17 @@
 			<size>26</size>
 		</font>
 		<!-- MoodyFin -->
+		<font>
+			<name>mf_semibold20</name>
+			<filename>arial.ttf</filename>
+			<size>20</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_small18</name>
+			<filename>arial.ttf</filename>
+			<size>18</size>
+		</font>
 		<font>
 			<name>mf_small20</name>
 			<filename>arial.ttf</filename>

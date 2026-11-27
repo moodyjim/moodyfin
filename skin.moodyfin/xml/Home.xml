@@ -321,6 +321,10 @@
 					</focusedlayout>
 					<content target="videos">plugin://script.moodyfin.helper/?row=top10&amp;part=rest&amp;reload=$INFO[Window(Home).Property(MoodyFin.Reload)]</content>
 				</control>
+				<control type="group">
+					<left>480</left><top>72</top>
+					<include content="MFPopupRowTop10"><param name="list" value="4022" /></include>
+				</control>
 			</control>
 
 			<include content="MFPosterRow"><param name="group" value="4030" /><param name="id" value="403" /><param name="up" value="4020" /><param name="down" value="4040" /><param name="label" value="Latest Releases" /><param name="row" value="latest" /></include>
