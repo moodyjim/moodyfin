@@ -1,0 +1,2455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MoodyFin dashboard (window 1153): the Jellyfin theme's admin dashboard home (web-src/js/19-dashboard-skin.js) with its
+     Now Playing panel (24-now-playing.js). Written by tools/build_dash.py from those files' CSS; data from the helper
+     (resources/lib/dashboard.py): Window(Home).Property(MoodyFin.Dash.*) and the rows
+     plugin://script.moodyfin.helper/?row=dash&part=np|att|rec|sto|task|act.
+     Left out (web only): the admin menu column, Compact / Hide / Show details, card details on click, the folders
+     under each drive, the CPU sparkline, "Update all & restart".
+     Focus: 3001 Scan all libraries, 3002 Server menu, 3200 Recently added, 3600 Activity; left menu (MFDashMenu,
+     Includes_MoodyFin.xml): 3690 MoodyFin (home), 3700 System items, 3710 Settings items.
+     Opened from the user menu (administrators). -->
+<window id="1153">
+	<defaultcontrol always="true">3001</defaultcontrol>
+	<backgroundcolor>background</backgroundcolor>
+	<controls>
+		<include>MFAmbient</include>
+		<!-- the page; moves up while the lower half (recently added, deep in the activity list) has focus -->
+		<control type="group">
+		<top>-64</top>
+		<animation effect="slide" end="0,-340" time="300" tween="cubic" easing="out" condition="Control.HasFocus(3200) | [Control.HasFocus(3600) + Integer.IsGreater(Container(3600).CurrentItem,9)]">Conditional</animation>
+
+		<!-- ======================================================== NOW PLAYING -->
+		<control type="grouplist">
+			<left>264</left><top>114</top><width>600</width><height>40</height>
+			<orientation>horizontal</orientation><itemgap>10</itemgap><usecontrolwidth>true</usecontrolwidth>
+			<control type="image">
+				<width>26</width><height>40</height><aspectratio>keep</aspectratio>
+				<texture>moodyfin/icons/play_circle.png</texture>
+			</control>
+			<control type="label">
+				<width>auto</width><height>40</height><aligny>center</aligny>
+				<font>mf_heading32</font><textcolor>FFFFFFFF</textcolor><label>NOW PLAYING</label>
+			</control>
+			<control type="image">
+				<width>9</width><height>40</height><aspectratio>keep</aspectratio>
+				<texture colordiffuse="FF3EE0A1">moodyfin/shapes/circle.png</texture>
+				<animation effect="fade" start="100" end="35" time="800" pulse="true" condition="true">Conditional</animation>
+			</control>
+		</control>
+		<control type="image">
+			<left>264</left><top>166</top><right>72</right><height>58</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+		</control>
+		<control type="image">
+			<left>264</left><top>166</top><right>72</right><height>58</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+		</control>
+		<control type="grouplist">
+			<left>284</left><top>178</top><width>960</width><height>34</height>
+			<orientation>horizontal</orientation><itemgap>7</itemgap><usecontrolwidth>true</usecontrolwidth>
+			<control type="group"><width>0</width><height>12</height></control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_heading36</font><textcolor>FFFFFFFF</textcolor>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.Streams)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold12</font><textcolor>8CFFFFFF</textcolor>
+					<label>STREAMS</label>
+					<top>4</top>
+				</control>
+				<control type="image"><width>4</width><height>34</height><texture /></control>
+				<control type="image"><top>4</top><width>1</width><height>26</height><texture colordiffuse="1AFFFFFF">colors/white.png</texture></control>
+				<control type="image"><width>4</width><height>34</height><texture /></control>
+				<control type="image">
+					<width>9</width><height>34</height><aspectratio>keep</aspectratio>
+					<texture colordiffuse="FF3EE0A1">moodyfin/shapes/circle.png</texture>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.DP),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold18</font><textcolor>FFFFFFFF</textcolor>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.DP)]</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.DP),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_card_meta</font><textcolor>E0FFFFFF</textcolor>
+					<label>Direct Play</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.DP),0)">Conditional</animation>
+				</control>
+				<control type="image"><width>6</width><height>34</height><texture /></control>
+				<control type="image">
+					<width>9</width><height>34</height><aspectratio>keep</aspectratio>
+					<texture colordiffuse="FF4FB4FF">moodyfin/shapes/circle.png</texture>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.DS),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold18</font><textcolor>FFFFFFFF</textcolor>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.DS)]</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.DS),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_card_meta</font><textcolor>E0FFFFFF</textcolor>
+					<label>Direct Stream</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.DS),0)">Conditional</animation>
+				</control>
+				<control type="image"><width>6</width><height>34</height><texture /></control>
+				<control type="image">
+					<width>9</width><height>34</height><aspectratio>keep</aspectratio>
+					<texture colordiffuse="FFB98CFF">moodyfin/shapes/circle.png</texture>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.RM),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold18</font><textcolor>FFFFFFFF</textcolor>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.RM)]</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.RM),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_card_meta</font><textcolor>E0FFFFFF</textcolor>
+					<label>Remux</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.RM),0)">Conditional</animation>
+				</control>
+				<control type="image"><width>6</width><height>34</height><texture /></control>
+				<control type="image">
+					<width>9</width><height>34</height><aspectratio>keep</aspectratio>
+					<texture colordiffuse="FFFF6B8A">moodyfin/shapes/circle.png</texture>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.TC),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold18</font><textcolor>FFFFFFFF</textcolor>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.TC)]</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.TC),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_card_meta</font><textcolor>E0FFFFFF</textcolor>
+					<label>Transcode</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.TC),0)">Conditional</animation>
+				</control>
+				<control type="image"><width>6</width><height>34</height><texture /></control>
+				<control type="image"><top>4</top><width>1</width><height>26</height><texture colordiffuse="1AFFFFFF">colors/white.png</texture></control>
+				<control type="image"><width>4</width><height>34</height><texture /></control>
+				<control type="image">
+					<width>14</width><height>34</height><aspectratio>keep</aspectratio>
+					<texture colordiffuse="FFFFBE55">moodyfin/icons/pause.png</texture>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.Paused),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold18</font><textcolor>FFFFBE55</textcolor>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.Paused)]</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.Paused),0)">Conditional</animation>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_card_meta</font><textcolor>FFFFBE55</textcolor>
+					<label>Paused</label>
+					<animation effect="fade" start="100" end="38" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.Dash.Paused),0)">Conditional</animation>
+				</control>
+		</control>
+		<control type="grouplist">
+			<right>92</right><top>178</top><width>700</width><height>34</height>
+			<orientation>horizontal</orientation><align>right</align><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold24</font><textcolor>mf_accent</textcolor>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.UpStreams)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold12</font><textcolor>80FFFFFF</textcolor>
+					<label>MBPS STREAMS</label>
+					<top>4</top>
+				</control>
+				<control type="image"><width>8</width><height>34</height><texture /></control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold24</font><textcolor>BFFFFFFF</textcolor>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.UpTotal)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>34</height><aligny>center</aligny>
+					<font>mf_bold12</font><textcolor>80FFFFFF</textcolor>
+					<label>MBPS TOTAL UPLOAD</label>
+					<top>4</top>
+				</control>
+		</control>
+		<!-- one card per stream, 3 across, up to 6 -->
+		<!-- stream 1 -->
+		<control type="group">
+			<left>264</left><top>238</top><width>521</width><height>94</height>
+			<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.1.title))</visible>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF3EE0A1">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.edge),dp)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF4FB4FF">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.edge),ds)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFF6B8A">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.edge),tc)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFFBE55">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.edge),pa)</visible>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="D1101014">moodyfin/shapes/rr14.png</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<aspectratio>stretch</aspectratio>
+				<texture background="true" colordiffuse="33FFFFFF" diffuse="moodyfin/masks/npcard.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.1.bg)]</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="1AFFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<texture border="7" colordiffuse="FF111111">moodyfin/shapes/rr7.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/npposter.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.1.poster)]</texture>
+			</control>
+			<!-- title, sub (700 15 / 500 12 at 55 %) and this stream's Mbps (700 12 accent chip) -->
+			<control type="grouplist">
+				<left>73</left><top>9</top><width>320</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.title)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>8CFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.sub)]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<right>12</right><top>9</top><width>150</width><height>22</height>
+				<orientation>horizontal</orientation><align>right</align><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.mbps)]</label><font>mf_bold13</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>mf_accent</disabledcolor>
+					<texturenofocus border="7" colordiffuse="0FFFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+				</control>
+			</control>
+			<!-- avatar 18, user (700 12), client . device (500 12 at 50 %) -->
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<texture colordiffuse="FF333333">moodyfin/shapes/circle.png</texture>
+			</control>
+			<control type="label">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<align>center</align><aligny>center</aligny>
+				<font>mf_bold12</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.initial)]</label>
+			</control>
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/shapes/circle.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.1.av)]</texture>
+			</control>
+			<control type="grouplist">
+				<left>99</left><top>36</top><width>410</width><height>18</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_bold13</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.user)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.dev)]</label>
+				</control>
+			</control>
+			<!-- progress, 3 px -->
+			<control type="progress">
+				<left>73</left><top>60</top><width>436</width><height>3</height>
+				<texturebg border="1" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+				<lefttexture />
+				<midtexture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+				<righttexture />
+				<info>Window(Home).Property(MoodyFin.Dash.np.1.pct)</info>
+			</control>
+			<!-- method pill (600 11 in its colour), what happens to the picture, time . ends -->
+			<control type="grouplist">
+				<left>73</left><top>68</top><width>250</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF3EE0A1</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="143EE0A1">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.m),dp)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF4FB4FF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="144FB4FF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.m),ds)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFB98CFF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14B98CFF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.m),rm)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF6B8A</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FF6B8A">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.m),tc)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>     $INFO[Window(Home).Property(MoodyFin.Dash.np.1.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFBE55</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FFBE55">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.m),pa)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFFFFF</disabledcolor>
+					<texturenofocus border="7" colordiffuse="12FFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.1.summary)) + String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.1.conv))</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF8FA5</disabledcolor>
+					<texturenofocus border="7" colordiffuse="1AFF6B8A">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.1.conv))</visible>
+				</control>
+			</control>
+			<control type="image">
+				<left>81</left><top>73</top><width>12</width><height>12</height>
+				<texture colordiffuse="FFFFBE55">moodyfin/icons/pause.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.1.m),pa)</visible>
+			</control>
+			<control type="label">
+				<right>12</right><top>68</top><width>230</width><height>22</height>
+				<align>right</align><aligny>center</aligny>
+				<font>mf_card_badge</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.1.time)]</label>
+			</control>
+		</control>
+		<!-- stream 2 -->
+		<control type="group">
+			<left>795</left><top>238</top><width>521</width><height>94</height>
+			<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.2.title))</visible>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF3EE0A1">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.edge),dp)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF4FB4FF">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.edge),ds)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFF6B8A">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.edge),tc)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFFBE55">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.edge),pa)</visible>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="D1101014">moodyfin/shapes/rr14.png</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<aspectratio>stretch</aspectratio>
+				<texture background="true" colordiffuse="33FFFFFF" diffuse="moodyfin/masks/npcard.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.2.bg)]</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="1AFFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<texture border="7" colordiffuse="FF111111">moodyfin/shapes/rr7.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/npposter.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.2.poster)]</texture>
+			</control>
+			<!-- title, sub (700 15 / 500 12 at 55 %) and this stream's Mbps (700 12 accent chip) -->
+			<control type="grouplist">
+				<left>73</left><top>9</top><width>320</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.title)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>8CFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.sub)]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<right>12</right><top>9</top><width>150</width><height>22</height>
+				<orientation>horizontal</orientation><align>right</align><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.mbps)]</label><font>mf_bold13</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>mf_accent</disabledcolor>
+					<texturenofocus border="7" colordiffuse="0FFFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+				</control>
+			</control>
+			<!-- avatar 18, user (700 12), client . device (500 12 at 50 %) -->
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<texture colordiffuse="FF333333">moodyfin/shapes/circle.png</texture>
+			</control>
+			<control type="label">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<align>center</align><aligny>center</aligny>
+				<font>mf_bold12</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.initial)]</label>
+			</control>
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/shapes/circle.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.2.av)]</texture>
+			</control>
+			<control type="grouplist">
+				<left>99</left><top>36</top><width>410</width><height>18</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_bold13</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.user)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.dev)]</label>
+				</control>
+			</control>
+			<!-- progress, 3 px -->
+			<control type="progress">
+				<left>73</left><top>60</top><width>436</width><height>3</height>
+				<texturebg border="1" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+				<lefttexture />
+				<midtexture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+				<righttexture />
+				<info>Window(Home).Property(MoodyFin.Dash.np.2.pct)</info>
+			</control>
+			<!-- method pill (600 11 in its colour), what happens to the picture, time . ends -->
+			<control type="grouplist">
+				<left>73</left><top>68</top><width>250</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF3EE0A1</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="143EE0A1">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.m),dp)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF4FB4FF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="144FB4FF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.m),ds)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFB98CFF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14B98CFF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.m),rm)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF6B8A</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FF6B8A">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.m),tc)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>     $INFO[Window(Home).Property(MoodyFin.Dash.np.2.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFBE55</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FFBE55">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.m),pa)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFFFFF</disabledcolor>
+					<texturenofocus border="7" colordiffuse="12FFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.2.summary)) + String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.2.conv))</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF8FA5</disabledcolor>
+					<texturenofocus border="7" colordiffuse="1AFF6B8A">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.2.conv))</visible>
+				</control>
+			</control>
+			<control type="image">
+				<left>81</left><top>73</top><width>12</width><height>12</height>
+				<texture colordiffuse="FFFFBE55">moodyfin/icons/pause.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.2.m),pa)</visible>
+			</control>
+			<control type="label">
+				<right>12</right><top>68</top><width>230</width><height>22</height>
+				<align>right</align><aligny>center</aligny>
+				<font>mf_card_badge</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.2.time)]</label>
+			</control>
+		</control>
+		<!-- stream 3 -->
+		<control type="group">
+			<left>1326</left><top>238</top><width>521</width><height>94</height>
+			<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.3.title))</visible>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF3EE0A1">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.edge),dp)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF4FB4FF">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.edge),ds)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFF6B8A">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.edge),tc)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFFBE55">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.edge),pa)</visible>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="D1101014">moodyfin/shapes/rr14.png</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<aspectratio>stretch</aspectratio>
+				<texture background="true" colordiffuse="33FFFFFF" diffuse="moodyfin/masks/npcard.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.3.bg)]</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="1AFFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<texture border="7" colordiffuse="FF111111">moodyfin/shapes/rr7.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/npposter.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.3.poster)]</texture>
+			</control>
+			<!-- title, sub (700 15 / 500 12 at 55 %) and this stream's Mbps (700 12 accent chip) -->
+			<control type="grouplist">
+				<left>73</left><top>9</top><width>320</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.title)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>8CFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.sub)]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<right>12</right><top>9</top><width>150</width><height>22</height>
+				<orientation>horizontal</orientation><align>right</align><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.mbps)]</label><font>mf_bold13</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>mf_accent</disabledcolor>
+					<texturenofocus border="7" colordiffuse="0FFFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+				</control>
+			</control>
+			<!-- avatar 18, user (700 12), client . device (500 12 at 50 %) -->
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<texture colordiffuse="FF333333">moodyfin/shapes/circle.png</texture>
+			</control>
+			<control type="label">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<align>center</align><aligny>center</aligny>
+				<font>mf_bold12</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.initial)]</label>
+			</control>
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/shapes/circle.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.3.av)]</texture>
+			</control>
+			<control type="grouplist">
+				<left>99</left><top>36</top><width>410</width><height>18</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_bold13</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.user)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.dev)]</label>
+				</control>
+			</control>
+			<!-- progress, 3 px -->
+			<control type="progress">
+				<left>73</left><top>60</top><width>436</width><height>3</height>
+				<texturebg border="1" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+				<lefttexture />
+				<midtexture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+				<righttexture />
+				<info>Window(Home).Property(MoodyFin.Dash.np.3.pct)</info>
+			</control>
+			<!-- method pill (600 11 in its colour), what happens to the picture, time . ends -->
+			<control type="grouplist">
+				<left>73</left><top>68</top><width>250</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF3EE0A1</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="143EE0A1">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.m),dp)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF4FB4FF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="144FB4FF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.m),ds)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFB98CFF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14B98CFF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.m),rm)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF6B8A</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FF6B8A">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.m),tc)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>     $INFO[Window(Home).Property(MoodyFin.Dash.np.3.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFBE55</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FFBE55">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.m),pa)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFFFFF</disabledcolor>
+					<texturenofocus border="7" colordiffuse="12FFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.3.summary)) + String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.3.conv))</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF8FA5</disabledcolor>
+					<texturenofocus border="7" colordiffuse="1AFF6B8A">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.3.conv))</visible>
+				</control>
+			</control>
+			<control type="image">
+				<left>81</left><top>73</top><width>12</width><height>12</height>
+				<texture colordiffuse="FFFFBE55">moodyfin/icons/pause.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.3.m),pa)</visible>
+			</control>
+			<control type="label">
+				<right>12</right><top>68</top><width>230</width><height>22</height>
+				<align>right</align><aligny>center</aligny>
+				<font>mf_card_badge</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.3.time)]</label>
+			</control>
+		</control>
+		<!-- stream 4 -->
+		<control type="group">
+			<left>264</left><top>342</top><width>521</width><height>94</height>
+			<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.4.title))</visible>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF3EE0A1">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.edge),dp)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF4FB4FF">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.edge),ds)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFF6B8A">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.edge),tc)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFFBE55">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.edge),pa)</visible>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="D1101014">moodyfin/shapes/rr14.png</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<aspectratio>stretch</aspectratio>
+				<texture background="true" colordiffuse="33FFFFFF" diffuse="moodyfin/masks/npcard.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.4.bg)]</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="1AFFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<texture border="7" colordiffuse="FF111111">moodyfin/shapes/rr7.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/npposter.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.4.poster)]</texture>
+			</control>
+			<!-- title, sub (700 15 / 500 12 at 55 %) and this stream's Mbps (700 12 accent chip) -->
+			<control type="grouplist">
+				<left>73</left><top>9</top><width>320</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.title)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>8CFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.sub)]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<right>12</right><top>9</top><width>150</width><height>22</height>
+				<orientation>horizontal</orientation><align>right</align><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.mbps)]</label><font>mf_bold13</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>mf_accent</disabledcolor>
+					<texturenofocus border="7" colordiffuse="0FFFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+				</control>
+			</control>
+			<!-- avatar 18, user (700 12), client . device (500 12 at 50 %) -->
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<texture colordiffuse="FF333333">moodyfin/shapes/circle.png</texture>
+			</control>
+			<control type="label">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<align>center</align><aligny>center</aligny>
+				<font>mf_bold12</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.initial)]</label>
+			</control>
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/shapes/circle.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.4.av)]</texture>
+			</control>
+			<control type="grouplist">
+				<left>99</left><top>36</top><width>410</width><height>18</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_bold13</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.user)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.dev)]</label>
+				</control>
+			</control>
+			<!-- progress, 3 px -->
+			<control type="progress">
+				<left>73</left><top>60</top><width>436</width><height>3</height>
+				<texturebg border="1" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+				<lefttexture />
+				<midtexture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+				<righttexture />
+				<info>Window(Home).Property(MoodyFin.Dash.np.4.pct)</info>
+			</control>
+			<!-- method pill (600 11 in its colour), what happens to the picture, time . ends -->
+			<control type="grouplist">
+				<left>73</left><top>68</top><width>250</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF3EE0A1</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="143EE0A1">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.m),dp)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF4FB4FF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="144FB4FF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.m),ds)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFB98CFF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14B98CFF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.m),rm)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF6B8A</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FF6B8A">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.m),tc)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>     $INFO[Window(Home).Property(MoodyFin.Dash.np.4.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFBE55</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FFBE55">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.m),pa)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFFFFF</disabledcolor>
+					<texturenofocus border="7" colordiffuse="12FFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.4.summary)) + String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.4.conv))</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF8FA5</disabledcolor>
+					<texturenofocus border="7" colordiffuse="1AFF6B8A">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.4.conv))</visible>
+				</control>
+			</control>
+			<control type="image">
+				<left>81</left><top>73</top><width>12</width><height>12</height>
+				<texture colordiffuse="FFFFBE55">moodyfin/icons/pause.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.4.m),pa)</visible>
+			</control>
+			<control type="label">
+				<right>12</right><top>68</top><width>230</width><height>22</height>
+				<align>right</align><aligny>center</aligny>
+				<font>mf_card_badge</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.4.time)]</label>
+			</control>
+		</control>
+		<!-- stream 5 -->
+		<control type="group">
+			<left>795</left><top>342</top><width>521</width><height>94</height>
+			<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.5.title))</visible>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF3EE0A1">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.edge),dp)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF4FB4FF">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.edge),ds)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFF6B8A">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.edge),tc)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFFBE55">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.edge),pa)</visible>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="D1101014">moodyfin/shapes/rr14.png</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<aspectratio>stretch</aspectratio>
+				<texture background="true" colordiffuse="33FFFFFF" diffuse="moodyfin/masks/npcard.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.5.bg)]</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="1AFFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<texture border="7" colordiffuse="FF111111">moodyfin/shapes/rr7.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/npposter.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.5.poster)]</texture>
+			</control>
+			<!-- title, sub (700 15 / 500 12 at 55 %) and this stream's Mbps (700 12 accent chip) -->
+			<control type="grouplist">
+				<left>73</left><top>9</top><width>320</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.title)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>8CFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.sub)]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<right>12</right><top>9</top><width>150</width><height>22</height>
+				<orientation>horizontal</orientation><align>right</align><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.mbps)]</label><font>mf_bold13</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>mf_accent</disabledcolor>
+					<texturenofocus border="7" colordiffuse="0FFFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+				</control>
+			</control>
+			<!-- avatar 18, user (700 12), client . device (500 12 at 50 %) -->
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<texture colordiffuse="FF333333">moodyfin/shapes/circle.png</texture>
+			</control>
+			<control type="label">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<align>center</align><aligny>center</aligny>
+				<font>mf_bold12</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.initial)]</label>
+			</control>
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/shapes/circle.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.5.av)]</texture>
+			</control>
+			<control type="grouplist">
+				<left>99</left><top>36</top><width>410</width><height>18</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_bold13</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.user)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.dev)]</label>
+				</control>
+			</control>
+			<!-- progress, 3 px -->
+			<control type="progress">
+				<left>73</left><top>60</top><width>436</width><height>3</height>
+				<texturebg border="1" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+				<lefttexture />
+				<midtexture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+				<righttexture />
+				<info>Window(Home).Property(MoodyFin.Dash.np.5.pct)</info>
+			</control>
+			<!-- method pill (600 11 in its colour), what happens to the picture, time . ends -->
+			<control type="grouplist">
+				<left>73</left><top>68</top><width>250</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF3EE0A1</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="143EE0A1">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.m),dp)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF4FB4FF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="144FB4FF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.m),ds)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFB98CFF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14B98CFF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.m),rm)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF6B8A</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FF6B8A">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.m),tc)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>     $INFO[Window(Home).Property(MoodyFin.Dash.np.5.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFBE55</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FFBE55">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.m),pa)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFFFFF</disabledcolor>
+					<texturenofocus border="7" colordiffuse="12FFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.5.summary)) + String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.5.conv))</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF8FA5</disabledcolor>
+					<texturenofocus border="7" colordiffuse="1AFF6B8A">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.5.conv))</visible>
+				</control>
+			</control>
+			<control type="image">
+				<left>81</left><top>73</top><width>12</width><height>12</height>
+				<texture colordiffuse="FFFFBE55">moodyfin/icons/pause.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.5.m),pa)</visible>
+			</control>
+			<control type="label">
+				<right>12</right><top>68</top><width>230</width><height>22</height>
+				<align>right</align><aligny>center</aligny>
+				<font>mf_card_badge</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.5.time)]</label>
+			</control>
+		</control>
+		<!-- stream 6 -->
+		<control type="group">
+			<left>1326</left><top>342</top><width>521</width><height>94</height>
+			<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.6.title))</visible>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF3EE0A1">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.edge),dp)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FF4FB4FF">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.edge),ds)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFF6B8A">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.edge),tc)</visible>
+			</control>
+			<control type="image">
+				<left>0</left><top>0</top><width>8</width><height>94</height>
+				<texture border="4,14,0,14" colordiffuse="FFFFBE55">moodyfin/shapes/rr14.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.edge),pa)</visible>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="D1101014">moodyfin/shapes/rr14.png</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<aspectratio>stretch</aspectratio>
+				<texture background="true" colordiffuse="33FFFFFF" diffuse="moodyfin/masks/npcard.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.6.bg)]</texture>
+			</control>
+			<control type="image">
+				<left>3</left><top>0</top><width>518</width><height>94</height>
+				<texture border="14" colordiffuse="1AFFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<texture border="7" colordiffuse="FF111111">moodyfin/shapes/rr7.png</texture>
+			</control>
+			<control type="image">
+				<left>13</left><top>11</top><width>48</width><height>72</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/masks/npposter.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.6.poster)]</texture>
+			</control>
+			<!-- title, sub (700 15 / 500 12 at 55 %) and this stream's Mbps (700 12 accent chip) -->
+			<control type="grouplist">
+				<left>73</left><top>9</top><width>320</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.title)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>22</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>8CFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.sub)]</label>
+				</control>
+			</control>
+			<control type="grouplist">
+				<right>12</right><top>9</top><width>150</width><height>22</height>
+				<orientation>horizontal</orientation><align>right</align><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.mbps)]</label><font>mf_bold13</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>mf_accent</disabledcolor>
+					<texturenofocus border="7" colordiffuse="0FFFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+				</control>
+			</control>
+			<!-- avatar 18, user (700 12), client . device (500 12 at 50 %) -->
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<texture colordiffuse="FF333333">moodyfin/shapes/circle.png</texture>
+			</control>
+			<control type="label">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<align>center</align><aligny>center</aligny>
+				<font>mf_bold12</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.initial)]</label>
+			</control>
+			<control type="image">
+				<left>73</left><top>36</top><width>18</width><height>18</height>
+				<aspectratio>scale</aspectratio>
+				<texture background="true" diffuse="moodyfin/shapes/circle.png">$INFO[Window(Home).Property(MoodyFin.Dash.np.6.av)]</texture>
+			</control>
+			<control type="grouplist">
+				<left>99</left><top>36</top><width>410</width><height>18</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_bold13</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.user)]</label>
+				</control>
+				<control type="label">
+					<width>auto</width><height>18</height><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.dev)]</label>
+				</control>
+			</control>
+			<!-- progress, 3 px -->
+			<control type="progress">
+				<left>73</left><top>60</top><width>436</width><height>3</height>
+				<texturebg border="1" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+				<lefttexture />
+				<midtexture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+				<righttexture />
+				<info>Window(Home).Property(MoodyFin.Dash.np.6.pct)</info>
+			</control>
+			<!-- method pill (600 11 in its colour), what happens to the picture, time . ends -->
+			<control type="grouplist">
+				<left>73</left><top>68</top><width>250</width><height>22</height>
+				<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF3EE0A1</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="143EE0A1">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.m),dp)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF4FB4FF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="144FB4FF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.m),ds)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFB98CFF</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14B98CFF">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.m),rm)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF6B8A</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FF6B8A">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.m),tc)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>     $INFO[Window(Home).Property(MoodyFin.Dash.np.6.pill)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFBE55</disabledcolor>
+					<texturenofocus border="11,0,11,0" colordiffuse="14FFBE55">moodyfin/shapes/pill_40.png</texturenofocus>
+					<enable>false</enable>
+					<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.m),pa)</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFFFFF</disabledcolor>
+					<texturenofocus border="7" colordiffuse="12FFFFFF">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.6.summary)) + String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.6.conv))</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>22</height>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.summary)]</label><font>mf_card_badge</font><textoffsetx>8</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFF8FA5</disabledcolor>
+					<texturenofocus border="7" colordiffuse="1AFF6B8A">moodyfin/shapes/rr7.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.np.6.conv))</visible>
+				</control>
+			</control>
+			<control type="image">
+				<left>81</left><top>73</top><width>12</width><height>12</height>
+				<texture colordiffuse="FFFFBE55">moodyfin/icons/pause.png</texture>
+				<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.np.6.m),pa)</visible>
+			</control>
+			<control type="label">
+				<right>12</right><top>68</top><width>230</width><height>22</height>
+				<align>right</align><aligny>center</aligny>
+				<font>mf_card_badge</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.np.6.time)]</label>
+			</control>
+		</control>
+
+		<control type="group">
+			<left>264</left><top>238</top><right>72</right><height>50</height>
+			<visible>String.IsEqual(Window(Home).Property(MoodyFin.Dash.Streams),0)</visible>
+			<control type="image">
+				<width>100%</width><height>50</height>
+				<texture border="14" colordiffuse="24FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			</control>
+			<control type="label">
+				<left>18</left><width>1200</width><height>50</height><aligny>center</aligny>
+				<font>mf_tag13</font><textcolor>80FFFFFF</textcolor><label>Nothing is playing right now.</label>
+			</control>
+		</control>
+
+		<!-- everything under the cards: down one card row when there are more than 3 streams -->
+		<control type="group">
+		<top>352</top>
+		<animation effect="slide" end="0,104" time="0" condition="Integer.IsGreater(Window(Home).Property(MoodyFin.Dash.Streams),3)">Conditional</animation>
+
+		<!-- ======================================================== server strip (.tbh-health) -->
+		<control type="image">
+			<left>264</left><top>0</top><right>72</right><height>72</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+		</control>
+		<control type="image">
+			<left>264</left><top>0</top><right>72</right><height>72</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+		</control>
+		<control type="grouplist">
+			<left>284</left><top>2</top><width>1160</width><height>68</height>
+			<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+				<control type="label">
+					<width>auto</width><height>68</height><aligny>center</aligny>
+					<font>mf_heading36</font><textcolor>FFFFFFFF</textcolor>
+					<label>$INFO[Window(Home).Property(MoodyFin.Dash.Name)]</label>
+				</control>
+				<control type="image"><width>22</width><height>68</height><texture /></control>
+				<control type="button">
+					<width>auto</width><height>68</height>
+					<label>[COLOR FF3EE0A1]•[/COLOR] Online</label><font>mf_bold13</font><textoffsetx>12</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FF3EE0A1</disabledcolor>
+					<texturenofocus border="13,0,13,0" colordiffuse="1A3EE0A1">moodyfin/shapes/chip26_68.png</texturenofocus>
+					<enable>false</enable>
+				</control>
+				<control type="button">
+					<width>auto</width><height>68</height>
+					<label>v$INFO[Window(Home).Property(MoodyFin.Dash.Version)]</label><font>mf_bold13</font><textoffsetx>12</textoffsetx><aligny>center</aligny>
+					<disabledcolor>D1FFFFFF</disabledcolor>
+					<texturenofocus border="13,0,13,0" colordiffuse="0FFFFFFF">moodyfin/shapes/chip26_68.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.Version))</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>68</height>
+					<label>Theme v$INFO[Window(Home).Property(MoodyFin.Dash.Theme)]</label><font>mf_bold13</font><textoffsetx>12</textoffsetx><aligny>center</aligny>
+					<disabledcolor>D1FFFFFF</disabledcolor>
+					<texturenofocus border="13,0,13,0" colordiffuse="0FFFFFFF">moodyfin/shapes/chip26_68.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.Theme))</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>68</height>
+					<label>Update available</label><font>mf_bold13</font><textoffsetx>12</textoffsetx><aligny>center</aligny>
+					<disabledcolor>mf_accent</disabledcolor>
+					<texturenofocus border="13,0,13,0" colordiffuse="1FFFFFFF">moodyfin/shapes/chip26_68.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.Update))</visible>
+				</control>
+				<control type="button">
+					<width>auto</width><height>68</height>
+					<label>Restart pending</label><font>mf_bold13</font><textoffsetx>12</textoffsetx><aligny>center</aligny>
+					<disabledcolor>FFFFB347</disabledcolor>
+					<texturenofocus border="13,0,13,0" colordiffuse="1FFF9F43">moodyfin/shapes/chip26_68.png</texturenofocus>
+					<enable>false</enable>
+					<visible>!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.Restart))</visible>
+				</control>
+				<control type="image"><width>14</width><height>68</height><texture /></control>
+				<control type="image"><top>19</top><width>1</width><height>30</height><texture colordiffuse="1AFFFFFF">colors/white.png</texture></control>
+				<control type="image"><width>14</width><height>68</height><texture /></control>
+				<control type="group">
+					<width>74</width><height>68</height>
+					<control type="label">
+						<top>16</top><width>74</width><height>14</height>
+						<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>UPTIME</label>
+					</control>
+					<control type="label">
+						<top>33</top><width>74</width><height>22</height>
+						<font>mf_bold18</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Uptime)]</label>
+					</control>
+				</control>
+				<control type="group">
+					<width>112</width><height>68</height>
+					<control type="label">
+						<top>16</top><width>112</width><height>14</height>
+						<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>CPU · JELLYFIN</label>
+					</control>
+					<control type="label">
+						<top>33</top><width>112</width><height>22</height>
+						<font>mf_bold18</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Cpu)]</label>
+					</control>
+				</control>
+				<control type="group">
+					<width>84</width><height>68</height>
+					<control type="label">
+						<top>16</top><width>84</width><height>14</height>
+						<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>MEMORY</label>
+					</control>
+					<control type="label">
+						<top>33</top><width>84</width><height>22</height>
+						<font>mf_bold18</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Memory)]</label>
+					</control>
+				</control>
+				<control type="group">
+					<width>104</width><height>68</height>
+					<control type="label">
+						<top>16</top><width>104</width><height>14</height>
+						<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>TRANSCODING</label>
+					</control>
+					<control type="label">
+						<top>33</top><width>104</width><height>22</height>
+						<font>mf_bold18</font><textcolor>$VAR[MFDashTcColor]</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Transcoding)]</label>
+					</control>
+				</control>
+				<control type="group">
+					<width>70</width><height>68</height>
+					<control type="label">
+						<top>16</top><width>70</width><height>14</height>
+						<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>DEVICES</label>
+					</control>
+					<control type="label">
+						<top>33</top><width>70</width><height>22</height>
+						<font>mf_bold18</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Devices)]</label>
+					</control>
+				</control>
+				<control type="group">
+					<width>56</width><height>68</height>
+					<control type="label">
+						<top>16</top><width>56</width><height>14</height>
+						<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>USERS</label>
+					</control>
+					<control type="label">
+						<top>33</top><width>56</width><height>22</height>
+						<font>mf_bold18</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Users)]</label>
+					</control>
+				</control>
+		</control>
+		<!-- Scan all libraries (accent pill; shows the scan's progress) and the Server menu -->
+		<control type="button" id="3001">
+			<right>246</right><top>18</top><width>214</width><height>36</height>
+			<label>$VAR[MFDashScanLabel]</label><font>mf_tag14b</font>
+			<textcolor>FF111111</textcolor><focusedcolor>FF111111</focusedcolor>
+			<textoffsetx>40</textoffsetx><aligny>center</aligny>
+			<texturenofocus border="18,0,18,0" colordiffuse="mf_accent">moodyfin/shapes/pill_40.png</texturenofocus>
+			<texturefocus border="18,0,18,0" colordiffuse="mf_accent">moodyfin/shapes/pill_40.png</texturefocus>
+			<onclick>RunScript(script.moodyfin.helper,action=dashscan)</onclick>
+			<onup>9120</onup><ondown>3200</ondown><onleft>3700</onleft><onright>3002</onright>
+		</control>
+		<control type="image">
+			<right>242</right><top>14</top><width>222</width><height>44</height>
+			<texture border="22,0,22,0" colordiffuse="FFFFFFFF">moodyfin/shapes/pill_line_48.png</texture>
+			<visible>Control.HasFocus(3001)</visible>
+		</control>
+		<control type="image">
+			<right>428</right><top>28</top><width>16</width><height>16</height>
+			<texture colordiffuse="FF111111">moodyfin/icons/refresh.png</texture>
+			<animation effect="rotate" end="-360" center="auto" time="1100" loop="true" condition="!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.Scan))">Conditional</animation>
+		</control>
+		<control type="button" id="3002">
+			<right>92</right><top>18</top><width>142</width><height>36</height>
+			<label>Server</label><font>mf_tag14b</font>
+			<textcolor>FFFFFFFF</textcolor><focusedcolor>FFFFFFFF</focusedcolor>
+			<textoffsetx>18</textoffsetx><aligny>center</aligny>
+			<texturenofocus border="18,0,18,0" colordiffuse="0DFFFFFF">moodyfin/shapes/pill_40.png</texturenofocus>
+			<texturefocus border="18,0,18,0" colordiffuse="1AFFFFFF">moodyfin/shapes/pill_40.png</texturefocus>
+			<onclick>RunScript(script.moodyfin.helper,action=dashserver)</onclick>
+			<onup>9120</onup><ondown>3600</ondown><onleft>3001</onleft><onright>noop</onright>
+		</control>
+		<control type="image">
+			<right>92</right><top>18</top><width>142</width><height>36</height>
+			<texture border="18,0,18,0" colordiffuse="24FFFFFF">moodyfin/shapes/pill_line_40.png</texture>
+			<visible>!Control.HasFocus(3002)</visible>
+		</control>
+		<control type="image">
+			<right>88</right><top>14</top><width>150</width><height>44</height>
+			<texture border="22,0,22,0" colordiffuse="FFFFFFFF">moodyfin/shapes/pill_line_48.png</texture>
+			<visible>Control.HasFocus(3002)</visible>
+		</control>
+		<control type="image">
+			<right>108</right><top>26</top><width>20</width><height>20</height>
+			<texture>moodyfin/icons/expand_more.png</texture>
+		</control>
+
+		<!-- ======================================================== left column -->
+		<control type="group">
+		<left>264</left><top>98</top><width>870</width>
+		<!-- attention: only what needs you -->
+		<control type="group">
+			<visible>Integer.IsGreater(Container(3400).NumItems,0)</visible>
+		<control type="grouplist">
+			<left>0</left><top>0</top><width>600</width><height>42</height>
+			<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_heading32</font><textcolor>FFFFFFFF</textcolor>
+				<label>ATTENTION</label>
+			</control>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_semibold22</font><textcolor>mf_accent</textcolor>
+				<label>›</label>
+			</control>
+		</control>
+		</control>
+		<control type="list" id="3400">
+			<left>0</left><top>42</top><width>870</width><height>248</height>
+			<orientation>vertical</orientation>
+			<itemlayout width="870" height="62">
+				<control type="image">
+					<width>870</width><height>56</height>
+					<texture border="12" colordiffuse="8C121216">moodyfin/shapes/rr12.png</texture>
+					<visible>String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<width>870</width><height>56</height>
+					<texture border="12" colordiffuse="12FF3C50">moodyfin/shapes/rr12.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<width>870</width><height>56</height>
+					<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr12_line.png</texture>
+					<visible>String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<width>870</width><height>56</height>
+					<texture border="14" colordiffuse="59FF5064">moodyfin/shapes/rr12_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<left>16</left><top>13</top><width>30</width><height>30</height>
+					<texture border="8" colordiffuse="29FF5D73">moodyfin/shapes/rr10.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.c),FFFF5D73)</visible>
+				</control>
+				<control type="label">
+					<left>16</left><top>13</top><width>30</width><height>30</height><align>center</align><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFF5D73</textcolor><label>$INFO[ListItem.Property(mf.i)]</label>
+					<visible>String.IsEqual(ListItem.Property(mf.c),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>16</left><top>13</top><width>30</width><height>30</height>
+					<texture border="8" colordiffuse="29FFB347">moodyfin/shapes/rr10.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.c),FFFFB347)</visible>
+				</control>
+				<control type="label">
+					<left>16</left><top>13</top><width>30</width><height>30</height><align>center</align><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFFB347</textcolor><label>$INFO[ListItem.Property(mf.i)]</label>
+					<visible>String.IsEqual(ListItem.Property(mf.c),FFFFB347)</visible>
+				</control>
+				<control type="image">
+					<left>16</left><top>13</top><width>30</width><height>30</height>
+					<texture border="8" colordiffuse="29FFFFFF">moodyfin/shapes/rr10.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.c),mf_accent)</visible>
+				</control>
+				<control type="label">
+					<left>16</left><top>13</top><width>30</width><height>30</height><align>center</align><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>mf_accent</textcolor><label>$INFO[ListItem.Property(mf.i)]</label>
+					<visible>String.IsEqual(ListItem.Property(mf.c),mf_accent)</visible>
+				</control>
+				<control type="image">
+					<left>23</left><top>20</top><width>16</width><height>16</height>
+					<texture colordiffuse="FFFFB347">moodyfin/icons/$INFO[ListItem.Property(mf.icon)].png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.icon)) + !String.IsEqual(ListItem.Property(mf.c),mf_accent) + !String.IsEqual(ListItem.Property(mf.c),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>23</left><top>20</top><width>16</width><height>16</height>
+					<texture colordiffuse="FFFF5D73">moodyfin/icons/$INFO[ListItem.Property(mf.icon)].png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.icon)) + String.IsEqual(ListItem.Property(mf.c),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>23</left><top>20</top><width>16</width><height>16</height>
+					<texture colordiffuse="mf_accent">moodyfin/icons/$INFO[ListItem.Property(mf.icon)].png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.icon)) + String.IsEqual(ListItem.Property(mf.c),mf_accent)</visible>
+				</control>
+				<control type="label">
+					<left>60</left><top>8</top><width>790</width><height>20</height>
+					<font>mf_tag14b</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="label">
+					<left>60</left><top>29</top><width>790</width><height>18</height>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor><label>$INFO[ListItem.Property(mf.s)]</label>
+				</control>
+			</itemlayout>
+			<focusedlayout width="870" height="62">
+				<control type="image">
+					<width>870</width><height>56</height>
+					<texture border="12" colordiffuse="8C121216">moodyfin/shapes/rr12.png</texture>
+					<visible>String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<width>870</width><height>56</height>
+					<texture border="12" colordiffuse="12FF3C50">moodyfin/shapes/rr12.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<width>870</width><height>56</height>
+					<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr12_line.png</texture>
+					<visible>String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<width>870</width><height>56</height>
+					<texture border="14" colordiffuse="59FF5064">moodyfin/shapes/rr12_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<left>16</left><top>13</top><width>30</width><height>30</height>
+					<texture border="8" colordiffuse="29FF5D73">moodyfin/shapes/rr10.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.c),FFFF5D73)</visible>
+				</control>
+				<control type="label">
+					<left>16</left><top>13</top><width>30</width><height>30</height><align>center</align><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFF5D73</textcolor><label>$INFO[ListItem.Property(mf.i)]</label>
+					<visible>String.IsEqual(ListItem.Property(mf.c),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>16</left><top>13</top><width>30</width><height>30</height>
+					<texture border="8" colordiffuse="29FFB347">moodyfin/shapes/rr10.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.c),FFFFB347)</visible>
+				</control>
+				<control type="label">
+					<left>16</left><top>13</top><width>30</width><height>30</height><align>center</align><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>FFFFB347</textcolor><label>$INFO[ListItem.Property(mf.i)]</label>
+					<visible>String.IsEqual(ListItem.Property(mf.c),FFFFB347)</visible>
+				</control>
+				<control type="image">
+					<left>16</left><top>13</top><width>30</width><height>30</height>
+					<texture border="8" colordiffuse="29FFFFFF">moodyfin/shapes/rr10.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.c),mf_accent)</visible>
+				</control>
+				<control type="label">
+					<left>16</left><top>13</top><width>30</width><height>30</height><align>center</align><aligny>center</aligny>
+					<font>mf_bold16</font><textcolor>mf_accent</textcolor><label>$INFO[ListItem.Property(mf.i)]</label>
+					<visible>String.IsEqual(ListItem.Property(mf.c),mf_accent)</visible>
+				</control>
+				<control type="image">
+					<left>23</left><top>20</top><width>16</width><height>16</height>
+					<texture colordiffuse="FFFFB347">moodyfin/icons/$INFO[ListItem.Property(mf.icon)].png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.icon)) + !String.IsEqual(ListItem.Property(mf.c),mf_accent) + !String.IsEqual(ListItem.Property(mf.c),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>23</left><top>20</top><width>16</width><height>16</height>
+					<texture colordiffuse="FFFF5D73">moodyfin/icons/$INFO[ListItem.Property(mf.icon)].png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.icon)) + String.IsEqual(ListItem.Property(mf.c),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>23</left><top>20</top><width>16</width><height>16</height>
+					<texture colordiffuse="mf_accent">moodyfin/icons/$INFO[ListItem.Property(mf.icon)].png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(mf.icon)) + String.IsEqual(ListItem.Property(mf.c),mf_accent)</visible>
+				</control>
+				<control type="label">
+					<left>60</left><top>8</top><width>790</width><height>20</height>
+					<font>mf_tag14b</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="label">
+					<left>60</left><top>29</top><width>790</width><height>18</height>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor><label>$INFO[ListItem.Property(mf.s)]</label>
+				</control>
+			</focusedlayout>
+			<content>plugin://script.moodyfin.helper/?row=dash&amp;part=att&amp;reload=$INFO[Window(Home).Property(MoodyFin.Dash.att.Reload)]</content>
+		</control>
+		<control type="group">
+		<animation effect="slide" end="0,124" time="0" condition="Integer.IsEqual(Container(3400).NumItems,1)">Conditional</animation>
+		<animation effect="slide" end="0,186" time="0" condition="Integer.IsEqual(Container(3400).NumItems,2)">Conditional</animation>
+		<animation effect="slide" end="0,248" time="0" condition="Integer.IsEqual(Container(3400).NumItems,3)">Conditional</animation>
+		<animation effect="slide" end="0,310" time="0" condition="Integer.IsEqual(Container(3400).NumItems,4)">Conditional</animation>
+		<control type="grouplist">
+			<left>0</left><top>0</top><width>600</width><height>42</height>
+			<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_heading32</font><textcolor>FFFFFFFF</textcolor>
+				<label>LIBRARY</label>
+			</control>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_semibold22</font><textcolor>mf_accent</textcolor>
+				<label>›</label>
+			</control>
+		</control>
+		<control type="image">
+			<left>0</left><top>42</top><width>870</width><height>92</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+		</control>
+		<control type="image">
+			<left>0</left><top>42</top><width>870</width><height>92</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+		</control>
+		<control type="group">
+			<top>42</top>
+			<control type="group">
+				<left>0</left><width>217</width><height>92</height>
+				<control type="image">
+					<left>20</left><top>0</top><width>177</width><height>2</height>
+					<texture border="1" colordiffuse="FFFF5D73">moodyfin/shapes/rr6.png</texture>
+				</control>
+				<control type="label">
+					<left>20</left><top>16</top><width>177</width><height>14</height>
+					<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>MOVIES</label>
+				</control>
+				<control type="grouplist">
+					<left>20</left><top>30</top><width>190</width><height>48</height>
+					<orientation>horizontal</orientation><itemgap>6</itemgap><usecontrolwidth>true</usecontrolwidth>
+					<control type="label">
+						<width>auto</width><height>48</height><aligny>center</aligny>
+						<font>mf_heading40</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Movies)]</label>
+					</control>
+					<control type="label">
+						<top>8</top><width>auto</width><height>40</height><aligny>center</aligny>
+						<font>mf_bold13</font><textcolor>FF3EE0A1</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Movies.New)]</label>
+					</control>
+				</control>
+				<control type="image">
+					<left>216</left><top>0</top><width>1</width><height>92</height>
+					<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+				</control>
+			</control>
+			<control type="group">
+				<left>217</left><width>217</width><height>92</height>
+				<control type="image">
+					<left>20</left><top>0</top><width>177</width><height>2</height>
+					<texture border="1" colordiffuse="FF4FC3FF">moodyfin/shapes/rr6.png</texture>
+				</control>
+				<control type="label">
+					<left>20</left><top>16</top><width>177</width><height>14</height>
+					<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>SERIES</label>
+				</control>
+				<control type="grouplist">
+					<left>20</left><top>30</top><width>190</width><height>48</height>
+					<orientation>horizontal</orientation><itemgap>6</itemgap><usecontrolwidth>true</usecontrolwidth>
+					<control type="label">
+						<width>auto</width><height>48</height><aligny>center</aligny>
+						<font>mf_heading40</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Series)]</label>
+					</control>
+					<control type="label">
+						<top>8</top><width>auto</width><height>40</height><aligny>center</aligny>
+						<font>mf_bold13</font><textcolor>FF3EE0A1</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Series.New)]</label>
+					</control>
+				</control>
+				<control type="image">
+					<left>216</left><top>0</top><width>1</width><height>92</height>
+					<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+				</control>
+			</control>
+			<control type="group">
+				<left>434</left><width>217</width><height>92</height>
+				<control type="image">
+					<left>20</left><top>0</top><width>177</width><height>2</height>
+					<texture border="1" colordiffuse="FF4FC3FF">moodyfin/shapes/rr6.png</texture>
+				</control>
+				<control type="label">
+					<left>20</left><top>16</top><width>177</width><height>14</height>
+					<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>EPISODES</label>
+				</control>
+				<control type="grouplist">
+					<left>20</left><top>30</top><width>190</width><height>48</height>
+					<orientation>horizontal</orientation><itemgap>6</itemgap><usecontrolwidth>true</usecontrolwidth>
+					<control type="label">
+						<width>auto</width><height>48</height><aligny>center</aligny>
+						<font>mf_heading40</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Episodes)]</label>
+					</control>
+					<control type="label">
+						<top>8</top><width>auto</width><height>40</height><aligny>center</aligny>
+						<font>mf_bold13</font><textcolor>FF3EE0A1</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Episodes.New)]</label>
+					</control>
+				</control>
+				<control type="image">
+					<left>216</left><top>0</top><width>1</width><height>92</height>
+					<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+				</control>
+			</control>
+			<control type="group">
+				<left>651</left><width>217</width><height>92</height>
+				<control type="image">
+					<left>20</left><top>0</top><width>177</width><height>2</height>
+					<texture border="1" colordiffuse="FF3EE0A1">moodyfin/shapes/rr6.png</texture>
+				</control>
+				<control type="label">
+					<left>20</left><top>16</top><width>177</width><height>14</height>
+					<font>mf_bold12</font><textcolor>80FFFFFF</textcolor><label>COLLECTIONS</label>
+				</control>
+				<control type="grouplist">
+					<left>20</left><top>30</top><width>190</width><height>48</height>
+					<orientation>horizontal</orientation><itemgap>6</itemgap><usecontrolwidth>true</usecontrolwidth>
+					<control type="label">
+						<width>auto</width><height>48</height><aligny>center</aligny>
+						<font>mf_heading40</font><textcolor>FFFFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Collections)]</label>
+					</control>
+					<control type="label">
+						<top>8</top><width>auto</width><height>40</height><aligny>center</aligny>
+						<font>mf_bold13</font><textcolor>FF3EE0A1</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Collections.New)]</label>
+					</control>
+				</control>
+			</control>
+		</control>
+		<control type="grouplist">
+			<left>0</left><top>160</top><width>600</width><height>42</height>
+			<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_heading32</font><textcolor>FFFFFFFF</textcolor>
+				<label>RECENTLY ADDED</label>
+			</control>
+		</control>
+		<control type="list" id="3200">
+			<left>-4</left><top>196</top><width>878</width><height>226</height>
+			<orientation>horizontal</orientation>
+			<scrolltime tween="cubic" easing="out">200</scrolltime>
+			<onup>3001</onup><ondown>noop</ondown><onleft>3700</onleft><onright>3600</onright>
+			<onclick>RunScript(script.moodyfin.helper,action=info,type=$INFO[ListItem.Property(mf.kind)],dbid=$INFO[ListItem.Property(mf.dbid)])</onclick>
+			<itemlayout width="124" height="226">
+			<control type="group">
+				<left>4</left><top>8</top>
+				<control type="image">
+					<width>112</width><height>168</height>
+					<texture border="12" colordiffuse="FF17171C">moodyfin/shapes/rr12.png</texture>
+				</control>
+				<control type="image">
+					<width>112</width><height>168</height>
+					<aspectratio>scale</aspectratio>
+					<texture background="true" diffuse="moodyfin/masks/dashposter.png">$INFO[ListItem.Art(poster)]</texture>
+				</control>
+			</control>
+			<control type="label">
+				<left>4</left><top>183</top><width>112</width><height>18</height>
+				<font>mf_tag13</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+			</control>
+			<control type="label">
+				<left>4</left><top>201</top><width>112</width><height>16</height>
+				<font>mf_regular12</font><textcolor>80FFFFFF</textcolor><label>$INFO[ListItem.Property(mf.sub)]</label>
+			</control>
+			</itemlayout>
+			<focusedlayout width="124" height="226">
+			<control type="group">
+				<left>4</left><top>8</top>
+				<animation effect="slide" end="0,-4" time="200" tween="cubic" easing="out">Focus</animation>
+				<control type="image">
+					<width>112</width><height>168</height>
+					<texture border="12" colordiffuse="FF17171C">moodyfin/shapes/rr12.png</texture>
+				</control>
+				<control type="image">
+					<width>112</width><height>168</height>
+					<aspectratio>scale</aspectratio>
+					<texture background="true" diffuse="moodyfin/masks/dashposter.png">$INFO[ListItem.Art(poster)]</texture>
+				</control>
+				<control type="image">
+					<left>-2</left><top>-2</top><width>116</width><height>172</height>
+					<texture border="14" colordiffuse="mf_accent">moodyfin/shapes/rr14_line.png</texture>
+				</control>
+			</control>
+			<control type="label">
+				<left>4</left><top>183</top><width>112</width><height>18</height>
+				<font>mf_tag13</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+			</control>
+			<control type="label">
+				<left>4</left><top>201</top><width>112</width><height>16</height>
+				<font>mf_regular12</font><textcolor>80FFFFFF</textcolor><label>$INFO[ListItem.Property(mf.sub)]</label>
+			</control>
+			</focusedlayout>
+			<content target="videos">plugin://script.moodyfin.helper/?row=dash&amp;part=rec&amp;reload=$INFO[Window(Home).Property(MoodyFin.Dash.rec.Reload)]</content>
+		</control>
+		<control type="grouplist">
+			<left>0</left><top>434</top><width>600</width><height>42</height>
+			<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_heading32</font><textcolor>FFFFFFFF</textcolor>
+				<label>STORAGE</label>
+			</control>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>92</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,1)</visible>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>92</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,1)</visible>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>184</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,2)</visible>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>184</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,2)</visible>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>276</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,3)</visible>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>276</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,3)</visible>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>368</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,4)</visible>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>368</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,4)</visible>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>52</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,0)</visible>
+		</control>
+		<control type="image">
+			<left>0</left><top>476</top><width>421</width><height>52</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3300).NumItems,0)</visible>
+		</control>
+		<control type="list" id="3300">
+			<left>0</left><top>476</top><width>421</width><height>368</height>
+			<orientation>vertical</orientation>
+			<itemlayout width="421" height="92">
+				<control type="image">
+					<left>0</left><top>0</top><width>421</width><height>1</height>
+					<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+					<visible>!Integer.IsEqual(ListItem.CurrentItem,1)</visible>
+				</control>
+				<control type="label">
+					<left>18</left><top>12</top><width>240</width><height>28</height><aligny>center</aligny>
+					<font>mf_heading24</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="label">
+					<right>18</right><top>12</top><width>260</width><height>28</height><align>right</align><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor>
+					<label>$INFO[ListItem.Property(mf.size)][COLOR FFFFFFFF]$INFO[ListItem.Property(mf.free)][/COLOR]</label>
+				</control>
+				<control type="progress">
+					<left>18</left><top>47</top><width>385</width><height>8</height>
+					<texturebg border="4" colordiffuse="14FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+					<lefttexture />
+					<midtexture border="4" colordiffuse="FF3EE0A1">moodyfin/shapes/rr6.png</midtexture>
+					<righttexture />
+					<info>ListItem.Property(mf.pct)</info>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FF3EE0A1)</visible>
+				</control>
+				<control type="progress">
+					<left>18</left><top>47</top><width>385</width><height>8</height>
+					<texturebg border="4" colordiffuse="14FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+					<lefttexture />
+					<midtexture border="4" colordiffuse="FFFFB347">moodyfin/shapes/rr6.png</midtexture>
+					<righttexture />
+					<info>ListItem.Property(mf.pct)</info>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFFFB347)</visible>
+				</control>
+				<control type="progress">
+					<left>18</left><top>47</top><width>385</width><height>8</height>
+					<texturebg border="4" colordiffuse="14FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+					<lefttexture />
+					<midtexture border="4" colordiffuse="FFFF4D6D">moodyfin/shapes/rr6.png</midtexture>
+					<righttexture />
+					<info>ListItem.Property(mf.pct)</info>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFFF4D6D)</visible>
+				</control>
+				<control type="label">
+					<left>18</left><top>62</top><width>385</width><height>18</height><aligny>center</aligny>
+					<font>mf_bold13</font><textcolor>mf_accent</textcolor><label>$INFO[ListItem.Property(mf.summary)]</label>
+				</control>
+			</itemlayout>
+			<focusedlayout width="421" height="92">
+				<control type="image">
+					<left>0</left><top>0</top><width>421</width><height>1</height>
+					<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+					<visible>!Integer.IsEqual(ListItem.CurrentItem,1)</visible>
+				</control>
+				<control type="label">
+					<left>18</left><top>12</top><width>240</width><height>28</height><aligny>center</aligny>
+					<font>mf_heading24</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="label">
+					<right>18</right><top>12</top><width>260</width><height>28</height><align>right</align><aligny>center</aligny>
+					<font>mf_medium13</font><textcolor>80FFFFFF</textcolor>
+					<label>$INFO[ListItem.Property(mf.size)][COLOR FFFFFFFF]$INFO[ListItem.Property(mf.free)][/COLOR]</label>
+				</control>
+				<control type="progress">
+					<left>18</left><top>47</top><width>385</width><height>8</height>
+					<texturebg border="4" colordiffuse="14FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+					<lefttexture />
+					<midtexture border="4" colordiffuse="FF3EE0A1">moodyfin/shapes/rr6.png</midtexture>
+					<righttexture />
+					<info>ListItem.Property(mf.pct)</info>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FF3EE0A1)</visible>
+				</control>
+				<control type="progress">
+					<left>18</left><top>47</top><width>385</width><height>8</height>
+					<texturebg border="4" colordiffuse="14FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+					<lefttexture />
+					<midtexture border="4" colordiffuse="FFFFB347">moodyfin/shapes/rr6.png</midtexture>
+					<righttexture />
+					<info>ListItem.Property(mf.pct)</info>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFFFB347)</visible>
+				</control>
+				<control type="progress">
+					<left>18</left><top>47</top><width>385</width><height>8</height>
+					<texturebg border="4" colordiffuse="14FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+					<lefttexture />
+					<midtexture border="4" colordiffuse="FFFF4D6D">moodyfin/shapes/rr6.png</midtexture>
+					<righttexture />
+					<info>ListItem.Property(mf.pct)</info>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFFF4D6D)</visible>
+				</control>
+				<control type="label">
+					<left>18</left><top>62</top><width>385</width><height>18</height><aligny>center</aligny>
+					<font>mf_bold13</font><textcolor>mf_accent</textcolor><label>$INFO[ListItem.Property(mf.summary)]</label>
+				</control>
+			</focusedlayout>
+			<content>plugin://script.moodyfin.helper/?row=dash&amp;part=sto&amp;reload=$INFO[Window(Home).Property(MoodyFin.Dash.sto.Reload)]</content>
+		</control>
+		<control type="grouplist">
+			<left>449</left><top>434</top><width>600</width><height>42</height>
+			<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_heading32</font><textcolor>FFFFFFFF</textcolor>
+				<label>RUNNING TASKS</label>
+			</control>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_semibold22</font><textcolor>mf_accent</textcolor>
+				<label>›</label>
+			</control>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>52</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsLessOrEqual(Container(3310).NumItems,0)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>52</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsLessOrEqual(Container(3310).NumItems,0)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>62</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,1)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>62</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,1)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>124</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,2)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>124</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,2)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>186</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,3)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>186</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,3)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>248</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,4)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>248</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,4)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>310</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,5)</visible>
+		</control>
+		<control type="image">
+			<left>449</left><top>476</top><width>421</width><height>310</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+			<visible>Integer.IsEqual(Container(3310).NumItems,5)</visible>
+		</control>
+		<control type="list" id="3310">
+			<left>449</left><top>476</top><width>421</width><height>310</height>
+			<orientation>vertical</orientation>
+			<itemlayout width="421" height="62">
+				<control type="image">
+					<left>0</left><top>0</top><width>421</width><height>1</height>
+					<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+					<visible>!Integer.IsEqual(ListItem.CurrentItem,1)</visible>
+				</control>
+				<control type="label">
+					<left>18</left><top>12</top><width>310</width><height>20</height><aligny>center</aligny>
+					<font>mf_card_meta</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="label">
+					<right>18</right><top>12</top><width>80</width><height>20</height><align>right</align><aligny>center</aligny>
+					<font>mf_card_meta</font><textcolor>80FFFFFF</textcolor><label>$INFO[ListItem.Property(mf.pct),,%]</label>
+				</control>
+				<control type="progress">
+					<left>18</left><top>41</top><width>385</width><height>6</height>
+					<texturebg border="3" colordiffuse="14FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+					<lefttexture />
+					<midtexture border="3" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+					<righttexture />
+					<info>ListItem.Property(mf.pct)</info>
+				</control>
+			</itemlayout>
+			<focusedlayout width="421" height="62">
+				<control type="image">
+					<left>0</left><top>0</top><width>421</width><height>1</height>
+					<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+					<visible>!Integer.IsEqual(ListItem.CurrentItem,1)</visible>
+				</control>
+				<control type="label">
+					<left>18</left><top>12</top><width>310</width><height>20</height><aligny>center</aligny>
+					<font>mf_card_meta</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="label">
+					<right>18</right><top>12</top><width>80</width><height>20</height><align>right</align><aligny>center</aligny>
+					<font>mf_card_meta</font><textcolor>80FFFFFF</textcolor><label>$INFO[ListItem.Property(mf.pct),,%]</label>
+				</control>
+				<control type="progress">
+					<left>18</left><top>41</top><width>385</width><height>6</height>
+					<texturebg border="3" colordiffuse="14FFFFFF">moodyfin/shapes/rr6.png</texturebg>
+					<lefttexture />
+					<midtexture border="3" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</midtexture>
+					<righttexture />
+					<info>ListItem.Property(mf.pct)</info>
+				</control>
+			</focusedlayout>
+			<content>plugin://script.moodyfin.helper/?row=dash&amp;part=task&amp;reload=$INFO[Window(Home).Property(MoodyFin.Dash.task.Reload)]</content>
+		</control>
+		<control type="label">
+			<left>467</left><top>476</top><width>390</width><height>52</height><aligny>center</aligny>
+			<font>mf_medium14</font><textcolor>80FFFFFF</textcolor><label>$INFO[Window(Home).Property(MoodyFin.Dash.Idle)]</label>
+			<visible>Integer.IsEqual(Container(3310).NumItems,0)</visible>
+		</control>
+		</control>
+		</control>
+
+		<!-- ======================================================== right column: activity -->
+		<control type="group">
+		<right>72</right><top>98</top><width>686</width>
+		<control type="grouplist">
+			<left>0</left><top>0</top><width>600</width><height>42</height>
+			<orientation>horizontal</orientation><itemgap>8</itemgap><usecontrolwidth>true</usecontrolwidth>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_heading32</font><textcolor>FFFFFFFF</textcolor>
+				<label>ACTIVITY</label>
+			</control>
+			<control type="label">
+				<width>auto</width><height>42</height><aligny>center</aligny>
+				<font>mf_semibold22</font><textcolor>mf_accent</textcolor>
+				<label>›</label>
+			</control>
+		</control>
+		<control type="image">
+			<left>0</left><top>42</top><width>686</width><height>772</height>
+			<texture border="14" colordiffuse="8C121216">moodyfin/shapes/rr14.png</texture>
+		</control>
+		<control type="image">
+			<left>0</left><top>42</top><width>686</width><height>772</height>
+			<texture border="14" colordiffuse="14FFFFFF">moodyfin/shapes/rr14_line.png</texture>
+		</control>
+		<control type="list" id="3600">
+			<left>6</left><top>48</top><width>674</width><height>760</height>
+			<orientation>vertical</orientation>
+			<scrolltime tween="cubic" easing="out">150</scrolltime>
+			<onup>3002</onup><onleft>3200</onleft><onright>noop</onright><ondown>noop</ondown>
+			<itemlayout width="674" height="38">
+				<control type="image">
+					<width>674</width><height>38</height>
+					<texture border="9" colordiffuse="06FFFFFF">moodyfin/shapes/rr10.png</texture>
+					<visible>Integer.IsOdd(ListItem.CurrentItem)</visible>
+				</control>
+				<control type="label">
+					<left>12</left><top>0</top><width>66</width><height>38</height><aligny>center</aligny>
+					<font>mf_tag13</font><textcolor>80FFFFFF</textcolor><label>$INFO[ListItem.Property(mf.time)]</label>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),mf_accent)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FFFF5D73">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FF8A8F98">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FF8A8F98)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FF3EE0A1">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FF3EE0A1)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FFB98BFF">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFB98BFF)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FFFF9F43">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFFF9F43)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FF4FC3FF">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FF4FC3FF)</visible>
+				</control>
+				<control type="image">
+					<left>87</left><top>12</top><width>14</width><height>14</height>
+					<texture colordiffuse="FF111111">moodyfin/icons/play_arrow.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),play)</visible>
+				</control>
+				<control type="image">
+					<left>89</left><top>14</top><width>10</width><height>10</height>
+					<texture colordiffuse="FF111111">moodyfin/shapes/circle_line.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),ring)</visible>
+				</control>
+				<control type="image">
+					<left>89</left><top>14</top><width>10</width><height>10</height>
+					<texture colordiffuse="FF111111">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),dot)</visible>
+				</control>
+				<control type="image">
+					<left>87</left><top>12</top><width>14</width><height>14</height>
+					<texture colordiffuse="FF111111">moodyfin/icons/star.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),spark)</visible>
+				</control>
+				<control type="image">
+					<left>87</left><top>12</top><width>14</width><height>14</height>
+					<texture colordiffuse="FF111111">moodyfin/icons/settings.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),gear)</visible>
+				</control>
+				<control type="label">
+					<left>89</left><top>8</top><width>8</width><height>22</height><align>center</align><aligny>center</aligny>
+					<font>mf_bold12</font><textcolor>FF111111</textcolor><label>!</label>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),alert)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<aspectratio>scale</aspectratio>
+					<texture background="true" diffuse="moodyfin/shapes/circle.png">$INFO[ListItem.Art(thumb)]</texture>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),mf_accent)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FFFF5D73">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FF8A8F98">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FF8A8F98)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FF3EE0A1">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FF3EE0A1)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FFB98BFF">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FFB98BFF)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FFFF9F43">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FFFF9F43)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FF4FC3FF">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FF4FC3FF)</visible>
+				</control>
+				<control type="label">
+					<left>114</left><top>0</top><width>500</width><height>38</height><aligny>center</aligny>
+					<font>mf_card_genre</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="image">
+					<right>12</right><top>10</top><width>30</width><height>18</height>
+					<texture border="6" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.nw),1) + String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<right>12</right><top>10</top><width>38</width><height>18</height>
+					<texture border="6" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.nw),2) + String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="label">
+					<right>19</right><top>10</top><width>38</width><height>18</height><align>right</align><aligny>center</aligny>
+					<font>mf_bold12</font><textcolor>mf_accent</textcolor><label>$INFO[ListItem.Property(mf.n)]</label>
+					<visible>String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<right>12</right><top>10</top><width>30</width><height>18</height>
+					<texture border="6" colordiffuse="29FF465A">moodyfin/shapes/rr6.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.nw),1) + !String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<right>12</right><top>10</top><width>38</width><height>18</height>
+					<texture border="6" colordiffuse="29FF465A">moodyfin/shapes/rr6.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.nw),2) + !String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="label">
+					<right>19</right><top>10</top><width>38</width><height>18</height><align>right</align><aligny>center</aligny>
+					<font>mf_bold12</font><textcolor>FFFF8A9A</textcolor><label>$INFO[ListItem.Property(mf.n)]</label>
+					<visible>!String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+			</itemlayout>
+			<focusedlayout width="674" height="38">
+				<control type="image">
+					<width>674</width><height>38</height>
+					<texture border="9" colordiffuse="12FFFFFF">moodyfin/shapes/rr10.png</texture>
+				</control>
+				<control type="label">
+					<left>12</left><top>0</top><width>66</width><height>38</height><aligny>center</aligny>
+					<font>mf_tag13</font><textcolor>80FFFFFF</textcolor><label>$INFO[ListItem.Property(mf.time)]</label>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),mf_accent)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FFFF5D73">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FF8A8F98">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FF8A8F98)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FF3EE0A1">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FF3EE0A1)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FFB98BFF">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFB98BFF)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FFFF9F43">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FFFF9F43)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<texture colordiffuse="FF4FC3FF">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.color),FF4FC3FF)</visible>
+				</control>
+				<control type="image">
+					<left>87</left><top>12</top><width>14</width><height>14</height>
+					<texture colordiffuse="FF111111">moodyfin/icons/play_arrow.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),play)</visible>
+				</control>
+				<control type="image">
+					<left>89</left><top>14</top><width>10</width><height>10</height>
+					<texture colordiffuse="FF111111">moodyfin/shapes/circle_line.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),ring)</visible>
+				</control>
+				<control type="image">
+					<left>89</left><top>14</top><width>10</width><height>10</height>
+					<texture colordiffuse="FF111111">moodyfin/shapes/circle.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),dot)</visible>
+				</control>
+				<control type="image">
+					<left>87</left><top>12</top><width>14</width><height>14</height>
+					<texture colordiffuse="FF111111">moodyfin/icons/star.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),spark)</visible>
+				</control>
+				<control type="image">
+					<left>87</left><top>12</top><width>14</width><height>14</height>
+					<texture colordiffuse="FF111111">moodyfin/icons/settings.png</texture>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),gear)</visible>
+				</control>
+				<control type="label">
+					<left>89</left><top>8</top><width>8</width><height>22</height><align>center</align><aligny>center</aligny>
+					<font>mf_bold12</font><textcolor>FF111111</textcolor><label>!</label>
+					<visible>String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.glyph),alert)</visible>
+				</control>
+				<control type="image">
+					<left>82</left><top>8</top><width>22</width><height>22</height>
+					<aspectratio>scale</aspectratio>
+					<texture background="true" diffuse="moodyfin/shapes/circle.png">$INFO[ListItem.Art(thumb)]</texture>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),mf_accent)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FFFF5D73">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FFFF5D73)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FF8A8F98">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FF8A8F98)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FF3EE0A1">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FF3EE0A1)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FFB98BFF">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FFB98BFF)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FFFF9F43">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FFFF9F43)</visible>
+				</control>
+				<control type="image">
+					<left>80</left><top>6</top><width>26</width><height>26</height>
+					<texture colordiffuse="FF4FC3FF">moodyfin/shapes/circle_line.png</texture>
+					<visible>!String.IsEmpty(ListItem.Art(thumb)) + String.IsEqual(ListItem.Property(mf.color),FF4FC3FF)</visible>
+				</control>
+				<control type="label">
+					<left>114</left><top>0</top><width>500</width><height>38</height><aligny>center</aligny>
+					<font>mf_card_genre</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="image">
+					<right>12</right><top>10</top><width>30</width><height>18</height>
+					<texture border="6" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.nw),1) + String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<right>12</right><top>10</top><width>38</width><height>18</height>
+					<texture border="6" colordiffuse="24FFFFFF">moodyfin/shapes/rr6.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.nw),2) + String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="label">
+					<right>19</right><top>10</top><width>38</width><height>18</height><align>right</align><aligny>center</aligny>
+					<font>mf_bold12</font><textcolor>mf_accent</textcolor><label>$INFO[ListItem.Property(mf.n)]</label>
+					<visible>String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<right>12</right><top>10</top><width>30</width><height>18</height>
+					<texture border="6" colordiffuse="29FF465A">moodyfin/shapes/rr6.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.nw),1) + !String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="image">
+					<right>12</right><top>10</top><width>38</width><height>18</height>
+					<texture border="6" colordiffuse="29FF465A">moodyfin/shapes/rr6.png</texture>
+					<visible>String.IsEqual(ListItem.Property(mf.nw),2) + !String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+				<control type="label">
+					<right>19</right><top>10</top><width>38</width><height>18</height><align>right</align><aligny>center</aligny>
+					<font>mf_bold12</font><textcolor>FFFF8A9A</textcolor><label>$INFO[ListItem.Property(mf.n)]</label>
+					<visible>!String.IsEmpty(ListItem.Property(mf.red))</visible>
+				</control>
+			</focusedlayout>
+			<content>plugin://script.moodyfin.helper/?row=dash&amp;part=act&amp;reload=$INFO[Window(Home).Property(MoodyFin.Dash.act.Reload)]</content>
+		</control>
+		<control type="label">
+			<left>18</left><top>42</top><width>640</width><height>52</height><aligny>center</aligny>
+			<font>mf_medium14</font><textcolor>80FFFFFF</textcolor><label>No activity in the last 3 days</label>
+			<visible>Integer.IsEqual(Container(3600).NumItems,0)</visible>
+		</control>
+		</control>
+		</control>
+		</control>
+
+		<include content="MFDashMenu" />
+		<include content="MFHeader"><param name="down" value="3001" /><param name="stats" value="false" /><param name="nav" value="false" /><param name="avatarleft" value="3001" /></include>
+	</controls>
+</window>

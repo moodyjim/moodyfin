@@ -20,6 +20,8 @@
         Binary search over Container(list).ListItemAbsolute(n).SortLetter, so the list must be sorted by name, A-Z.
     action=favorite
         Player: marks / unmarks the playing title as a Jellyfin favourite (Window(Home).Property(MoodyFin.Fav) 1/0).
+    action=dashscan / action=dashserver
+        Dashboard: scan all Jellyfin libraries / the Server menu (restart, shut down; each asks first).
     action=playnext,tvshowid=N
         Plays the show's next episode (the one in progress, else the first unwatched), resuming where it stopped.
 """
@@ -198,6 +200,12 @@ def run(argv):
         jump(args.get("letter", "#"), args.get("list", "520"))
     elif action == "favorite":
         favorite()
+    elif action == "dashscan":
+        from . import dashboard
+        dashboard.scan()
+    elif action == "dashserver":
+        from . import dashboard
+        dashboard.server_menu()
     elif action == "playnext":
         playnext(args.get("tvshowid", ""))
     else:

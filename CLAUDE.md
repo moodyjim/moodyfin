@@ -85,7 +85,10 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
     522 list; SetFocus(520) = current view) and `xml/Custom_1150_MoodyFinSearch.xml` (search, window 11150 in Python)
     are MoodyFin's own; Estuary's versions are gone. Player: `VideoOSD.xml` (panel), `DialogSeekBar.xml` (seek bar and
     pause screen), `MoodyFin-UpNext.xml` (opened by the helper's `upnext.py`), `Startup.xml` (splash),
-    `LoginScreen.xml` (profile picker). Estuary's other screens are restyled globally: `button_focus` is a soft light
+    `LoginScreen.xml` (profile picker). `Custom_1152_MoodyFinUserMenu.xml` = the avatar's user menu;
+    `Custom_1153_MoodyFinDashboard.xml` = the Jellyfin theme's admin dashboard (written by `tools/build_dash.py`, data from the
+    helper's `dashboard.py`; opened from the user menu, administrators only; no nav pill, Kodi's System menu on the
+    left = `MFDashMenu`). Estuary's other screens are restyled globally: `button_focus` is a soft light
     highlight (not the accent), and `media/dialogs/dialog-bg.png` + `media/buttons/dialogbutton-*.png` are redrawn
     rounded by `tools/build_media.sh` (same sizes/borders as Estuary's).
   - Details page = Kodi's video info dialog. Its `ListItem.*` is always the dialog's item. Kodi ids: 8 Play, 11 Trailer,
@@ -148,4 +151,9 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
   after the list, moved over the focused slot by conditional slides on Container.Position (or Column/Row); shows on
   `System.IdleTime(1)`. Any input hides it, **including kodi.py's screenshot action**: check it with a Windows screen
   capture of the Kodi window instead.
+- A list's item layout can't hold grouplists or buttons (they don't draw): rows that need auto-width chips are fixed
+  slots fed by window properties. A grouplist puts every child at its top (`<top>` is ignored): centre small things
+  in a full-height image with `aspectratio keep`.
+- A `ranges` control scales its textures by height / texturebg's height: use the tick picture as the (transparent) bg.
+- Funnel Sans has no arrows, ●, ⏸ or ▶ (it has • × › ·): use Material icons for those.
 - Test playback with a local ffmpeg clip (`testsrc2`), muted, never a library title (it would change Jellyfin progress).

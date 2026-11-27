@@ -4,7 +4,8 @@
      (2 px white 12 % ring) + name (Bebas 26, 28 here) + "Administrator" / "Signed in" (600 12 px at 50 %), line under it;
      items 10 / 12 padding, radius 10, Medium 14 (15 here) at 88 %, icons 20 at 60 %; focused = 7 % white, 3 px accent
      bar, accent icon; Sign Out #ff7a7a. Jellyfin's web-only items (dashboard, metadata, quick connect) become Kodi's:
-       1161 Settings, 1162 MoodyFin (skin settings), 1163 Jellyfin (add-on settings), 1164 Add-ons,
+       1161 Settings, 1162 MoodyFin (skin settings), 1163 Jellyfin (add-on settings), 1167 Dashboard (administrators;
+       Custom_1153_MoodyFinDashboard.xml), 1164 Add-ons,
        1165 Power, 1166 Sign Out (back to the profile picker; only with profiles)
      The user comes from the helper: Window(Home).Property(MoodyFin.UserName|UserSub|UserPic). -->
 <window type="dialog" id="1152">
@@ -18,24 +19,44 @@
 		<animation effect="fade" start="100" end="0" time="120">WindowClose</animation>
 		<!-- panel -->
 		<control type="image">
+			<width>280</width><height>409</height>
+			<texture border="16" colordiffuse="F00E0E10">moodyfin/shapes/rr16.png</texture>
+			<visible>String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator) + System.HasLoginScreen</visible>
+		</control>
+		<control type="image">
+			<width>280</width><height>409</height>
+			<texture border="16" colordiffuse="14FFFFFF">moodyfin/shapes/rr16_line.png</texture>
+			<visible>String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator) + System.HasLoginScreen</visible>
+		</control>
+		<control type="image">
 			<width>280</width><height>367</height>
 			<texture border="16" colordiffuse="F00E0E10">moodyfin/shapes/rr16.png</texture>
-			<visible>System.HasLoginScreen</visible>
+			<visible>String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator) + !System.HasLoginScreen</visible>
 		</control>
 		<control type="image">
 			<width>280</width><height>367</height>
 			<texture border="16" colordiffuse="14FFFFFF">moodyfin/shapes/rr16_line.png</texture>
-			<visible>System.HasLoginScreen</visible>
+			<visible>String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator) + !System.HasLoginScreen</visible>
+		</control>
+		<control type="image">
+			<width>280</width><height>367</height>
+			<texture border="16" colordiffuse="F00E0E10">moodyfin/shapes/rr16.png</texture>
+			<visible>!String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator) + System.HasLoginScreen</visible>
+		</control>
+		<control type="image">
+			<width>280</width><height>367</height>
+			<texture border="16" colordiffuse="14FFFFFF">moodyfin/shapes/rr16_line.png</texture>
+			<visible>!String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator) + System.HasLoginScreen</visible>
 		</control>
 		<control type="image">
 			<width>280</width><height>325</height>
 			<texture border="16" colordiffuse="F00E0E10">moodyfin/shapes/rr16.png</texture>
-			<visible>!System.HasLoginScreen</visible>
+			<visible>!String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator) + !System.HasLoginScreen</visible>
 		</control>
 		<control type="image">
 			<width>280</width><height>325</height>
 			<texture border="16" colordiffuse="14FFFFFF">moodyfin/shapes/rr16_line.png</texture>
-			<visible>!System.HasLoginScreen</visible>
+			<visible>!String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator) + !System.HasLoginScreen</visible>
 		</control>
 		<!-- head: picture, name, role -->
 		<control type="image">
@@ -153,7 +174,7 @@
 				<onclick>Dialog.Close(1152)</onclick>
 				<onclick>Addon.OpenSettings(plugin.video.jellyfin)</onclick>
 				<onup>1162</onup>
-				<ondown>1164</ondown>
+				<ondown>1167</ondown>
 				<onleft>noop</onleft>
 				<onright>noop</onright>
 			</control>
@@ -177,9 +198,47 @@
 			<left>14</left><top>215</top><width>252</width><height>1</height>
 			<texture colordiffuse="14FFFFFF">colors/white.png</texture>
 		</control>
+		<!-- Dashboard -->
+		<control type="group">
+			<left>6</left><top>223</top><width>268</width><height>40</height>
+			<visible>String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)</visible>
+			<control type="button" id="1167">
+				<width>268</width><height>40</height>
+				<label>Dashboard</label>
+				<font>mf_card_genre</font>
+				<textcolor>E0FFFFFF</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<textoffsetx>44</textoffsetx>
+				<aligny>center</aligny>
+				<texturefocus border="10" colordiffuse="12FFFFFF">moodyfin/shapes/rr10.png</texturefocus>
+				<texturenofocus />
+				<onclick>Dialog.Close(1152)</onclick>
+				<onclick>ActivateWindow(1153)</onclick>
+				<onup>1163</onup>
+				<ondown>1164</ondown>
+				<onleft>noop</onleft>
+				<onright>noop</onright>
+			</control>
+			<control type="image">
+				<left>0</left><top>9</top><width>3</width><height>22</height>
+				<texture border="1" colordiffuse="mf_accent">moodyfin/shapes/rr6.png</texture>
+				<visible>Control.HasFocus(1167)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="99FFFFFF">moodyfin/icons/dashboard.png</texture>
+				<visible>!Control.HasFocus(1167)</visible>
+			</control>
+			<control type="image">
+				<left>12</left><top>10</top><width>20</width><height>20</height>
+				<texture colordiffuse="mf_accent">moodyfin/icons/dashboard.png</texture>
+				<visible>Control.HasFocus(1167)</visible>
+			</control>
+		</control>
 		<!-- Add-ons -->
 		<control type="group">
 			<left>6</left><top>223</top><width>268</width><height>40</height>
+			<animation effect="slide" end="0,42" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)">Conditional</animation>
 			<control type="button" id="1164">
 				<width>268</width><height>40</height>
 				<label>Add-ons</label>
@@ -192,7 +251,7 @@
 				<texturenofocus />
 				<onclick>Dialog.Close(1152)</onclick>
 				<onclick>ActivateWindow(addonbrowser)</onclick>
-				<onup>1163</onup>
+				<onup>1167</onup>
 				<ondown>1165</ondown>
 				<onleft>noop</onleft>
 				<onright>noop</onright>
@@ -215,13 +274,16 @@
 		</control>
 		<control type="image">
 			<left>14</left><top>270</top><width>252</width><height>1</height>
+			<animation effect="slide" end="0,42" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)">Conditional</animation>
 			<texture colordiffuse="14FFFFFF">colors/white.png</texture>
 		</control>
 		<!-- Power -->
 		<control type="group">
 			<left>6</left><top>278</top><width>268</width><height>40</height>
+			<animation effect="slide" end="0,42" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)">Conditional</animation>
 			<control type="button" id="1165">
 				<width>268</width><height>40</height>
+			<animation effect="slide" end="0,42" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)">Conditional</animation>
 				<label>Power</label>
 				<font>mf_card_genre</font>
 				<textcolor>E0FFFFFF</textcolor>
@@ -256,9 +318,11 @@
 		<!-- Sign Out -->
 		<control type="group">
 			<left>6</left><top>320</top><width>268</width><height>40</height>
+			<animation effect="slide" end="0,42" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)">Conditional</animation>
 			<visible>System.HasLoginScreen</visible>
 			<control type="button" id="1166">
 				<width>268</width><height>40</height>
+			<animation effect="slide" end="0,42" time="0" condition="String.IsEqual(Window(Home).Property(MoodyFin.UserSub),Administrator)">Conditional</animation>
 				<label>Sign Out</label>
 				<font>mf_card_genre</font>
 				<textcolor>FFFF7A7A</textcolor>

@@ -1,3 +1,11 @@
+[B]0.9.0[/B]
+- Dashboard (avatar menu > Dashboard, administrators): the Jellyfin theme's admin dashboard home. Now Playing (streams by play
+  method, upload Mbps, a card per stream), server bar (version, uptime, CPU, memory, transcoding, devices, users),
+  Scan all libraries, Server menu (restart / shut down, asks first), attention, library counts with this week's new,
+  recently added (opens the details page), storage, running tasks, activity.
+- Dashboard has Kodi's System menu on the left (file manager, add-ons, system information, event log, settings pages),
+  like the Jellyfin theme's admin drawer; no nav pill there.
+
 [B]0.8.1[/B]
 - Chapter marks sit on the progress bar (they were stretched and drawn under it).
 - Episode count on show posters like the Jellyfin theme's: small dark rounded badge, 99+ above 99.

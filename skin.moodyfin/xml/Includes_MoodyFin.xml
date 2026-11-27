@@ -122,6 +122,8 @@
 	<include name="MFHeader">
 		<param name="down" default="9000" />
 		<param name="stats" default="true" />
+		<param name="nav" default="true" />
+		<param name="avatarleft" default="9106" />
 		<definition>
 		<control type="group">
 			<depth>DepthBars</depth>
@@ -139,6 +141,7 @@
 			<control type="image">
 				<left>0</left><top>0</top><width>100%</width><height>220</height>
 				<texture colordiffuse="99000000">moodyfin/shapes/grad_up.png</texture>
+				<visible>$PARAM[nav]</visible>
 			</control>
 			<!-- logo (9110: back to the home page) + stats -->
 			<control type="button" id="9110">
@@ -149,11 +152,13 @@
 				<onclick>ActivateWindow(home)</onclick>
 				<onright>9101</onright>
 				<ondown>$PARAM[down]</ondown>
+				<visible>$PARAM[nav]</visible>
 			</control>
 			<control type="image">
 				<left>mf_gutter</left><top>26</top><width>52</width><height>52</height>
 				<aspectratio>keep</aspectratio>
 				<texture>moodyfin/logo.png</texture>
+				<visible>$PARAM[nav]</visible>
 			</control>
 			<control type="label">
 				<left>140</left><top>26</top><width>440</width><height>52</height>
@@ -166,6 +171,7 @@
 			<!-- nav pill -->
 			<control type="group" id="9100">
 				<centerleft>50%</centerleft><top>20</top><width>804</width><height>64</height>
+				<visible>$PARAM[nav]</visible>
 				<control type="image">
 					<left>0</left><top>0</top><width>804</width><height>64</height>
 					<texture border="32,0,32,0" colordiffuse="CC101113">moodyfin/shapes/pill_64.png</texture>
@@ -218,7 +224,7 @@
 				<texturenofocus />
 				<label />
 				<onclick>ActivateWindow(1152)</onclick>
-				<onleft>9106</onleft>
+				<onleft>$PARAM[avatarleft]</onleft>
 				<ondown>$PARAM[down]</ondown>
 			</control>
 			<control type="image">
@@ -229,6 +235,296 @@
 		</control>
 		</definition>
 	</include>
+
+	<!-- ================================================================ dashboard menu (left)
+	     the Jellyfin theme's admin drawer (19-dashboard-skin.js): rgba(10,10,13,.94), 1 px white 8 % edge; section headings
+	     Bebas 18 (20 here) at 45 %, letter-spaced; items 48 tall, 2 / 10 px margin, radius 12, MUI's 16 px text
+	     and 24 px icons; focused = 6 % white + 3 px to the right; this page = accent .28 -> .06 with a
+	     3 px accent bar and an accent icon. Items: Kodi's System page (Estuary's Settings.xml).
+	     3690 MoodyFin (home page), 3700 System, 3710 Settings. -->
+	<include name="MFDashMenu">
+		<control type="group">
+		<animation effect="fade" start="0" end="100" time="300">WindowOpen</animation>
+		<control type="image">
+			<left>0</left><top>0</top><width>240</width><height>100%</height>
+			<texture colordiffuse="F00A0A0D">colors/white.png</texture>
+		</control>
+		<control type="image">
+			<left>239</left><top>0</top><width>1</width><height>100%</height>
+			<texture colordiffuse="14FFFFFF">colors/white.png</texture>
+		</control>
+		<!-- MoodyFin + Kodi version: back to the home page -->
+		<control type="button" id="3690">
+			<left>10</left><top>14</top><width>220</width><height>64</height>
+			<label /><texturenofocus />
+			<texturefocus border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texturefocus>
+			<onclick>ActivateWindow(home)</onclick>
+			<onup>noop</onup><ondown>3700</ondown><onleft>noop</onleft><onright>3001</onright>
+		</control>
+		<control type="image">
+			<left>24</left><top>26</top><width>40</width><height>40</height>
+			<aspectratio>keep</aspectratio>
+			<texture>moodyfin/logo.png</texture>
+		</control>
+		<control type="label">
+			<left>76</left><top>24</top><width>150</width><height>24</height><aligny>center</aligny>
+			<font>mf_small20</font><textcolor>FFFFFFFF</textcolor><label>MoodyFin</label>
+		</control>
+		<control type="label">
+			<left>76</left><top>48</top><width>150</width><height>18</height><aligny>center</aligny>
+			<font>mf_medium13</font><textcolor>99FFFFFF</textcolor><label>Kodi $INFO[System.BuildVersionShort]</label>
+		</control>
+		<control type="label">
+			<left>16</left><top>92</top><width>208</width><height>48</height><aligny>center</aligny>
+			<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>SYSTEM</label>
+		</control>
+		<control type="list" id="3700">
+			<left>0</left><top>140</top><width>240</width><height>260</height>
+			<orientation>vertical</orientation>
+			<scrolltime>0</scrolltime>
+			<onup>3690</onup><ondown>3710</ondown><onleft>noop</onleft><onright>3001</onright>
+			<itemlayout width="240" height="52">
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+					<visible>false</visible>
+				</control>
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+				</control>
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+				</control>
+				<control type="group">
+					
+					<control type="image">
+						<left>26</left><top>14</top><width>24</width><height>24</height>
+						<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+						<visible>String.IsEmpty(ListItem.Property(current))</visible>
+					</control>
+					<control type="image">
+						<left>26</left><top>14</top><width>24</width><height>24</height>
+						<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+						<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+					</control>
+					<control type="label">
+						<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+						<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+					</control>
+				</control>
+			</itemlayout>
+			<focusedlayout width="240" height="52">
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+					<visible>Control.HasFocus(3700)</visible>
+				</control>
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+				</control>
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+				</control>
+				<control type="group">
+					<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3700)">Conditional</animation>
+					<control type="image">
+						<left>26</left><top>14</top><width>24</width><height>24</height>
+						<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+						<visible>String.IsEmpty(ListItem.Property(current))</visible>
+					</control>
+					<control type="image">
+						<left>26</left><top>14</top><width>24</width><height>24</height>
+						<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+						<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+					</control>
+					<control type="label">
+						<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+						<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+					</control>
+				</control>
+			</focusedlayout>
+			<content>
+				<item>
+					<label>Dashboard</label>
+					<icon>moodyfin/icons/dashboard.png</icon>
+					<onclick>noop</onclick>
+					<property name="current">1</property>
+				</item>
+				<item>
+					<label>$LOCALIZE[10003]</label>
+					<icon>moodyfin/icons/folder.png</icon>
+					<onclick>ActivateWindow(filemanager)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[24001]</label>
+					<icon>moodyfin/icons/extension.png</icon>
+					<onclick>ActivateWindow(addonbrowser)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[138]</label>
+					<icon>moodyfin/icons/info.png</icon>
+					<onclick>ActivateWindow(systeminfo)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[31067]</label>
+					<icon>moodyfin/icons/history.png</icon>
+					<onclick>ActivateWindow(eventlog)</onclick>
+				</item>
+			</content>
+		</control>
+		<control type="label">
+			<left>16</left><top>404</top><width>208</width><height>48</height><aligny>center</aligny>
+			<font>mf_heading20</font><textcolor>73FFFFFF</textcolor><label>SETTINGS</label>
+		</control>
+		<control type="list" id="3710">
+			<left>0</left><top>452</top><width>240</width><height>520</height>
+			<orientation>vertical</orientation>
+			<scrolltime>0</scrolltime>
+			<onup>3700</onup><ondown>noop</ondown><onleft>noop</onleft><onright>3001</onright>
+			<itemlayout width="240" height="52">
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+					<visible>false</visible>
+				</control>
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+				</control>
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+				</control>
+				<control type="group">
+					
+					<control type="image">
+						<left>26</left><top>14</top><width>24</width><height>24</height>
+						<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+						<visible>String.IsEmpty(ListItem.Property(current))</visible>
+					</control>
+					<control type="image">
+						<left>26</left><top>14</top><width>24</width><height>24</height>
+						<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+						<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+					</control>
+					<control type="label">
+						<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+						<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+					</control>
+				</control>
+			</itemlayout>
+			<focusedlayout width="240" height="52">
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture border="12" colordiffuse="0FFFFFFF">moodyfin/shapes/rr12.png</texture>
+					<visible>Control.HasFocus(3710)</visible>
+				</control>
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/navsel.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+				</control>
+				<control type="image">
+					<left>10</left><top>2</top><width>220</width><height>48</height>
+					<texture colordiffuse="mf_accent">moodyfin/shapes/navbar.png</texture>
+					<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+				</control>
+				<control type="group">
+					<animation effect="slide" end="3,0" time="150" condition="Control.HasFocus(3710)">Conditional</animation>
+					<control type="image">
+						<left>26</left><top>14</top><width>24</width><height>24</height>
+						<texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
+						<visible>String.IsEmpty(ListItem.Property(current))</visible>
+					</control>
+					<control type="image">
+						<left>26</left><top>14</top><width>24</width><height>24</height>
+						<texture colordiffuse="mf_accent">$INFO[ListItem.Icon]</texture>
+						<visible>!String.IsEmpty(ListItem.Property(current))</visible>
+					</control>
+					<control type="label">
+						<left>82</left><top>2</top><width>144</width><height>48</height><aligny>center</aligny>
+						<font>mf_regular16</font><textcolor>FFFFFFFF</textcolor><label>$INFO[ListItem.Label]</label>
+					</control>
+				</control>
+			</focusedlayout>
+			<content>
+				<item>
+					<label>$LOCALIZE[14200]</label>
+					<icon>moodyfin/icons/smart_display.png</icon>
+					<onclick>ActivateWindow(PlayerSettings)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[14211]</label>
+					<icon>moodyfin/icons/perm_media.png</icon>
+					<onclick>ActivateWindow(MediaSettings)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[14204]</label>
+					<icon>moodyfin/icons/tv_guide.png</icon>
+					<onclick>ActivateWindow(PVRSettings)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[14036]</label>
+					<icon>moodyfin/icons/settings_input_antenna.png</icon>
+					<onclick>ActivateWindow(ServiceSettings)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[15016]</label>
+					<icon>moodyfin/icons/sports_esports.png</icon>
+					<onclick>ActivateWindow(GameSettings)</onclick>
+					<visible>System.GetBool(gamesgeneral.enable)</visible>
+				</item>
+				<item>
+					<label>$LOCALIZE[14206]</label>
+					<icon>moodyfin/icons/design_services.png</icon>
+					<onclick>ActivateWindow(InterfaceSettings)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[13200]</label>
+					<icon>moodyfin/icons/person.png</icon>
+					<onclick>ActivateWindow(Profiles)</onclick>
+				</item>
+				<item>
+					<label>$LOCALIZE[13000]</label>
+					<icon>moodyfin/icons/settings.png</icon>
+					<onclick>ActivateWindow(SystemSettings)</onclick>
+				</item>
+				<item>
+					<label>CoreELEC</label>
+					<icon>moodyfin/icons/memory.png</icon>
+					<onclick>RunAddon(service.coreelec.settings)</onclick>
+					<visible>System.AddonIsEnabled(service.coreelec.settings)</visible>
+				</item>
+				<item>
+					<label>LibreELEC</label>
+					<icon>moodyfin/icons/memory.png</icon>
+					<onclick>RunAddon(service.libreelec.settings)</onclick>
+					<visible>System.AddonIsEnabled(service.libreelec.settings)</visible>
+				</item>
+			</content>
+		</control>
+		</control>
+	</include>
+
+	<!-- dashboard (Custom_1153_MoodyFinDashboard.xml) -->
+	<variable name="MFDashScanLabel">
+		<value condition="!String.IsEmpty(Window(Home).Property(MoodyFin.Dash.Scan))">Scanning  $INFO[Window(Home).Property(MoodyFin.Dash.Scan)]</value>
+		<value>Scan all libraries</value>
+	</variable>
+	<variable name="MFDashTcColor">
+		<value condition="Integer.IsGreater(Window(Home).Property(MoodyFin.Dash.Transcoding),0)">mf_accent</value>
+		<value>FFFFFFFF</value>
+	</variable>
 
 	<!-- the user menu's head (helper: the Jellyfin user; else the Kodi profile) -->
 	<variable name="MFUserName">

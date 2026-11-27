@@ -17,6 +17,7 @@ rr 190 285 12 "$M/masks/poster.png"
 rr 356 200 12 "$M/masks/thumb.png"
 rr 396 285 12 "$M/masks/wide.png"
 rr 160 240 12 "$M/masks/poster_small.png"
+rr 579 94 14 "$M/masks/npcard.png"; rr 48 72 7 "$M/masks/npposter.png"; rr 112 168 12 "$M/masks/dashposter.png"  # dashboard
 
 # pills: height h, width 2h, used with border="h/2,0,h/2,0" so only the middle stretches
 for h in 40 48 56 64; do
@@ -29,6 +30,13 @@ rr 24 24 6 "$M/shapes/rr6.png"
 # user menu (the Jellyfin theme's ue-header-avatar.css): panel radius 16, items radius 10
 rr 48 48 16 "$M/shapes/rr16.png"; ring 48 48 16 2 "$M/shapes/rr16_line.png"
 rr 40 40 10 "$M/shapes/rr10.png"
+# dashboard (the Jellyfin theme's 19-dashboard-skin.js): boxes radius 14, chips radius 7
+rr 40 40 14 "$M/shapes/rr14.png"; ring 40 40 14 2 "$M/shapes/rr14_line.png"
+rr 24 24 7 "$M/shapes/rr7.png"; ring 24 24 7 2 "$M/shapes/rr7_line.png"
+magick -size 52x68 xc:none -fill white -draw "roundrectangle 0,21,51,46,13,13" "$M/shapes/chip26_68.png"  # 26 px pill in a 68 px row
+# dashboard menu (the Jellyfin theme's drawer): selected item = accent .28 -> .06 left to right, radius 12, 3 px inset bar
+magick -size 48x220 "gradient:rgba(255,255,255,0.28)-rgba(255,255,255,0.06)" -rotate -90 \( -size 220x48 xc:none -fill white -draw "roundrectangle 0,0,219,47,12,12" \) -compose DstIn -composite PNG32:"$M/shapes/navsel.png"
+magick -size 220x48 xc:none -fill white -draw "roundrectangle 0,0,219,47,12,12" \( -size 220x48 xc:none -fill white -draw "roundrectangle 3,0,230,47,12,12" \) -compose DstOut -composite PNG32:"$M/shapes/navbar.png"
 magick -size 64x64 xc:none -fill white -draw "circle 31.5,31.5 31.5,0" "$M/shapes/circle.png"
 magick -size 64x64 xc:none -fill none -stroke white -strokewidth 3 -draw "circle 31.5,31.5 31.5,2" "$M/shapes/circle_line.png"
 

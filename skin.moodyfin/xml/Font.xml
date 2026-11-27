@@ -143,6 +143,67 @@
 			<filename>FunnelSans-Bold.ttf</filename>
 			<size>14</size>
 		</font>
+		<!-- dashboard (the Jellyfin theme's 19-dashboard-skin.js / 24-now-playing.js) -->
+		<font>
+			<name>mf_bold12</name>
+			<filename>FunnelSans-Bold.ttf</filename>
+			<size>12</size>
+		</font>
+		<font>
+			<name>mf_bold13</name>
+			<filename>FunnelSans-Bold.ttf</filename>
+			<size>13</size>
+		</font>
+		<font>
+			<name>mf_bold16</name>
+			<filename>FunnelSans-Bold.ttf</filename>
+			<size>16</size>
+		</font>
+		<font>
+			<name>mf_bold18</name>
+			<filename>FunnelSans-Bold.ttf</filename>
+			<size>18</size>
+		</font>
+		<font>
+			<name>mf_bold24</name>
+			<filename>FunnelSans-Bold.ttf</filename>
+			<size>24</size>
+		</font>
+		<font>
+			<name>mf_medium13</name>
+			<filename>FunnelSans-Medium.ttf</filename>
+			<size>13</size>
+		</font>
+		<font>
+			<name>mf_medium14</name>
+			<filename>FunnelSans-Medium.ttf</filename>
+			<size>14</size>
+		</font>
+		<font>
+			<name>mf_regular12</name>
+			<filename>FunnelSans-Regular.ttf</filename>
+			<size>12</size>
+		</font>
+		<font>
+			<name>mf_heading24</name>
+			<filename>BebasNeue-Regular.ttf</filename>
+			<size>24</size>
+		</font>
+		<font>
+			<name>mf_heading40</name>
+			<filename>BebasNeue-Regular.ttf</filename>
+			<size>40</size>
+		</font>
+		<font>
+			<name>mf_regular16</name>
+			<filename>FunnelSans-Regular.ttf</filename>
+			<size>16</size>
+		</font>
+		<font>
+			<name>mf_heading20</name>
+			<filename>BebasNeue-Regular.ttf</filename>
+			<size>20</size>
+		</font>
 		<font>
 			<name>mf_heading28</name>
 			<filename>BebasNeue-Regular.ttf</filename>
@@ -385,6 +446,74 @@
 			<name>mf_tag14b</name>
 			<filename>arial.ttf</filename>
 			<size>14</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_bold12</name>
+			<filename>arial.ttf</filename>
+			<size>12</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_bold13</name>
+			<filename>arial.ttf</filename>
+			<size>13</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_bold16</name>
+			<filename>arial.ttf</filename>
+			<size>16</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_bold18</name>
+			<filename>arial.ttf</filename>
+			<size>18</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_bold24</name>
+			<filename>arial.ttf</filename>
+			<size>24</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_medium13</name>
+			<filename>arial.ttf</filename>
+			<size>13</size>
+		</font>
+		<font>
+			<name>mf_medium14</name>
+			<filename>arial.ttf</filename>
+			<size>14</size>
+		</font>
+		<font>
+			<name>mf_regular12</name>
+			<filename>arial.ttf</filename>
+			<size>12</size>
+		</font>
+		<font>
+			<name>mf_heading24</name>
+			<filename>arial.ttf</filename>
+			<size>24</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_heading40</name>
+			<filename>arial.ttf</filename>
+			<size>40</size>
+			<style>bold</style>
+		</font>
+		<font>
+			<name>mf_regular16</name>
+			<filename>arial.ttf</filename>
+			<size>16</size>
+		</font>
+		<font>
+			<name>mf_heading20</name>
+			<filename>arial.ttf</filename>
+			<size>20</size>
 			<style>bold</style>
 		</font>
 		<font>
