@@ -1,3 +1,6 @@
+[B]0.10.1[/B]
+- Published with the MoodyFin Repository; MIT licence text added.
+
 [B]0.10.0[/B]
 - admin.py: the admin pages' data and actions (users, libraries, devices, activity, plugins, tasks, server settings).
 - jellyfin.call sends JSON bodies.

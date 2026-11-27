@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.moodyfin" name="MoodyFin Repository" version="1.0.0" provider-name="moodyjim">
+  <extension point="xbmc.addon.repository" name="MoodyFin Repository">
+    <dir>
+      <info compressed="false">https://moodyjim.github.io/moodyfin/addons.xml</info>
+      <checksum>https://moodyjim.github.io/moodyfin/addons.xml.md5</checksum>
+      <datadir zip="true">https://moodyjim.github.io/moodyfin/</datadir>
+      <hashes>false</hashes>
+    </dir>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">MoodyFin skin and its helper</summary>
+    <description lang="en_GB">Installs and updates the MoodyFin skin (the Jellyfin theme's look for Kodi) and MoodyFin Helper.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+    <source>https://github.com/moodyjim/moodyfin</source>
+    <assets>
+      <icon>icon.png</icon>
+    </assets>
+  </extension>
+</addon>

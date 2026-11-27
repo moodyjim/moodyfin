@@ -46,8 +46,7 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
 - Hero / Top 10 come from the library (no TMDB): hero = newest unwatched with a backdrop; Top 10 = best rated added lately.
 - Top 10 style is a skin setting `mf.top10numbers`: off = rank badges + #1 wide card (default), on = outlined numbers.
 - First milestone: the Home page.
-- Repo is private for now and will go public later, so keep licences and third-party notices correct from day one
-  (`THIRD-PARTY-NOTICES.md`).
+- Repo is public (since 0.10.1): keep licences and third-party notices correct (`THIRD-PARTY-NOTICES.md`).
 
 ## Look (from the Jellyfin theme — keep in sync with the reference)
 - **Never guess a look.** Take sizes, fonts, colours and spacing from the theme's source (`web-src/js/NN-*.js` style
@@ -100,6 +99,9 @@ MoodyFin: a Kodi skin that recreates the Jellyfin theme on Kodi.
     `ListItem.Property(mf.*)`, listed in the docstring of `items.py`)
   - service: `Window(Home).Property(MoodyFin.Stats|Reload|Ambient)`; the ambient blur reads its picture from label 9990
   - `RunScript(script.moodyfin.helper,action=studio|info|watched|play|playnext,...)` (docstring in `actions.py`)
+- `repository.moodyfin/` — Kodi repository add-on (own version, 1.0.x). `tools/build_repo.py` builds the repo site
+  (addons.xml + md5 + zips); `.github/workflows/pages.yml` publishes it to https://moodyjim.github.io/moodyfin/ on
+  every `v*` tag. The Ugoos installs from there. Repo is public: never commit server names, tokens or screenshots.
 - `tools/` — `build_media.sh` (masks, pills, gradients, icons, badge strips, Top 10 numbers), `build_studios.sh`,
   `build_fonts.py` (Funnel Sans static weights + star), `kodi.py` (drive the local Kodi), `icons/` (Material Symbols SVGs).
 - `docs/reference/` — screenshots of the Jellyfin theme + logo source. Not shipped.

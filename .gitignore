@@ -9,3 +9,4 @@ tools/shots/
 
 # reference screenshots of Jellyfin servers: kept locally, never published
 docs/reference/*.jpg
+_site/

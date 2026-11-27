@@ -1,3 +1,6 @@
+[B]0.10.1[/B]
+- Published: install from the MoodyFin Repository (https://moodyjim.github.io/moodyfin/).
+
 [B]0.10.0[/B]
 - Admin pages (dashboard menu): General, Users, Libraries, Devices, Activity, Plugins, Scheduled tasks, in the Jellyfin theme's
   admin look. OK on a row opens what can be done with it (asks before anything final).

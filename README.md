@@ -19,7 +19,8 @@ remote control on CoreELEC boxes.
 | `skin.moodyfin/` | The skin (a fork of Estuary). |
 | `script.moodyfin.helper/` | The helper the skin needs: Home rows, library stats, the blurred background, studio pages. |
 | `tools/` | Scripts that build the skin's pictures and fonts, and drive a local Kodi for testing. |
-| `docs/reference/` | Screenshots of the the Jellyfin theme Jellyfin theme, the look MoodyFin copies. |
+| `repository.moodyfin/` | The Kodi repository add-on (points at the GitHub Pages site). |
+| `docs/reference/` | The logo's source picture. |
 
 ## Home
 
@@ -66,6 +67,14 @@ Tip: to open the details page when you press OK on a movie in a library page (as
 - **Top 10 style:** *Skin settings > General > Top 10: big outlined numbers*. Off (default): rank badges, with #1 as a
   wide card.
 - **Up Next pop-up:** *Skin settings > General*.
+
+## Install on Kodi (CoreELEC, LibreELEC, any Kodi 21)
+
+1. *Settings > File manager > Add source*, address `https://moodyjim.github.io/moodyfin/`, name it `moodyfin`.
+2. *Settings > Add-ons > Install from zip file > moodyfin >* `repository.moodyfin-1.0.0.zip`
+   (allow *Unknown sources* when Kodi asks).
+3. *Install from repository > MoodyFin Repository > Look and feel > Skin > MoodyFin*. The helper comes with it.
+4. Pick **MoodyFin** in *Settings > Interface > Skin*. Updates arrive through the repository.
 
 ## Install (development)
 
