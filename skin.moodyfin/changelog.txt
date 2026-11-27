@@ -1,0 +1,5 @@
+[B]0.1.0[/B]
+- Start of MoodyFin, forked from Estuary (Kodi 21.3).
+- Fonts: Funnel Sans (body) and Bebas Neue (headings).
+- the Jellyfin theme's colours, cyan accent, accent presets in Settings > Skin > Colours.
+- Flame icon.

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MoodyFin accent: Amber -->
+<colors>
+	<color name="mf_accent">FFF59E0B</color>
+	<color name="mf_accent_dim">80F59E0B</color>
+	<color name="mf_star">FFF59E0B</color>
+	<color name="blue">FFF59E0B</color>
+	<color name="button_focus">FFF59E0B</color>
+	<color name="button_alt_focus">80F59E0B</color>
+	<color name="selected">FFF59E0B</color>
+</colors>

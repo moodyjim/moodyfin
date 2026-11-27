@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MoodyFin colours. Values from the Jellyfin theme's ue-tokens.css; accent = cyan (#5CD8FA).
+     The accent presets in this folder override only the accent names (Settings > Skin > Colours). -->
+<colors>
+	<!-- MoodyFin tokens -->
+	<color name="mf_background">FF000000</color>
+	<color name="mf_surface">FF101113</color>
+	<color name="mf_raised">FF1A1C20</color>
+	<color name="mf_border">FF26292E</color>
+	<color name="mf_border_hover">38F1F2F4</color>
+	<color name="mf_glass">B3101113</color>
+	<color name="mf_text">FFF1F2F4</color>
+	<color name="mf_muted">FF969AA1</color>
+	<color name="mf_skeleton">29D3D7DD</color>
+	<color name="mf_accent">FF5CD8FA</color>
+	<color name="mf_accent_dim">805CD8FA</color>
+	<color name="mf_on_accent">FF000000</color>
+	<color name="mf_badge_new">FFE50914</color>
+	<color name="mf_star">FF5CD8FA</color>
+
+	<!-- Estuary names, mapped onto the tokens -->
+	<color name="primary_background">FF101113</color>
+	<color name="secondary_background">1AFFFFFF</color>
+	<color name="dialog_tint">FF1A1C20</color>
+	<color name="background">FF000000</color>
+	<color name="bg_image">FF909090</color>
+	<color name="bg_overlay">30FFFFFF</color>
+	<color name="black">FF000000</color>
+	<color name="white">FFF1F2F4</color>
+	<color name="grey">FF969AA1</color>
+	<color name="blue">FF5CD8FA</color>
+	<color name="red">FFDC2626</color>
+	<color name="button_focus">FF5CD8FA</color>
+	<color name="button_alt_focus">805CD8FA</color>
+	<color name="text_shadow">22000000</color>
+	<color name="border_alpha">38F1F2F4</color>
+	<color name="disabled">40FFFFFF</color>
+	<color name="selected">FF5CD8FA</color>
+	<color name="invalid">FFFF0000</color>
+</colors>
